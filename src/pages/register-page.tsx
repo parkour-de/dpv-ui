@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export function RegisterPage() {
-    // const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
         password: "",

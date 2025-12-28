@@ -18,17 +18,6 @@ export function CreateClubPage() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    // Retrieve token from storage manually if not using useAuth or if useAuth doesn't expose it directly (it does)
-    // The api client handles it if we pass it.
-    // Actually we need the token from context.
-    // Let's import useAuth.
-
-    // Wait, I can't import useAuth inside the component code block in the write_to_file tool if I didn't import it at the top.
-    // I must add the import statement at the top.
-    // See lines below.
-
-    // (Note for self: The `write_to_file` tool takes the whole file content. I will include imports.)
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
     };
@@ -38,7 +27,7 @@ export function CreateClubPage() {
         setError(null);
         setLoading(true);
 
-        const token = sessionStorage.getItem('dpv_auth_token'); // Or use context
+        const token = sessionStorage.getItem('dpv_auth_token');
         if (!token) {
             setError("Nicht authentifiziert.");
             setLoading(false);

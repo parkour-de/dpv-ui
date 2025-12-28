@@ -34,7 +34,6 @@ export function DashboardPage() {
                     query += `&status=${statusFilter}`;
                 }
 
-                // Ensure token is passed. If useAuth exposes token, use it.
                 if (token) {
                     const data = await api.get<Club[]>(`/clubs${query}`, token);
                     setClubs(data || []);
@@ -47,7 +46,7 @@ export function DashboardPage() {
         };
 
         fetchClubs();
-    }, [token, statusFilter, page]); // Re-fetch when filter/page changes
+    }, [token, statusFilter, page]);
 
     const clubsByStatus = clubs.reduce((acc, club) => {
         const status = club.membership.status;

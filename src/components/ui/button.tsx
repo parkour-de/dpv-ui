@@ -1,11 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-// Note: I don't have cva or radix-slot installed. I should probably stick to simple props or install them.
-// The user asked for "minimalistic, clean". I can do without heavy libs if needed, but cva is great.
-// I'll stick to simple standard React components to avoid extra deps unless I install them.
-// Let's keep it simple and just use clsx/tailwind-merge which I installed.
-
 const buttonVariants = (variant: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' = 'default', size: 'default' | 'sm' | 'lg' | 'icon' = 'default', className?: string) => {
     const base = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
 
@@ -36,7 +31,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, ...props }, ref) => {
-        // asChild logic omitted for simplicity, just rendering button
         return (
             <button
                 className={buttonVariants(variant, size, className)}

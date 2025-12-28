@@ -34,7 +34,7 @@ export function ProfilePage() {
         try {
             const messages = [];
 
-            // 1. Update Name if changed
+            // Update Name if changed
             if (formData.firstname !== user?.firstname || formData.lastname !== user?.lastname) {
                 const updatedUser = await api.patch('/users/me', {
                     firstname: formData.firstname,
@@ -44,7 +44,7 @@ export function ProfilePage() {
                 messages.push("Profil aktualisiert.");
             }
 
-            // 2. Request Email Validation if changed
+            // Request Email Validation if changed
             if (formData.email !== user?.email) {
                 await api.post('/users/request-email-validation', {
                     email: formData.email

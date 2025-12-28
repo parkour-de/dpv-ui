@@ -2,7 +2,6 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/auth-context";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-// import { cn } from "@/lib/utils";
 
 export function Layout() {
     const { user, logout } = useAuth();
