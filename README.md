@@ -1,73 +1,95 @@
-# React + TypeScript + Vite
+# DPV Mitgliederverwaltung UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The **Deutscher Parkour Verband (DPV) Membership Management UI** is the official web frontend for managing users, parkour clubs, and memberships within the German Parkour Association infrastructure.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application provides a modern, responsive interface for the DPV Membership Management platform, allowing users and administrators to:
 
-## React Compiler
+- **Dashboard**: Get an overview of all registered clubs and their membership status.
+- **Club Management**: Create, edit, and manage parkour club details.
+- **Membership Actions**: Apply for membership, cancel applications, or (as Admin) approve/deny requests.
+- **User Profile**: Manage personal data, including name updates and email validation workflows.
+- **Authentication**: Secure login, registration, and password reset flows.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- ✅ **Responsive Design**: Mobile-first, dark-mode-first aesthetic with dynamic animations.
+- ✅ **Dynamic Dashboards**: Context-aware views for regular users and administrators.
+- ✅ **Membership Workflows**: Direct integration with the DPV backend for status transitions.
+- ✅ **Profile Management**: Self-service user profile updates with secure email validation.
+- ✅ **Clean UI**: Built with a premium look using vanilla CSS, Tailwind CSS 4, and Lucide icons.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Technology Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite 7](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with PostCSS
+- **Navigation**: [React Router 7](https://reactrouter.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Components**: Custom components built with [Radix UI](https://www.radix-ui.com/) primitives
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/          # Reusable UI components (Buttons, Cards, Layout, etc.)
+│   └── ui/             # Shadcn-inspired base components
+├── context/            # Authentication and global state management
+├── lib/                # API client and utility functions
+├── pages/              # Page components (Dashboard, Profile, Login, etc.)
+├── types/              # TypeScript interfaces and shared constants
+├── App.tsx             # Main application component
+├── router.tsx          # Route definitions and protected route logic
+└── main.tsx            # Application entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Prerequisites
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Node.js**: Version 20.x or higher
+- **npm**: Version 10.x or higher
+- **Backend**: A running instance of the [DPV Backend API](https://github.com/parkour-de/dpv)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+### 1. Installation
+
+Clone and install dependencies:
+
+```bash
+npm install
 ```
+
+### 2. Configuration
+
+Ensure your environment is configured to point to the correct API base URL. By default, the application expects the API at `http://localhost:8070/dpv`.
+
+### 3. Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:8080` (or the port specified in your console).
+
+### 4. Build
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+**Deutscher Parkour Verband** - Building the infrastructure for parkour in Germany 🏃‍♂️

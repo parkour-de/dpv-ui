@@ -1,4 +1,4 @@
-export const API_BASE = 'http://localhost:8070/dpv';
+export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8070/dpv';
 
 export class ApiError extends Error {
     public status: number;
