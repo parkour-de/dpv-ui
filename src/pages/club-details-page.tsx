@@ -1,6 +1,6 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
 import { type Club, CLUB_STATUS_COLORS, CLUB_STATUS_LABELS } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -104,7 +104,7 @@ export function ClubDetailsPage() {
             const updated = await api.get<Club>(`/clubs/${id}`, token);
             setClub(updated);
             setIsEditing(false);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);

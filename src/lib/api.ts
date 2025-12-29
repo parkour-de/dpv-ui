@@ -1,11 +1,16 @@
 export const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8070/dpv';
 
+export interface ApiErrorData {
+    message?: string;
+    [key: string]: unknown;
+}
+
 export class ApiError extends Error {
     public status: number;
     public statusText: string;
-    public data?: any;
+    public data?: ApiErrorData;
 
-    constructor(status: number, statusText: string, data?: any) {
+    constructor(status: number, statusText: string, data?: ApiErrorData) {
         super(`API Error ${status}: ${statusText}`);
         this.status = status;
         this.statusText = statusText;
@@ -33,7 +38,7 @@ export const api = {
         return res.json();
     },
 
-    post: async <T>(endpoint: string, body: any, token?: string): Promise<T> => {
+    post: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
         const res = await fetch(`${API_BASE}${endpoint}`, {
             method: 'POST',
             headers: getHeaders(token),
@@ -43,7 +48,7 @@ export const api = {
         return res.json();
     },
 
-    patch: async <T>(endpoint: string, body: any, token?: string): Promise<T> => {
+    patch: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
         const res = await fetch(`${API_BASE}${endpoint}`, {
             method: 'PATCH',
             headers: getHeaders(token),

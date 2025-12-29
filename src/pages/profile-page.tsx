@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
+import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,11 +37,11 @@ export function ProfilePage() {
 
             // Update Name if changed
             if (formData.firstname !== user?.firstname || formData.lastname !== user?.lastname) {
-                const updatedUser = await api.patch('/users/me', {
+                const updatedUser = await api.patch<User>('/users/me', {
                     firstname: formData.firstname,
                     lastname: formData.lastname
                 }, token);
-                apiUpdateUser(updatedUser as any);
+                apiUpdateUser(updatedUser);
                 messages.push("Profil aktualisiert.");
             }
 
@@ -58,7 +59,7 @@ export function ProfilePage() {
                 setSuccess("Keine Änderungen vorgenommen.");
             }
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/context/auth-context-core";
 import { api } from "@/lib/api";
 import { type Club, CLUB_STATUS_LABELS, CLUB_STATUS_COLORS, type ClubStatus } from "@/types";
 import { Button } from "@/components/ui/button";

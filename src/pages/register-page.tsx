@@ -30,7 +30,7 @@ export function RegisterPage() {
         try {
             await api.post('/users', formData);
             setSuccess(true);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);

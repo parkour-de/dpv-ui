@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/auth-context";
+import { useAuth } from "@/context/auth-context-core";
 import { api } from "@/lib/api";
+import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,11 +24,11 @@ export function LandingPage() {
         try {
             // Basic Auth Header
             const token = btoa(`${email}:${password}`);
-            const user = await api.get<any>('/users/me', token);
+            const user = await api.get<User>('/users/me', token);
 
             login(token, user);
             navigate("/dashboard");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             setError("Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
         } finally {

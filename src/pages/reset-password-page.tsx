@@ -33,7 +33,7 @@ export function ResetPasswordPage() {
         try {
             await api.post('/users/request-password-reset', { email });
             setSuccess(true);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             // Even if email not found, we often show success for security. 
             // But here we might get 400.
@@ -66,7 +66,7 @@ export function ResetPasswordPage() {
                 confirm: formData.confirm
             });
             setSuccess(true);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
