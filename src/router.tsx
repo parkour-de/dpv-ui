@@ -61,4 +61,6 @@ export const router = createBrowserRouter([
             },
         ],
     },
-]);
+], {
+    basename: "/dpv-ui",
+});
