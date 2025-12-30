@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Check, X, Trash2, AlertCircle, Save } from "lucide-react";
+import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ClubDetailsPage() {
@@ -20,6 +20,9 @@ export function ClubDetailsPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [formLoading, setFormLoading] = useState(false);
+    const [documents, setDocuments] = useState<string[]>([]);
+    const [uploading, setUploading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     // Edit State - Flat structure for API
     const [formData, setFormData] = useState<{
@@ -59,8 +62,76 @@ export function ClubDetailsPage() {
                 setLoading(false);
             }
         };
+
+        const fetchDocuments = async () => {
+            if (!id || !token) return;
+            try {
+                const docs = await api.get<string[]>(`/clubs/${id}/documents`, token);
+                setDocuments(docs);
+            } catch (err) {
+                console.error("Failed to load documents", err);
+            }
+        };
+
         fetchClub();
+        fetchDocuments();
     }, [id, token]);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
+
+    const handleUpload = async () => {
+        if (!id || !token || !selectedFile) return;
+        setUploading(true);
+        const formData = new FormData();
+        formData.append("document", selectedFile);
+
+        try {
+            await api.upload(`/clubs/${id}/documents`, formData, token);
+            setSelectedFile(null);
+            // Refresh documents
+            const docs = await api.get<string[]>(`/clubs/${id}/documents`, token);
+            setDocuments(docs);
+            // Reset file input
+            const fileInput = document.getElementById('document-upload') as HTMLInputElement;
+            if (fileInput) fileInput.value = '';
+        } catch (err) {
+            console.error(err);
+            setError("Dokument-Upload fehlgeschlagen.");
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleDownload = async (filename: string) => {
+        if (!id || !token) return;
+        try {
+            // Determine API base URL from api.ts (exposed via vite env or default)
+            // But we can just use the fetch with auth header directly
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+
+            const res = await fetch(`${API_BASE}/clubs/${id}/documents/${filename}`, {
+                headers: { 'Authorization': `Basic ${token}` }
+            });
+            if (!res.ok) throw new Error("Download failed");
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error(err);
+            setError("Download fehlgeschlagen.");
+        }
+    };
 
     const handleAction = async (action: 'approve' | 'deny' | 'apply' | 'cancel') => {
         if (!id || !token) return;
@@ -262,6 +333,55 @@ export function ClubDetailsPage() {
                     )}
                 </Card>
             </form>
-        </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Dokumente</CardTitle>
+                    <CardDescription>Laden Sie hier Vereinsdokumente hoch (Satzung, Registerauszug, etc.).</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {/* List Documents */}
+                    {documents.length > 0 ? (
+                        <div className="space-y-2">
+                            {documents.map((doc) => (
+                                <div key={doc} className="flex items-center justify-between p-3 border rounded-md bg-muted/10 hover:bg-muted/20 transition-colors">
+                                    <div className="flex items-center gap-3 overflow-hidden">
+                                        <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                                        <span className="truncate text-sm font-medium">{doc}</span>
+                                    </div>
+                                    <Button variant="ghost" size="icon" onClick={() => handleDownload(doc)} title="Herunterladen">
+                                        <Download className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-sm text-muted-foreground text-center py-4 border-2 border-dashed rounded-md">
+                            Keine Dokumente vorhanden.
+                        </div>
+                    )}
+
+                    {/* Upload Section */}
+                    <div className="space-y-4 pt-4 border-t">
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                            <Label htmlFor="document-upload">Neues Dokument hochladen</Label>
+                            <div className="flex gap-2">
+                                <Input
+                                    id="document-upload"
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    disabled={uploading}
+                                    className="cursor-pointer"
+                                />
+                                <Button onClick={handleUpload} disabled={!selectedFile || uploading}>
+                                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+
+                </CardContent>
+            </Card>
+        </div >
     );
 }
