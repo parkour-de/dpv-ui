@@ -30,6 +30,11 @@ export function ClubDetailsPage() {
     const [uploading, setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+    // Payment details state
+    const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+    const [paymentDetails, setPaymentDetails] = useState<{ iban: string; sepa_mandate_number?: string } | null>(null);
+    const [loadingPayment, setLoadingPayment] = useState(false);
+
     // Edit State - Flat structure for API
     const [formData, setFormData] = useState<{
         name?: string;
@@ -37,7 +42,6 @@ export function ClubDetailsPage() {
         email?: string;
         address?: string;
         contact_person?: string;
-        iban?: string;
     }>({});
 
     useEffect(() => {
@@ -59,7 +63,6 @@ export function ClubDetailsPage() {
                     email: data.email,
                     address: data.membership.address,
                     contact_person: data.contact_person,
-                    iban: data.membership.iban
                 });
             } catch (err) {
                 console.error("Failed to load club", err);
@@ -82,6 +85,27 @@ export function ClubDetailsPage() {
         fetchClub();
         fetchDocuments();
     }, [id, token]);
+
+    const fetchPaymentDetails = async () => {
+        if (!id || !token) return;
+        setLoadingPayment(true);
+        try {
+            const details = await api.get<{ iban: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
+            setPaymentDetails(details);
+        } catch (err) {
+            console.error("Failed to load payment details", err);
+            setError("Zahlungsdetails konnten nicht geladen werden.");
+        } finally {
+            setLoadingPayment(false);
+        }
+    };
+
+    const handleShowPaymentDetails = () => {
+        if (!showPaymentDetails && !paymentDetails) {
+            fetchPaymentDetails();
+        }
+        setShowPaymentDetails(!showPaymentDetails);
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -334,15 +358,6 @@ export function ClubDetailsPage() {
                                     disabled={!isEditing}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="iban">IBAN</Label>
-                                <Input
-                                    id="iban"
-                                    value={formData.iban || ''}
-                                    onChange={(e) => setFormData(p => ({ ...p, iban: e.target.value }))}
-                                    disabled={!isEditing}
-                                />
-                            </div>
                         </div>
                     </CardContent>
                     {isEditing && (
@@ -421,6 +436,77 @@ export function ClubDetailsPage() {
                     </div>
                 </CardContent>
             </Card>
+
+            {/* Payment Details Card */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Zahlungsdetails</CardTitle>
+                    <CardDescription>Bankverbindung für Beiträge</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {!showPaymentDetails ? (
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleShowPaymentDetails}
+                            disabled={loadingPayment}
+                        >
+                            {loadingPayment ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Laden...
+                                </>
+                            ) : (
+                                "Zahlungsdetails anzeigen"
+                            )}
+                        </Button>
+                    ) : (
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <Label>IBAN</Label>
+                                <div className="p-2 bg-muted rounded-md font-mono text-sm">
+                                    {paymentDetails?.iban || "Nicht verfügbar"}
+                                </div>
+                                {isAdmin && paymentDetails?.sepa_mandate_number && (
+                                    <div className="text-xs text-muted-foreground">
+                                        Mandatsreferenz: {paymentDetails.sepa_mandate_number}
+                                    </div>
+                                )}
+                            </div>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowPaymentDetails(false)}
+                            >
+                                Ausblenden
+                            </Button>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            {/* Vorstand Card */}
+            {club?.vorstand && club.vorstand.length > 0 && (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Vorstand</CardTitle>
+                        <CardDescription>Mitglieder des Vorstands</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="space-y-2">
+                            {club.vorstand.map((member) => (
+                                <li key={member._key} className="flex items-center gap-2 p-2 rounded-md hover:bg-muted/50">
+                                    <div className="flex-1">
+                                        <p className="font-medium">{member.firstname} {member.lastname}</p>
+                                    </div>
+                                    {/* Add more details or actions for each board member if needed */}
+                                </li>
+                            ))}
+                        </ul>
+                    </CardContent>
+                </Card>
+            )}
         </div >
     );
 }
