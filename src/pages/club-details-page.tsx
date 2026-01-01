@@ -222,9 +222,9 @@ export function ClubDetailsPage() {
                     {!isEditing && (
                         <>
                             {/* Membership Actions for Everyone */}
-                            {club.membership.status === 'inactive' && (
+                            {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
                                 <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
-                                    Mitgliedschaft beantragen
+                                    {club.membership.status === 'cancelled' ? 'Erneut beantragen' : 'Mitgliedschaft beantragen'}
                                 </Button>
                             )}
                             {(club.membership.status === 'requested' || club.membership.status === 'active') && !isAdmin && (
@@ -234,14 +234,31 @@ export function ClubDetailsPage() {
                             )}
 
                             {/* Admin Actions */}
-                            {isAdmin && club.membership.status === 'requested' && (
+                            {isAdmin && (
                                 <>
-                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
-                                        <Check className="mr-2 h-4 w-4" /> Genehmigen
-                                    </Button>
-                                    <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
-                                        <X className="mr-2 h-4 w-4" /> Ablehnen
-                                    </Button>
+                                    {/* Admin can apply/cancel on behalf */}
+                                    {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
+                                        <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
+                                            Mitgliedschaft beantragen
+                                        </Button>
+                                    )}
+                                    {(club.membership.status === 'requested' || club.membership.status === 'active') && (
+                                        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleAction('cancel')} disabled={formLoading}>
+                                            {club.membership.status === 'active' ? 'Mitgliedschaft kündigen' : 'Antrag zurückziehen'}
+                                        </Button>
+                                    )}
+
+                                    {/* Admin approve/deny for requested status */}
+                                    {club.membership.status === 'requested' && (
+                                        <>
+                                            <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
+                                                <Check className="mr-2 h-4 w-4" /> Genehmigen
+                                            </Button>
+                                            <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
+                                                <X className="mr-2 h-4 w-4" /> Ablehnen
+                                            </Button>
+                                        </>
+                                    )}
                                 </>
                             )}
 

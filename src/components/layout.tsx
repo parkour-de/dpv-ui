@@ -26,11 +26,6 @@ export function Layout() {
                         <Link to="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
                             Übersicht
                         </Link>
-                        {user?.roles?.includes('admin') && (
-                            <Link to="/admin/clubs" className="text-sm font-medium transition-colors hover:text-primary">
-                                Unconfirmed Clubs
-                            </Link>
-                        )}
                         <Link to="/help" className="text-sm font-medium transition-colors hover:text-primary">Hilfe</Link>
                     </nav>
 

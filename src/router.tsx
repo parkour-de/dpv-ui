@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import { AuthProvider } from "@/context/auth-context";
 import { Layout } from "@/components/layout";
 import { LandingPage } from "@/pages/landing-page";
@@ -13,7 +13,7 @@ import { ProfilePage } from "@/pages/profile-page";
 import { ProtectedRoute } from "@/components/protected-route";
 
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         path: "/",
         element: <LandingPage />,
@@ -61,6 +61,4 @@ export const router = createBrowserRouter([
             },
         ],
     },
-], {
-    basename: "/dpv-ui",
-});
+]);
