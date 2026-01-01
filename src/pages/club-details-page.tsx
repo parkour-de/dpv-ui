@@ -369,7 +369,6 @@ export function ClubDetailsPage() {
                                     email: club.email,
                                     address: club.membership.address,
                                     contact_person: club.contact_person,
-                                    iban: club.membership.iban
                                 });
                             }}>
                                 Abbrechen
