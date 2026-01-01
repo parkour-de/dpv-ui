@@ -20,7 +20,13 @@ export function ClubDetailsPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [formLoading, setFormLoading] = useState(false);
-    const [documents, setDocuments] = useState<string[]>([]);
+    // Document Interface
+    interface Document {
+        name: string;
+        size: number;
+        last_modified: number;
+    }
+    const [documents, setDocuments] = useState<Document[]>([]);
     const [uploading, setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -66,7 +72,7 @@ export function ClubDetailsPage() {
         const fetchDocuments = async () => {
             if (!id || !token) return;
             try {
-                const docs = await api.get<string[]>(`/clubs/${id}/documents`, token);
+                const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
                 setDocuments(docs);
             } catch (err) {
                 console.error("Failed to load documents", err);
@@ -93,7 +99,7 @@ export function ClubDetailsPage() {
             await api.upload(`/clubs/${id}/documents`, formData, token);
             setSelectedFile(null);
             // Refresh documents
-            const docs = await api.get<string[]>(`/clubs/${id}/documents`, token);
+            const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
             setDocuments(docs);
             // Reset file input
             const fileInput = document.getElementById('document-upload') as HTMLInputElement;
@@ -185,6 +191,16 @@ export function ClubDetailsPage() {
         } finally {
             setFormLoading(false);
         }
+    };
+
+    const formatDate = (unixSeconds: number) => {
+        return new Date(unixSeconds * 1000).toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     };
 
     if (loading) return <div className="text-center py-12">Lade Details...</div>;
@@ -344,12 +360,19 @@ export function ClubDetailsPage() {
                     {documents.length > 0 ? (
                         <div className="space-y-2">
                             {documents.map((doc) => (
-                                <div key={doc} className="flex items-center justify-between p-3 border rounded-md bg-muted/10 hover:bg-muted/20 transition-colors">
+                                <div key={doc.name} className="flex items-center justify-between p-3 border rounded-md bg-muted/10 hover:bg-muted/20 transition-colors">
                                     <div className="flex items-center gap-3 overflow-hidden">
                                         <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                                        <span className="truncate text-sm font-medium">{doc}</span>
+                                        <div className="min-w-0">
+                                            <div className="truncate text-sm font-medium">{doc.name}</div>
+                                            <div className="text-xs text-muted-foreground flex gap-3">
+                                                <span>{doc.size} KiB</span>
+                                                <span className="text-muted-foreground/50">|</span>
+                                                <span>{formatDate(doc.last_modified)}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <Button variant="ghost" size="icon" onClick={() => handleDownload(doc)} title="Herunterladen">
+                                    <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)} title="Herunterladen">
                                         <Download className="h-4 w-4" />
                                     </Button>
                                 </div>
@@ -379,7 +402,6 @@ export function ClubDetailsPage() {
                             </div>
                         </div>
                     </div>
-
                 </CardContent>
             </Card>
         </div >
