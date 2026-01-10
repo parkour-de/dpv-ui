@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Wyłączenie odpowiedzialności",
-            "content": "Jako dostawca usług odpowiadamy za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa, na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy jednak zobowiązani do monitorowania przekazywanych lub przechowywanych informacji obcych ani do badania okoliczności wskazujących na działalność niezgodną z prawem.<br /><br />Zobowiązania do usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu prawa. W przypadku powzięcia wiadomości o odpowiednich naruszeniach prawa niezwłocznie usuniemy te treści."
+            "content1": "Jako dostawca usług odpowiadamy za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa, na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy jednak zobowiązani do monitorowania przekazywanych lub przechowywanych informacji obcych ani do badania okoliczności wskazujących na działalność niezgodną z prawem.",
+            "content2": "Zobowiązania do usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu prawa. W przypadku powzięcia wiadomości o odpowiednich naruszeniach prawa niezwłocznie usuniemy te treści."
         }
     }
 }

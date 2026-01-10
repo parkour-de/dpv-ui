@@ -74,7 +74,10 @@ export function ImprintPage() {
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.disclaimer.title')}</h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                        {t('imprint.disclaimer.content')}
+                        {t('imprint.disclaimer.content1')}
+                    </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                        {t('imprint.disclaimer.content2')}
                     </p>
                 </section>
             </div>

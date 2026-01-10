@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Mohim përgjegjësie",
-            "content": "Si ofrues shërbimesh, ne jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme në përputhje me § 7 para. 1 TMG. Sipas §§ 8 deri në 10 TMG, ne nuk jemi të detyruar të monitorojmë informacionin e huaj të transmetuar ose të ruajtur apo të hetojmë rrethana që tregojnë një aktivitet të paligjshëm.<br /><br />Detyrimet për të hequr ose bllokuar përdorimin e informacionit sipas ligjeve të përgjithshme mbeten të paprekura. Megjithatë, përgjegjësia në këtë drejtm është e mundur vetëm nga momenti i njohjes së një shkeljeje konkrete të ligjit. Me marrjen e njohurive për shkelje të tilla të ligjit, ne do t'i heqim këto përmbajtje menjëherë."
+            "content1": "Si ofrues shërbimesh, ne jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme në përputhje me § 7 para. 1 TMG. Sipas §§ 8 deri në 10 TMG, ne nuk jemi të detyruar të monitorojmë informacionin e huaj të transmetuar ose të ruajtur apo të hetojmë rrethana që tregojnë një aktivitet të paligjshëm.",
+            "content2": "Detyrimet për të hequr ose bllokuar përdorimin e informacionit sipas ligjeve të përgjithshme mbeten të paprekura. Megjithatë, përgjegjësia në këtë drejtim është e mundur vetëm nga momenti i njohjes së një shkeljeje konkrete të ligjit. Me marrjen e njohurive për shkelje të tilla të ligjit, ne do t'i heqim këto përmbajtje menjëherë."
         }
     }
 }

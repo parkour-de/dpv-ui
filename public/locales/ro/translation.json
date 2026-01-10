@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Declinare de responsabilitate",
-            "content": "În calitate de furnizor de servicii, suntem responsabili pentru propriul conținut pe aceste pagini în conformitate cu legile generale, conform § 7 alin. 1 din TMG. Conform §§ 8 până la 10 din TMG, nu suntem însă obligați să monitorizăm informațiile străine transmise sau stocate sau să cercetăm circumstanțele care indică o activitate ilegală.<br /><br />Obligațiile de a elimina sau de a bloca utilizarea informațiilor în conformitate cu legile generale rămân neafectate. Cu toate acestea, răspunderea în acest sens este posibilă numai din momentul luării la cunoștință a unei încălcări concrete a legii. În cazul în care luăm la cunoștință astfel de încălcări ale legii, vom elimina imediat acest conținut."
+            "content1": "În calitate de furnizor de servicii, suntem responsabili pentru propriul conținut pe aceste pagini în conformitate cu legile generale, conform § 7 alin. 1 din TMG. Conform §§ 8 până la 10 din TMG, nu suntem însă obligați să monitorizăm informațiile străine transmise sau stocate sau să cercetăm circumstanțele care indică o activitate ilegală.",
+            "content2": "Obligațiile de a elimina sau de a bloca utilizarea informațiilor în conformitate cu legile generale rămân neafectate. Cu toate acestea, răspunderea în acest sens este posibilă numai din momentul luării la cunoștință a unei încălcări concrete a legii. În cazul în care luăm la cunoștință astfel de încălcări ale legii, vom elimina imediat acest conținut."
         }
     }
 }

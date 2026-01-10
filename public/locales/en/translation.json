@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Disclaimer",
-            "content": "As a service provider, we are responsible for our own content on these pages in accordance with general laws pursuant to § 7 Para. 1 TMG. According to §§ 8 to 10 TMG, we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.<br /><br />Obligations to remove or block the use of information in accordance with general laws remain unaffected. However, liability in this regard is only possible from the time of knowledge of a concrete infringement. Upon becoming aware of such infringements, we will remove this content immediately."
+            "content1": "As a service provider, we are responsible for our own content on these pages in accordance with general laws pursuant to § 7 Para. 1 TMG. According to §§ 8 to 10 TMG, we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
+            "content2": "Obligations to remove or block the use of information in accordance with general laws remain unaffected. However, liability in this regard is only possible from the time of knowledge of a concrete infringement. Upon becoming aware of such infringements, we will remove this content immediately."
         }
     }
 }

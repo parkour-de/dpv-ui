@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Avis de non-responsabilité",
-            "content": "En tant que fournisseur de services, nous sommes responsables de notre propre contenu sur ces pages conformément aux lois générales selon § 7 Par. 1 TMG. Selon §§ 8 à 10 TMG, nous ne sommes pas tenus de surveiller les informations de tiers transmises ou stockées ni d'enquêter sur les circonstances indiquant une activité illégale.<br /><br />Les obligations de supprimer ou de bloquer l'utilisation d'informations conformément aux lois générales ne sont pas affectées. Cependant, la responsabilité à cet égard n'est possible qu'à partir du moment où l'on a connaissance d'une infraction concrète. Dès que nous aurons connaissance de telles infractions, nous supprimerons ce contenu immédiatement."
+            "content1": "En tant que fournisseur de services, nous sommes responsables de notre propre contenu sur ces pages conformément aux lois générales selon § 7 Par. 1 TMG. Selon §§ 8 à 10 TMG, nous ne sommes pas tenus de surveiller les informations de tiers transmises ou stockées ni d'enquêter sur les circonstances indiquant une activité illégale.",
+            "content2": "Les obligations de supprimer ou de bloquer l'utilisation d'informations conformément aux lois générales ne sont pas affectées. Cependant, la responsabilité à cet égard n'est possible qu'à partir du moment où l'on a connaissance d'une infraction concrète. Dès que nous aurons connaissance de telles infractions, nous supprimerons ce contenu immédiatement."
         }
     }
 }

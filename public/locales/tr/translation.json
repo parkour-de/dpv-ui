@@ -281,7 +281,8 @@
         },
         "disclaimer": {
             "title": "Sorumluluk Reddi",
-            "content": "Hizmet sağlayıcı olarak, bu sayfalardaki kendi içeriklerimizden TMG'nin 7. maddesinin 1. fıkrası uyarınca genel yasalar çerçevesinde sorumluyuz. TMG'nin 8. ila 10. maddeleri uyarınca hizmet sağlayıcı olarak iletilen veya saklanan yabancı bilgileri denetlemek veya hukuka aykırı bir faaliyete işaret eden durumları araştırmakla yükümlü değiliz.<br /><br />Genel yasalar uyarınca bilgilerin kullanımının kaldırılması veya engellenmesi konusundaki yükümlülükler saklı kalmaktadır. Ancak buna ilişkin bir sorumluluk, ancak somut bir ihlal hakkında bilgi sahibi olunduğu andan itibaren mümkündür. İlgili yasal ihlallerden haberdar olduğumuzda, bu tür içerikleri derhal kaldıracağız."
+            "content1": "Hizmet sağlayıcı olarak, bu sayfalardaki kendi içeriklerimizden TMG'nin 7. maddesinin 1. fıkrası uyarınca genel yasalar çerçevesinde sorumluyuz. TMG'nin 8. ila 10. maddeleri uyarınca hizmet sağlayıcı olarak iletilen veya saklanan yabancı bilgileri denetlemek veya hukuka aykırı bir faaliyete işaret eden durumları araştırmakla yükümlü değiliz.",
+            "content2": "Genel yasalar uyarınca bilgilerin kullanımının kaldırılması veya engellenmesi konusundaki yükümlülükler saklı kalmaktadır. Ancak buna ilişkin bir sorumluluk, ancak somut bir ihlal hakkında bilgi sahibi olunduğu andan itibaren mümkündür. İlgili yasal ihlallerden haberdar olduğumuzda, bu tür içerikleri derhal kaldıracağız."
         }
     }
 }
