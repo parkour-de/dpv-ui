@@ -13,26 +13,33 @@ import { ProfilePage } from "@/pages/profile-page";
 import { ProtectedRoute } from "@/components/protected-route";
 
 
+import { ErrorPage } from "@/pages/error-page";
+
 export const router = createHashRouter([
     {
         path: "/",
         element: <LandingPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/register",
         element: <RegisterPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/reset-password",
         element: <ResetPasswordPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/imprint",
         element: <ImprintPage />,
+        errorElement: <ErrorPage />,
     },
     {
         path: "/help",
         element: <HelpPage />,
+        errorElement: <ErrorPage />,
     },
     {
         element: (
@@ -42,6 +49,7 @@ export const router = createHashRouter([
                 </ProtectedRoute>
             </AuthProvider>
         ),
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/dashboard",

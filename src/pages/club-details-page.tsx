@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ClubDetailsPage() {
@@ -20,6 +20,7 @@ export function ClubDetailsPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [formLoading, setFormLoading] = useState(false);
+
     // Document Interface
     interface Document {
         name: string;
@@ -31,9 +32,14 @@ export function ClubDetailsPage() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     // Payment details state
-    const [showPaymentDetails, setShowPaymentDetails] = useState(false);
-    const [paymentDetails, setPaymentDetails] = useState<{ iban: string; sepa_mandate_number?: string } | null>(null);
+    // We merge these into formData when editing, but keep them for view mode
+    const [viewPaymentDetails, setViewPaymentDetails] = useState<{ iban: string; sepa_mandate_number?: string } | null>(null);
     const [loadingPayment, setLoadingPayment] = useState(false);
+    const [showPaymentDetails, setShowPaymentDetails] = useState(false);
+
+    // Owner management
+    const [newOwnerEmail, setNewOwnerEmail] = useState("");
+    const [ownerLoading, setOwnerLoading] = useState(false);
 
     // Edit State - Flat structure for API
     const [formData, setFormData] = useState<{
@@ -42,6 +48,8 @@ export function ClubDetailsPage() {
         email?: string;
         address?: string;
         contact_person?: string;
+        iban?: string;
+        sepa_mandate_number?: string;
     }>({});
 
     useEffect(() => {
@@ -50,28 +58,29 @@ export function ClubDetailsPage() {
         }
     }, [user]);
 
-    useEffect(() => {
-        const fetchClub = async () => {
-            if (!id || !token) return;
-            try {
-                const data = await api.get<Club>(`/clubs/${id}`, token);
-                setClub(data);
-                // Initialize form data
-                setFormData({
-                    name: data.name,
-                    legal_form: data.legal_form,
-                    email: data.email,
-                    address: data.membership.address,
-                    contact_person: data.contact_person,
-                });
-            } catch (err) {
-                console.error("Failed to load club", err);
-                setError("Verein konnte nicht geladen werden.");
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchClub = async () => {
+        if (!id || !token) return;
+        try {
+            const data = await api.get<Club>(`/clubs/${id}`, token);
+            setClub(data);
+            // Initialize form data (without payment initially)
+            setFormData(p => ({
+                ...p,
+                name: data.name,
+                legal_form: data.legal_form,
+                email: data.email,
+                address: data.membership.address,
+                contact_person: data.contact_person,
+            }));
+        } catch (err) {
+            console.error("Failed to load club", err);
+            setError("Verein konnte nicht geladen werden.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         const fetchDocuments = async () => {
             if (!id || !token) return;
             try {
@@ -86,23 +95,44 @@ export function ClubDetailsPage() {
         fetchDocuments();
     }, [id, token]);
 
-    const fetchPaymentDetails = async () => {
-        if (!id || !token) return;
-        setLoadingPayment(true);
+    // Fetch payment details helper
+    const fetchPayment = async () => {
+        if (!id || !token) return null;
         try {
             const details = await api.get<{ iban: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
-            setPaymentDetails(details);
+            setViewPaymentDetails(details);
+            return details;
         } catch (err) {
-            console.error("Failed to load payment details", err);
-            setError("Zahlungsdetails konnten nicht geladen werden.");
-        } finally {
-            setLoadingPayment(false);
+            console.error(err);
+            // Ignore error if 403 or similar in some cases, but generally warn
+            // actually invalid permission might occur if not admin/owner
+            return null;
         }
     };
 
-    const handleShowPaymentDetails = () => {
-        if (!showPaymentDetails && !paymentDetails) {
-            fetchPaymentDetails();
+    // When entering edit mode, ensure we have payment details
+    useEffect(() => {
+        if (isEditing && id && token) {
+            setLoadingPayment(true);
+            fetchPayment().then(details => {
+                if (details) {
+                    setFormData(prev => ({
+                        ...prev,
+                        iban: details.iban,
+                        sepa_mandate_number: details.sepa_mandate_number
+                    }));
+                }
+                setLoadingPayment(false);
+            });
+        }
+    }, [isEditing, id, token]);
+
+    // Toggle view handler
+    const handleShowPaymentDetails = async () => {
+        if (!showPaymentDetails && !viewPaymentDetails) {
+            setLoadingPayment(true);
+            await fetchPayment();
+            setLoadingPayment(false);
         }
         setShowPaymentDetails(!showPaymentDetails);
     };
@@ -125,7 +155,6 @@ export function ClubDetailsPage() {
             // Refresh documents
             const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
             setDocuments(docs);
-            // Reset file input
             const fileInput = document.getElementById('document-upload') as HTMLInputElement;
             if (fileInput) fileInput.value = '';
         } catch (err) {
@@ -139,10 +168,7 @@ export function ClubDetailsPage() {
     const handleDownload = async (filename: string) => {
         if (!id || !token) return;
         try {
-            // Determine API base URL from api.ts (exposed via vite env or default)
-            // But we can just use the fetch with auth header directly
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
-
             const res = await fetch(`${API_BASE}/clubs/${id}/documents/${filename}`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
@@ -163,19 +189,72 @@ export function ClubDetailsPage() {
         }
     };
 
+    const handleDownloadAll = async () => {
+        if (!id || !token) return;
+        try {
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+            const res = await fetch(`${API_BASE}/clubs/${id}/download-documents`, {
+                headers: { 'Authorization': `Basic ${token}` }
+            });
+            if (!res.ok) throw new Error("Download failed");
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${club?.name || 'club'}-documents.zip`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error(err);
+            setError("Zip download fehlgeschlagen.");
+        }
+    };
+
     const handleAction = async (action: 'approve' | 'deny' | 'apply' | 'cancel') => {
         if (!id || !token) return;
         setFormLoading(true);
         try {
             await api.post(`/clubs/${id}/${action}`, {}, token);
-            // Refresh
-            const updated = await api.get<Club>(`/clubs/${id}`, token);
-            setClub(updated);
+            await fetchClub(); // refresh
         } catch (err) {
             console.error(err);
             setError("Aktion fehlgeschlagen.");
         } finally {
             setFormLoading(false);
+        }
+    };
+
+    // Owner Actions
+    const handleAddOwner = async () => {
+        if (!id || !token || !newOwnerEmail) return;
+        setOwnerLoading(true);
+        try {
+            await api.post(`/clubs/${id}/owners`, { email: newOwnerEmail }, token);
+            setNewOwnerEmail("");
+            await fetchClub();
+        } catch (err: any) {
+            console.error(err);
+            setError(err.data?.message || "Hinzufügen fehlgeschlagen.");
+        } finally {
+            setOwnerLoading(false);
+        }
+    };
+
+    const handleRemoveOwner = async (userKey: string) => {
+        if (!id || !token) return;
+        if (!confirm("Diesen Nutzer wirklich als Verwalter entfernen?")) return;
+        setOwnerLoading(true);
+        try {
+            await api.delete(`/clubs/${id}/owners/${userKey}`, token);
+            await fetchClub();
+        } catch (err: any) {
+            console.error(err);
+            setError(err.data?.message || "Entfernen fehlgeschlagen.");
+        } finally {
+            setOwnerLoading(false);
         }
     };
 
@@ -199,11 +278,8 @@ export function ClubDetailsPage() {
         if (!id || !token) return;
         setFormLoading(true);
         try {
-            // Send flat updates
             await api.patch<Club>(`/clubs/${id}`, formData, token);
-            // Refresh data to be sure
-            const updated = await api.get<Club>(`/clubs/${id}`, token);
-            setClub(updated);
+            await fetchClub();
             setIsEditing(false);
         } catch (err: unknown) {
             console.error(err);
@@ -245,7 +321,6 @@ export function ClubDetailsPage() {
                 <div className="flex items-center gap-2">
                     {!isEditing && (
                         <>
-                            {/* Membership Actions for Everyone */}
                             {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
                                 <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
                                     {club.membership.status === 'cancelled' ? 'Erneut beantragen' : 'Mitgliedschaft beantragen'}
@@ -256,11 +331,8 @@ export function ClubDetailsPage() {
                                     {club.membership.status === 'active' ? 'Mitgliedschaft kündigen' : 'Antrag zurückziehen'}
                                 </Button>
                             )}
-
-                            {/* Admin Actions */}
                             {isAdmin && (
                                 <>
-                                    {/* Admin can apply/cancel on behalf */}
                                     {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
                                         <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
                                             Mitgliedschaft beantragen
@@ -271,8 +343,6 @@ export function ClubDetailsPage() {
                                             {club.membership.status === 'active' ? 'Mitgliedschaft kündigen' : 'Antrag zurückziehen'}
                                         </Button>
                                     )}
-
-                                    {/* Admin approve/deny for requested status */}
                                     {club.membership.status === 'requested' && (
                                         <>
                                             <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
@@ -285,7 +355,6 @@ export function ClubDetailsPage() {
                                     )}
                                 </>
                             )}
-
                             <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
                                 Bearbeiten
                             </Button>
@@ -360,151 +429,237 @@ export function ClubDetailsPage() {
                             </div>
                         </div>
                     </CardContent>
-                    {isEditing && (
+
+                </Card>
+
+                {/* Payment Details in Form or Separate? If editing, we show fields here. */}
+                {isEditing ? (
+                    <Card className="mt-6">
+                        <CardHeader>
+                            <CardTitle>Zahlungsdetails bearbeiten</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {loadingPayment ? (
+                                <div className="text-sm">Lade Zahlungsdetails...</div>
+                            ) : (
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="iban">IBAN</Label>
+                                        <Input
+                                            id="iban"
+                                            value={formData.iban || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, iban: e.target.value }))}
+                                            placeholder="DE..."
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="sepa">Mandatsreferenz</Label>
+                                        <Input
+                                            id="sepa"
+                                            value={formData.sepa_mandate_number || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </CardContent>
                         <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
                             <Button type="button" variant="ghost" onClick={() => {
-                                setIsEditing(false); setFormData({
+                                setIsEditing(false);
+                                setFormData({
                                     name: club.name,
                                     legal_form: club.legal_form,
                                     email: club.email,
                                     address: club.membership.address,
                                     contact_person: club.contact_person,
+                                    // Reset payment fields
+                                    iban: undefined,
+                                    sepa_mandate_number: undefined
                                 });
                             }}>
                                 Abbrechen
                             </Button>
-                            <Button type="submit" disabled={formLoading}>
+                            <Button type="submit" disabled={formLoading || loadingPayment}>
                                 <Save className="mr-2 h-4 w-4" /> Speichern
                             </Button>
                         </CardFooter>
-                    )}
-                </Card>
+                    </Card>
+                ) : (
+                    /* View Mode: Documents & Payment & Owners Cards */
+                    null
+                )}
             </form>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Dokumente</CardTitle>
-                    <CardDescription>Laden Sie hier Vereinsdokumente hoch (Satzung, Registerauszug, etc.).</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                    {/* List Documents */}
-                    {documents.length > 0 ? (
-                        <div className="space-y-2">
-                            {documents.map((doc) => (
-                                <div key={doc.name} className="flex items-center justify-between p-3 border rounded-md bg-muted/10 hover:bg-muted/20 transition-colors">
-                                    <div className="flex items-center gap-3 overflow-hidden">
-                                        <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                                        <div className="min-w-0">
-                                            <div className="truncate text-sm font-medium">{doc.name}</div>
-                                            <div className="text-xs text-muted-foreground flex gap-3">
-                                                <span>{doc.size} KiB</span>
-                                                <span className="text-muted-foreground/50">|</span>
-                                                <span>{formatDate(doc.last_modified)}</span>
+            {/* If NOT editing, show these cards */}
+            {!isEditing && (
+                <>
+                    {/* Documents */}
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>Dokumente</CardTitle>
+                                <CardDescription>Laden Sie hier Vereinsdokumente hoch.</CardDescription>
+                            </div>
+                            {documents.length > 0 && (
+                                <Button variant="outline" size="sm" onClick={handleDownloadAll}>
+                                    <Download className="h-4 w-4 mr-2" /> Alle herunterladen
+                                </Button>
+                            )}
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {documents.length > 0 ? (
+                                <div className="space-y-2">
+                                    {documents.map((doc) => (
+                                        <div key={doc.name} className="flex items-center justify-between p-3 border rounded-md bg-muted/10 hover:bg-muted/20 transition-colors">
+                                            <div className="flex items-center gap-3 overflow-hidden">
+                                                <FileText className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                                                <div className="min-w-0">
+                                                    <div className="truncate text-sm font-medium">{doc.name}</div>
+                                                    <div className="text-xs text-muted-foreground flex gap-3">
+                                                        <span>{doc.size} KiB</span>
+                                                        <span className="text-muted-foreground/50">|</span>
+                                                        <span>{formatDate(doc.last_modified)}</span>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)} title="Herunterladen">
+                                                <Download className="h-4 w-4" />
+                                            </Button>
                                         </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-sm text-muted-foreground text-center py-4 border-2 border-dashed rounded-md">
+                                    Keine Dokumente vorhanden.
+                                </div>
+                            )}
+
+                            {/* Upload Section */}
+                            <div className="space-y-4 pt-4 border-t">
+                                <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <Label htmlFor="document-upload">Neues Dokument hochladen</Label>
+                                    <div className="flex gap-2">
+                                        <Input
+                                            id="document-upload"
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            disabled={uploading}
+                                            className="cursor-pointer"
+                                        />
+                                        <Button onClick={handleUpload} disabled={!selectedFile || uploading}>
+                                            {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                        </Button>
                                     </div>
-                                    <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)} title="Herunterladen">
-                                        <Download className="h-4 w-4" />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Payment Details (View Only) */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Zahlungsdetails</CardTitle>
+                            <CardDescription>Bankverbindung für Beiträge</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            {!showPaymentDetails ? (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={handleShowPaymentDetails}
+                                    disabled={loadingPayment}
+                                >
+                                    {loadingPayment ? (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : null}
+                                    Zahlungsdetails anzeigen
+                                </Button>
+                            ) : (
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label>IBAN</Label>
+                                        <Input
+                                            value={viewPaymentDetails?.iban || ''}
+                                            disabled
+                                            className="bg-muted font-mono"
+                                            placeholder="Keine IBAN hinterlegt"
+                                        />
+                                        {isAdmin && viewPaymentDetails?.sepa_mandate_number && (
+                                            <div className="mt-2 space-y-2">
+                                                <Label>Mandatsreferenz</Label>
+                                                <Input
+                                                    value={viewPaymentDetails.sepa_mandate_number}
+                                                    disabled
+                                                    className="bg-muted"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => setShowPaymentDetails(false)}
+                                    >
+                                        Ausblenden
                                     </Button>
                                 </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-sm text-muted-foreground text-center py-4 border-2 border-dashed rounded-md">
-                            Keine Dokumente vorhanden.
-                        </div>
-                    )}
+                            )}
+                        </CardContent>
+                    </Card>
 
-                    {/* Upload Section */}
-                    <div className="space-y-4 pt-4 border-t">
-                        <div className="grid w-full max-w-sm items-center gap-1.5">
-                            <Label htmlFor="document-upload">Neues Dokument hochladen</Label>
-                            <div className="flex gap-2">
+                    {/* Vorstand / Owners */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Vorstand & Verwalter</CardTitle>
+                            <CardDescription>Personen, die diesen Verein verwalten.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {club.vorstand && club.vorstand.length > 0 ? (
+                                <ul className="space-y-2">
+                                    {club.vorstand.map((member: any) => (
+                                        <li key={member._key} className="flex items-center justify-between p-2 rounded-md bg-muted/20">
+                                            <div className="flex items-center gap-2">
+                                                <div className="bg-primary/10 p-1.5 rounded-full">
+                                                    <FileText className="h-4 w-4 text-primary" /> {/* User Icon better? */}
+                                                </div>
+                                                <div>
+                                                    <p className="font-medium text-sm">{member.firstname} {member.lastname}</p>
+                                                    {/* Start: Removed ID display as it's not user friendly */}
+                                                </div>
+                                            </div>
+                                            {/* Actions for owner */}
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-muted-foreground hover:text-destructive"
+                                                onClick={() => handleRemoveOwner(member._key)}
+                                                disabled={ownerLoading}
+                                                title="Entfernen"
+                                            >
+                                                <UserMinus className="h-4 w-4" />
+                                            </Button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-sm text-muted-foreground">Keine Vorstandsmitglieder gefunden.</p>
+                            )}
+
+                            <div className="flex gap-2 pt-4 border-t">
                                 <Input
-                                    id="document-upload"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                    disabled={uploading}
-                                    className="cursor-pointer"
+                                    placeholder="Neuen Verwalter per E-Mail hinzufügen"
+                                    value={newOwnerEmail}
+                                    onChange={(e) => setNewOwnerEmail(e.target.value)}
+                                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}
                                 />
-                                <Button onClick={handleUpload} disabled={!selectedFile || uploading}>
-                                    {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                <Button onClick={handleAddOwner} disabled={!newOwnerEmail || ownerLoading}>
+                                    {ownerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                                 </Button>
                             </div>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Payment Details Card */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Zahlungsdetails</CardTitle>
-                    <CardDescription>Bankverbindung für Beiträge</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {!showPaymentDetails ? (
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={handleShowPaymentDetails}
-                            disabled={loadingPayment}
-                        >
-                            {loadingPayment ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Laden...
-                                </>
-                            ) : (
-                                "Zahlungsdetails anzeigen"
-                            )}
-                        </Button>
-                    ) : (
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <Label>IBAN</Label>
-                                <div className="p-2 bg-muted rounded-md font-mono text-sm">
-                                    {paymentDetails?.iban || "Nicht verfügbar"}
-                                </div>
-                                {isAdmin && paymentDetails?.sepa_mandate_number && (
-                                    <div className="text-xs text-muted-foreground">
-                                        Mandatsreferenz: {paymentDetails.sepa_mandate_number}
-                                    </div>
-                                )}
-                            </div>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setShowPaymentDetails(false)}
-                            >
-                                Ausblenden
-                            </Button>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-
-            {/* Vorstand Card */}
-            {club?.vorstand && club.vorstand.length > 0 && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Vorstand</CardTitle>
-                        <CardDescription>Mitglieder des Vorstands</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="space-y-2">
-                            {club.vorstand.map((member) => (
-                                <li key={member._key} className="flex items-center gap-2 p-2 rounded-md hover:bg-muted/50">
-                                    <div className="flex-1">
-                                        <p className="font-medium">{member.firstname} {member.lastname}</p>
-                                    </div>
-                                    {/* Add more details or actions for each board member if needed */}
-                                </li>
-                            ))}
-                        </ul>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                </>
             )}
         </div >
     );

@@ -25,6 +25,10 @@ const getHeaders = (token?: string) => {
     if (token) {
         headers['Authorization'] = `Basic ${token}`;
     }
+    const lang = localStorage.getItem('dpv_language');
+    if (lang) {
+        headers['X-Language'] = lang;
+    }
     return headers;
 };
 
