@@ -261,27 +261,23 @@
     "imprint": {
         "title": "Aviso Legal",
         "legal_info": "Información según § 5 TMG:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Teléfono: +49 177 211 93 22<br />Correo: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
         "bank": {
-            "title": "Cuenta Bancaria",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Cuenta Bancaria"
         },
         "board": {
-            "title": "Junta Autorizada",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Junta Autorizada"
         },
         "assessors": {
-            "title": "Asesores",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Asesores"
         },
         "editorial": {
-            "title": "Responsable del contenido editorial",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+            "title": "Responsable del contenido editorial"
         },
         "register": {
             "title": "Registro",
-            "content": "Registrado en el Registro de Asociaciones<br />Tribunal de Distrito de Hamburgo<br />VR 25860"
+            "content": "Registrado en el Registro de Asociaciones"
         },
         "disclaimer": {
             "title": "Aviso de exención de responsabilidad",

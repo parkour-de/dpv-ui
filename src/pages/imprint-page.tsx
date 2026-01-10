@@ -1,4 +1,4 @@
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { PageWrapper } from "@/components/page-wrapper";
 
 export function ImprintPage() {
@@ -10,55 +10,71 @@ export function ImprintPage() {
                     <h1 className="text-2xl font-bold mb-4">{t('imprint.title')}</h1>
                     <p className="font-semibold mb-2">{t('imprint.legal_info')}</p>
                     <p>
-                        <Trans i18nKey="imprint.address" />
+                        Deutscher Parkourverband e.V.<br />
+                        c/o betahaus<br />
+                        Haus des Engagements<br />
+                        Eifflerstraße 43<br />
+                        22769 Hamburg
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <p>
-                        <Trans i18nKey="imprint.contact" />
+                        {t('imprint.phone')}: +49 177 211 93 22<br />
+                        {t('imprint.email')}: <a href="mailto:info@parkour-deutschland.de" className="text-primary hover:underline">info@parkour-deutschland.de</a>
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.bank.title')}</h2>
                     <p>
-                        <Trans i18nKey="imprint.bank.content" />
+                        GLS Gemeinschaftsbank eG<br />
+                        DE56 4306 0967 1374 7488 00<br />
+                        GENODEM1GLS
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.board.title')}</h2>
                     <p>
-                        <Trans i18nKey="imprint.board.content" />
+                        Maren Baufeld<br />
+                        Max Heckl<br />
+                        Eike Plenter
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.assessors.title')}</h2>
                     <p>
-                        <Trans i18nKey="imprint.assessors.content" />
+                        Merlin Szymanski<br />
+                        Jewgeni Eisenberg
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.editorial.title')}</h2>
                     <p>
-                        <Trans i18nKey="imprint.editorial.content" />
+                        Jewgeni Eisenberg<br />
+                        c/o betahaus<br />
+                        Haus des Engagements<br />
+                        Eifflerstraße 43<br />
+                        22769 Hamburg
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.register.title')}</h2>
                     <p>
-                        <Trans i18nKey="imprint.register.content" />
+                        {t('imprint.register.content')}<br />
+                        Amtsgericht Hamburg<br />
+                        VR 25860
                     </p>
                 </section>
 
                 <section className="mb-8">
                     <h2 className="text-xl font-bold mb-2">{t('imprint.disclaimer.title')}</h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                        <Trans i18nKey="imprint.disclaimer.content" />
+                        {t('imprint.disclaimer.content')}
                     </p>
                 </section>
             </div>

@@ -261,31 +261,27 @@
     "imprint": {
         "title": "Künye",
         "legal_info": "§ 5 TMG'ye göre bilgiler:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Telefon: +49 177 211 93 22<br />E-posta: info@parkour-deutschland.de",
+        "phone": "Telefon",
+        "email": "E-posta",
         "bank": {
-            "title": "Banka Hesabı",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Banka Hesabı"
         },
         "board": {
-            "title": "Yetkili Yönetim Kurulu",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Yetkili Yönetim Kurulu"
         },
         "assessors": {
-            "title": "Danışmanlar",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Danışmanlar"
         },
         "editorial": {
-            "title": "İçerikten Sorumlu",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Hamburg"
+            "title": "İçerikten Sorumlu"
         },
         "register": {
             "title": "Kayıt",
-            "content": "Dernek Sicilinde Kayıtlı<br />Hamburg Bölge Mahkemesi<br />VR 25860"
+            "content": "Dernek Sicilinde Kayıtlı"
         },
         "disclaimer": {
             "title": "Sorumluluk Reddi",
-            "content": "Hizmet sağlayıcı olarak, genel yasalara göre bu sayfalardaki kendi içeriğimizden sorumluyuz."
+            "content": "Hizmet sağlayıcı olarak, bu sayfalardaki kendi içeriklerimizden TMG'nin 7. maddesinin 1. fıkrası uyarınca genel yasalar çerçevesinde sorumluyuz. TMG'nin 8. ila 10. maddeleri uyarınca hizmet sağlayıcı olarak iletilen veya saklanan yabancı bilgileri denetlemek veya hukuka aykırı bir faaliyete işaret eden durumları araştırmakla yükümlü değiliz.<br /><br />Genel yasalar uyarınca bilgilerin kullanımının kaldırılması veya engellenmesi konusundaki yükümlülükler saklı kalmaktadır. Ancak buna ilişkin bir sorumluluk, ancak somut bir ihlal hakkında bilgi sahibi olunduğu andan itibaren mümkündür. İlgili yasal ihlallerden haberdar olduğumuzda, bu tür içerikleri derhal kaldıracağız."
         }
     }
 }

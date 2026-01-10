@@ -261,27 +261,23 @@
     "imprint": {
         "title": "Imprint",
         "legal_info": "Information according to § 5 TMG:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Phone: +49 177 211 93 22<br />Email: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "phone": "Phone",
+        "email": "Email",
         "bank": {
-            "title": "Bank Account",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Bank Account"
         },
         "board": {
-            "title": "Authorized Board",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Authorized Board"
         },
         "assessors": {
-            "title": "Assessors",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Assessors"
         },
         "editorial": {
-            "title": "Responsible for editorial content",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+            "title": "Responsible for editorial content"
         },
         "register": {
             "title": "Register Entry",
-            "content": "Registered in the Association Register<br />District Court Hamburg<br />VR 25860"
+            "content": "Registered in the Association Register"
         },
         "disclaimer": {
             "title": "Disclaimer",

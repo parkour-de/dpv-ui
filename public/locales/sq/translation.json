@@ -261,31 +261,27 @@
     "imprint": {
         "title": "Imprint",
         "legal_info": "Informacion sipas § 5 TMG:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Telefon: +49 177 211 93 22<br />Email: info@parkour-deutschland.de",
+        "phone": "Telefoni",
+        "email": "E-mail",
         "bank": {
-            "title": "Llogaria Bankare",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Llogaria Bankare"
         },
         "board": {
-            "title": "Bordi i Autorizuar",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Bordi i Autorizuar"
         },
         "assessors": {
-            "title": "Vlerësuesit",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Vlerësuesit"
         },
         "editorial": {
-            "title": "Përgjegjës për përmbajtjen redaktuese",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Hamburg"
+            "title": "Përgjegjës për përmbajtjen redaktuese"
         },
         "register": {
             "title": "Regjistrimi",
-            "content": "Regjistruar në Regjistrin e Shoqatave<br />Gjykata e Qarkut Hamburg<br />VR 25860"
+            "content": "Regjistruar në Regjistrin e Shoqatave"
         },
         "disclaimer": {
             "title": "Mohim përgjegjësie",
-            "content": "Si ofrues shërbimesh, jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme."
+            "content": "Si ofrues shërbimesh, ne jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme në përputhje me § 7 para. 1 TMG. Sipas §§ 8 deri në 10 TMG, ne nuk jemi të detyruar të monitorojmë informacionin e huaj të transmetuar ose të ruajtur apo të hetojmë rrethana që tregojnë një aktivitet të paligjshëm.<br /><br />Detyrimet për të hequr ose bllokuar përdorimin e informacionit sipas ligjeve të përgjithshme mbeten të paprekura. Megjithatë, përgjegjësia në këtë drejtm është e mundur vetëm nga momenti i njohjes së një shkeljeje konkrete të ligjit. Me marrjen e njohurive për shkelje të tilla të ligjit, ne do t'i heqim këto përmbajtje menjëherë."
         }
     }
 }

@@ -261,31 +261,27 @@
     "imprint": {
         "title": "Impressum",
         "legal_info": "Informacje zgodnie z § 5 TMG:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Telefon: +49 177 211 93 22<br />E-mail: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "phone": "Telefon",
+        "email": "E-mail",
         "bank": {
-            "title": "Konto Bankowe",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Konto Bankowe"
         },
         "board": {
-            "title": "Zarząd Upoważniony",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Zarząd Upoważniony"
         },
         "assessors": {
-            "title": "Asesorzy",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Asesorzy"
         },
         "editorial": {
-            "title": "Odpowiedzialny za treści redakcyjne",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+            "title": "Odpowiedzialny za treści redakcyjne"
         },
         "register": {
             "title": "Wpis do Rejestru",
-            "content": "Zarejestrowany w Rejestrze Stowarzyszeń<br />Sąd Rejonowy Hamburg<br />VR 25860"
+            "content": "Zarejestrowany w Rejestrze Stowarzyszeń"
         },
         "disclaimer": {
             "title": "Wyłączenie odpowiedzialności",
-            "content": "Jako dostawca usług jesteśmy odpowiedzialni za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy zobowiązani do monitorowania przesyłanych lub przechowywanych informacji osób trzecich ani do badania okoliczności wskazujących na działalność niezgodną z prawem.<br /><br />Obowiązki usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu. Po uzyskaniu informacji o takich naruszeniach niezwłocznie usuniemy te treści."
+            "content": "Jako dostawca usług odpowiadamy za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa, na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy jednak zobowiązani do monitorowania przekazywanych lub przechowywanych informacji obcych ani do badania okoliczności wskazujących na działalność niezgodną z prawem.<br /><br />Zobowiązania do usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu prawa. W przypadku powzięcia wiadomości o odpowiednich naruszeniach prawa niezwłocznie usuniemy te treści."
         }
     }
 }

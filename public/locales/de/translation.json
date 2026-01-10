@@ -261,31 +261,27 @@
     "imprint": {
         "title": "Impressum",
         "legal_info": "Angaben gemäß § 5 TMG:",
-        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
-        "contact": "Telefon: +49 177 211 93 22<br />E-Mail.: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "phone": "Telefon",
+        "email": "E-Mail",
         "bank": {
-            "title": "Kontoverbindung",
-            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+            "title": "Kontoverbindung"
         },
         "board": {
-            "title": "Vertretungsberechtigter Vorstand",
-            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+            "title": "Vertretungsberechtigter Vorstand"
         },
         "assessors": {
-            "title": "Beisitzer",
-            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+            "title": "Beisitzer"
         },
         "editorial": {
-            "title": "Verantwortlich für redaktionelle Inhalte",
-            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+            "title": "Verantwortlich für redaktionelle Inhalte"
         },
         "register": {
             "title": "Registereintrag",
-            "content": "Eingetragen im Vereinsregister<br />Amtsgericht Hamburg<br />VR 25860"
+            "content": "Eingetragen im Vereinsregister"
         },
         "disclaimer": {
             "title": "Haftungsausschluss",
-            "content": "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzten verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.<br /><br />Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzten bleiben hiervon unberührt. Eine diesbezügliche Haftung is jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtverletzungen werden wir diese Inhalte umgehend entfernen."
+            "content": "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.<br /><br />Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen werden wir diese Inhalte umgehend entfernen."
         }
     }
 }
