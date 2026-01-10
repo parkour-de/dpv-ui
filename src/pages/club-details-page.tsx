@@ -1,8 +1,8 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, CLUB_STATUS_LABELS } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, CLUB_STATUS_LABELS, type VorstandUser } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,7 +58,7 @@ export function ClubDetailsPage() {
         }
     }, [user]);
 
-    const fetchClub = async () => {
+    const fetchClub = useCallback(async () => {
         if (!id || !token) return;
         try {
             const data = await api.get<Club>(`/clubs/${id}`, token);
@@ -78,7 +78,7 @@ export function ClubDetailsPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, token]);
 
     useEffect(() => {
         const fetchDocuments = async () => {
@@ -93,10 +93,10 @@ export function ClubDetailsPage() {
 
         fetchClub();
         fetchDocuments();
-    }, [id, token]);
+    }, [id, token, fetchClub]);
 
     // Fetch payment details helper
-    const fetchPayment = async () => {
+    const fetchPayment = useCallback(async () => {
         if (!id || !token) return null;
         try {
             const details = await api.get<{ iban: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
@@ -108,7 +108,7 @@ export function ClubDetailsPage() {
             // actually invalid permission might occur if not admin/owner
             return null;
         }
-    };
+    }, [id, token]);
 
     // When entering edit mode, ensure we have payment details
     useEffect(() => {
@@ -125,7 +125,7 @@ export function ClubDetailsPage() {
                 setLoadingPayment(false);
             });
         }
-    }, [isEditing, id, token]);
+    }, [isEditing, id, token, fetchPayment]);
 
     // Toggle view handler
     const handleShowPaymentDetails = async () => {
@@ -235,9 +235,13 @@ export function ClubDetailsPage() {
             await api.post(`/clubs/${id}/owners`, { email: newOwnerEmail }, token);
             setNewOwnerEmail("");
             await fetchClub();
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.data?.message || "Hinzufügen fehlgeschlagen.");
+            if (err instanceof ApiError && err.data?.message) {
+                setError(err.data.message);
+            } else {
+                setError("Hinzufügen fehlgeschlagen.");
+            }
         } finally {
             setOwnerLoading(false);
         }
@@ -250,9 +254,13 @@ export function ClubDetailsPage() {
         try {
             await api.delete(`/clubs/${id}/owners/${userKey}`, token);
             await fetchClub();
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.data?.message || "Entfernen fehlgeschlagen.");
+            if (err instanceof ApiError && err.data?.message) {
+                setError(err.data.message);
+            } else {
+                setError("Entfernen fehlgeschlagen.");
+            }
         } finally {
             setOwnerLoading(false);
         }
@@ -617,7 +625,7 @@ export function ClubDetailsPage() {
                         <CardContent className="space-y-4">
                             {club.vorstand && club.vorstand.length > 0 ? (
                                 <ul className="space-y-2">
-                                    {club.vorstand.map((member: any) => (
+                                    {club.vorstand.map((member: VorstandUser) => (
                                         <li key={member._key} className="flex items-center justify-between p-2 rounded-md bg-muted/20">
                                             <div className="flex items-center gap-2">
                                                 <div className="bg-primary/10 p-1.5 rounded-full">

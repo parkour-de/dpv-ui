@@ -74,7 +74,7 @@ export function ProfilePage() {
                 localStorage.removeItem('dpv_language');
             }
             setMessage(messages.join(" "));
-        } catch (err: any) {
+        } catch (err: unknown) {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
