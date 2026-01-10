@@ -147,7 +147,7 @@
             "firstname": "Vorname",
             "lastname": "Nachname",
             "email": "E-Mail",
-            "language": "Sprache / Language"
+            "language": "Sprache"
         },
         "messages": {
             "success": "Profil aktualisiert.",

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { LanguageSelector } from "@/components/language-selector";
 
 export function Layout() {
     const { t } = useTranslation();
@@ -33,7 +32,6 @@ export function Layout() {
                     </nav>
 
                     <div className="hidden md:flex items-center gap-4">
-                        <LanguageSelector />
                         <Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground transition-colors group flex items-center gap-2">
                             <span className="group-hover:underline">{user?.email}</span>
                         </Link>
@@ -58,12 +56,9 @@ export function Layout() {
                         {t('layout.nav.help')}
                     </Link>
                     <div className="pt-2 border-t border-border space-y-3">
-                        <div className="flex items-center justify-between">
-                            <Link to="/profile" className="block text-xs text-muted-foreground hover:underline" onClick={() => setMobileMenuOpen(false)}>
-                                {user?.email}
-                            </Link>
-                            <LanguageSelector />
-                        </div>
+                        <Link to="/profile" className="block text-xs text-muted-foreground hover:underline" onClick={() => setMobileMenuOpen(false)}>
+                            {user?.email}
+                        </Link>
                         <button onClick={handleLogout} className="text-sm font-medium text-destructive w-full text-left">
                             {t('layout.nav.logout')}
                         </button>

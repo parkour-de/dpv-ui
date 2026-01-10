@@ -29,7 +29,8 @@ export function ProfilePage() {
                 firstname: user.firstname || '',
                 lastname: user.lastname || '',
                 email: user.email || '',
-                language: user.language || ''
+                // Map empty string from backend to "default" for local form state
+                language: user.language || 'default'
             });
         }
     }, [user]);
@@ -78,20 +79,20 @@ export function ProfilePage() {
         }
     };
 
-    // Language options
+    // Language options - use "default" as tombstone to clear backend language preference
     const languages = [
-        { code: "", label: t('profile.language_options.browser_default') },
-        { code: "de", label: "Deutsch 🇩🇪" },
-        { code: "en", label: "English 🇬🇧" },
-        { code: "es", label: "Español 🇪🇸" },
-        { code: "fr", label: "Français 🇫🇷" },
-        { code: "pl", label: "Polski 🇵🇱" },
-        { code: "ro", label: "Română 🇷🇴" },
-        { code: "sq", label: "Shqip 🇦🇱" },
-        { code: "tr", label: "Türkçe 🇹🇷" },
-        { code: "ru", label: "Русский 🇷🇺" },
-        { code: "ua", label: "Українська 🇺🇦" },
-        { code: "ar", label: "العربية 🇸🇦" },
+        { code: "default", label: t('profile.language_options.browser_default') },
+        { code: "de", label: "🇩🇪 Deutsch" },
+        { code: "en", label: "🇬🇧 English" },
+        { code: "es", label: "🇪🇸 Español" },
+        { code: "fr", label: "🇫🇷 Français" },
+        { code: "pl", label: "🇵🇱 Polski" },
+        { code: "ro", label: "🇷🇴 Română" },
+        { code: "sq", label: "🇦🇱 Shqip" },
+        { code: "tr", label: "🇹🇷 Türkçe" },
+        { code: "ru", label: "🇷🇺 Русский" },
+        { code: "ua", label: "🇺🇦 Українська" },
+        { code: "ar", label: "🇸🇦 العربية" },
     ];
 
     if (!user) return null;

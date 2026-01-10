@@ -28,8 +28,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Sync user language preference with i18n
     useEffect(() => {
-        if (user?.language && user.language !== i18n.language) {
-            i18n.changeLanguage(user.language);
+        if (user) {
+            if (user.language && user.language !== i18n.language) {
+                // User has a language preference set - use it
+                i18n.changeLanguage(user.language);
+            } else if (!user.language) {
+                // User chose "browser default" - let i18next detect from browser
+                const browserLang = navigator.language.split('-')[0] || 'de';
+                if (browserLang !== i18n.language) {
+                    i18n.changeLanguage(browserLang);
+                }
+            }
         }
     }, [user, i18n]);
 
