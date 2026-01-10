@@ -11,9 +11,6 @@
             "help": "Ayuda",
             "profile": "Perfil",
             "logout": "Cerrar sesión"
-        },
-        "language_selector": {
-            "label": "Seleccionar idioma"
         }
     },
     "dashboard": {
@@ -159,7 +156,7 @@
             "save": "Guardar"
         },
         "language_options": {
-            "browser_default": "Predeterminado del navegador (🗺️)"
+            "browser_default": "Predeterminado del navegador"
         }
     },
     "auth": {

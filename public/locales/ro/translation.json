@@ -11,9 +11,6 @@
             "help": "Ajutor",
             "profile": "Profil",
             "logout": "Deconectare"
-        },
-        "language_selector": {
-            "label": "Selectați limba"
         }
     },
     "dashboard": {
@@ -159,7 +156,7 @@
             "save": "Salvează"
         },
         "language_options": {
-            "browser_default": "Implicit browser (🗺️)"
+            "browser_default": "Implicit browser"
         }
     },
     "auth": {

@@ -27,20 +27,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, [token, user, isVerifying]);
 
     // Sync user language preference with i18n
+    // Only depend on user.language to avoid infinite loop from i18n object reference changes
+    const userLanguage = user?.language;
     useEffect(() => {
-        if (user) {
-            if (user.language && user.language !== i18n.language) {
-                // User has a language preference set - use it
-                i18n.changeLanguage(user.language);
-            } else if (!user.language) {
-                // User chose "browser default" - let i18next detect from browser
-                const browserLang = navigator.language.split('-')[0] || 'de';
-                if (browserLang !== i18n.language) {
-                    i18n.changeLanguage(browserLang);
-                }
-            }
+        if (userLanguage) {
+            // User has a language preference set - use it
+            i18n.changeLanguage(userLanguage);
+        } else if (user && !userLanguage) {
+            // User is logged in but chose "browser default" - detect from browser
+            const browserLang = navigator.language.split('-')[0] || 'de';
+            i18n.changeLanguage(browserLang);
         }
-    }, [user, i18n]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userLanguage]);
 
     const login = (newToken: string, newUser: User) => {
         sessionStorage.setItem(STORAGE_KEY_TOKEN, newToken);

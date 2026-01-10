@@ -11,9 +11,6 @@
             "help": "Yardım",
             "profile": "Profil",
             "logout": "Çıkış"
-        },
-        "language_selector": {
-            "label": "Dil Seçin"
         }
     },
     "dashboard": {
@@ -159,7 +156,7 @@
             "save": "Kaydet"
         },
         "language_options": {
-            "browser_default": "Tarayıcı Varsayılanı (🗺️)"
+            "browser_default": "Tarayıcı Varsayılanı"
         }
     },
     "auth": {

@@ -11,9 +11,6 @@
             "help": "Ndihmë",
             "profile": "Profili",
             "logout": "Dilni"
-        },
-        "language_selector": {
-            "label": "Zgjidhni gjuhën"
         }
     },
     "dashboard": {
@@ -159,7 +156,7 @@
             "save": "Ruaj"
         },
         "language_options": {
-            "browser_default": "Parazgjedhja e shfletuesit (🗺️)"
+            "browser_default": "Parazgjedhja e shfletuesit"
         }
     },
     "auth": {
