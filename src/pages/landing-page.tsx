@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api } from "@/lib/api";
 import { type User } from "@/types";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LandingPage() {
+    const { t } = useTranslation();
     const { login } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -30,7 +32,7 @@ export function LandingPage() {
             navigate("/dashboard");
         } catch (err: unknown) {
             console.error(err);
-            setError("Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+            setError(t('auth.login.error_generic'));
         } finally {
             setLoading(false);
         }
@@ -40,19 +42,19 @@ export function LandingPage() {
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center space-y-2">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-primary">DPV</h1>
-                    <p className="text-muted-foreground">Mitgliederverwaltung</p>
+                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-primary">{t('app.title')}</h1>
+                    <p className="text-muted-foreground">{t('app.subtitle')}</p>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Anmelden</CardTitle>
-                        <CardDescription>Geben Sie Ihre Zugangsdaten ein, um fortzufahren.</CardDescription>
+                        <CardTitle>{t('auth.login.title')}</CardTitle>
+                        <CardDescription>{t('auth.login.description')}</CardDescription>
                     </CardHeader>
                     <form onSubmit={handleSubmit}>
                         <CardContent className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="email">E-Mail</Label>
+                                <Label htmlFor="email">{t('auth.fields.email')}</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -64,9 +66,9 @@ export function LandingPage() {
                             </div>
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="password">Passwort</Label>
+                                    <Label htmlFor="password">{t('auth.fields.password')}</Label>
                                     <Link to="/reset-password" className="text-xs text-primary hover:underline">
-                                        Passwort vergessen?
+                                        {t('auth.fields.forgot_password')}
                                     </Link>
                                 </div>
                                 <Input
@@ -81,12 +83,12 @@ export function LandingPage() {
                         </CardContent>
                         <CardFooter className="flex flex-col gap-4">
                             <Button type="submit" className="w-full" disabled={loading}>
-                                {loading ? "Anmelden..." : "Anmelden"}
+                                {loading ? t('auth.login.submit_loading') : t('auth.login.submit')}
                             </Button>
                             <div className="text-center text-sm text-muted-foreground">
-                                Noch kein Konto?{" "}
+                                {t('auth.register.question')}{" "}
                                 <Link to="/register" className="text-primary hover:underline font-medium">
-                                    Registrieren
+                                    {t('auth.register.action')}
                                 </Link>
                             </div>
                         </CardFooter>
@@ -94,8 +96,8 @@ export function LandingPage() {
                 </Card>
 
                 <div className="text-center text-xs text-muted-foreground">
-                    <Link to="/imprint" className="hover:underline mr-4">Impressum</Link>
-                    <Link to="/help" className="hover:underline">Hilfe</Link>
+                    <Link to="/imprint" className="hover:underline mr-4">{t('footer.imprint')}</Link>
+                    <Link to="/help" className="hover:underline">{t('footer.help')}</Link>
                 </div>
             </div>
         </div>

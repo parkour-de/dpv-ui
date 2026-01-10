@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Zarządzanie Członkami",
+        "portal_name": "Portal Członków",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Panel",
+            "help": "Pomoc",
+            "profile": "Profil",
+            "logout": "Wyloguj"
+        },
+        "language_selector": {
+            "label": "Wybierz język"
+        }
+    },
+    "dashboard": {
+        "title": "Panel",
+        "welcome": "Witaj ponownie, {{firstname}}. Oto Twoje kluby.",
+        "actions": {
+            "new_club": "Nowy Klub",
+            "create_club": "Załóż Klub",
+            "load_more": "Załaduj więcej"
+        },
+        "filter": {
+            "label": "Filtr:",
+            "all_status": "Wszystkie statusy"
+        },
+        "empty": {
+            "title": "Nie znaleziono klubów",
+            "description": "Zacznij od utworzenia nowego klubu."
+        },
+        "loading": "Ładowanie klubów...",
+        "club_card": {
+            "no_address": "Brak adresu"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Aktywny",
+            "inactive": "Nieaktywny",
+            "requested": "Zgłoszony",
+            "denied": "Odrzucony",
+            "cancelled": "Anulowany"
+        },
+        "details": {
+            "title": "Dane Główne",
+            "description": "Ogólne informacje o klubie.",
+            "labels": {
+                "name": "Nazwa",
+                "legal_form": "Forma Prawna",
+                "email": "E-mail",
+                "address": "Adres",
+                "contact_person": "Osoba kontaktowa"
+            },
+            "actions": {
+                "edit": "Edytuj",
+                "save": "Zapisz",
+                "cancel": "Anuluj",
+                "delete": "Usuń",
+                "back": "Wstecz"
+            },
+            "membership": {
+                "apply": "Złóż wniosek o członkostwo",
+                "reapply": "Złóż ponownie",
+                "cancel": "Anuluj członkostwo",
+                "withdraw": "Wycofaj wniosek",
+                "approve": "Zatwierdź",
+                "deny": "Odrzuć"
+            }
+        },
+        "documents": {
+            "title": "Dokumenty",
+            "description": "Prześlij tutaj dokumenty klubu.",
+            "upload_label": "Prześlij nowy dokument",
+            "download_all": "Pobierz wszystko",
+            "empty": "Brak dostępnych dokumentów."
+        },
+        "payment": {
+            "title": "Dane Płatności",
+            "description": "Dane bankowe do składek",
+            "edit_title": "Edytuj Dane Płatności",
+            "show": "Pokaż Dane Płatności",
+            "hide": "Ukryj",
+            "no_iban": "Brak zapisanego IBAN",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Numer Mandatu"
+            }
+        },
+        "owners": {
+            "title": "Zarząd i Administratorzy",
+            "description": "Osoby zarządzające tym klubem.",
+            "empty": "Nie znaleziono członków zarządu.",
+            "add_placeholder": "Dodaj nowego administratora przez e-mail"
+        },
+        "messages": {
+            "load_error": "Nie udało się załadować klubu.",
+            "not_found": "Nie znaleziono klubu.",
+            "upload_error": "Przesyłanie dokumentu nie powiodło się.",
+            "download_error": "Pobieranie nie powiodło się.",
+            "action_error": "Akcja nie powiodła się.",
+            "save_error": "Zapisywanie nie powiodło się.",
+            "delete_confirm": "Czy na pewno chcesz usunąć ten klub?",
+            "remove_owner_confirm": "Czy na pewno chcesz usunąć tego użytkownika jako administratora?",
+            "loading": "Ładowanie szczegółów...",
+            "loading_payment": "Ładowanie danych płatności..."
+        }
+    },
+    "create_club": {
+        "title": "Załóż Nowy Klub",
+        "card": {
+            "title": "Dane Klubu",
+            "description": "Wprowadź podstawowe dane swojego klubu."
+        },
+        "labels": {
+            "name": "Nazwa Klubu",
+            "legal_form": "Forma Prawna",
+            "email_opt": "E-mail (opcjonalnie)",
+            "address_opt": "Adres (opcjonalnie)"
+        },
+        "placeholders": {
+            "name": "Przykładowy Klub",
+            "legal_form": "np. e.V.",
+            "email": "info@klub.pl",
+            "address": "Ulica 1, 12345 Miasto"
+        },
+        "actions": {
+            "cancel": "Anuluj",
+            "create": "Utwórz Klub",
+            "creating": "Tworzenie..."
+        },
+        "errors": {
+            "not_authenticated": "Niezalogowany.",
+            "create_failed": "Tworzenie nie powiodło się. Sprawdź wprowadzone dane."
+        }
+    },
+    "profile": {
+        "title": "Mój Profil",
+        "personal_data": {
+            "title": "Dane Osobowe",
+            "description": "Zaktualizuj tutaj swoje dane osobowe."
+        },
+        "labels": {
+            "firstname": "Imię",
+            "lastname": "Nazwisko",
+            "email": "E-mail",
+            "language": "Język"
+        },
+        "messages": {
+            "success": "Profil zaktualizowany.",
+            "email_sent": "E-mail potwierdzający wysłany na {{email}}.",
+            "email_validation_required": "Zmiana wymaga potwierdzenia e-mailem.",
+            "error_save": "Błąd podczas zapisywania."
+        },
+        "actions": {
+            "save": "Zapisz"
+        },
+        "language_options": {
+            "browser_default": "Domyślny przeglądarki (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Logowanie",
+            "description": "Wprowadź swoje dane, aby kontynuować.",
+            "submit": "Zaloguj się",
+            "submit_loading": "Logowanie...",
+            "error_generic": "Logowanie nie powiodło się. Sprawdź wprowadzone dane."
+        },
+        "fields": {
+            "email": "E-mail",
+            "password": "Hasło",
+            "firstname": "Imię",
+            "lastname": "Nazwisko",
+            "forgot_password": "Zapomniałeś hasła?"
+        },
+        "register": {
+            "title": "Rejestracja",
+            "description": "Utwórz nowe konto w DPV.",
+            "submit": "Zarejestruj się",
+            "submit_loading": "Rejestracja...",
+            "password_hint": "Co najmniej 10 znaków i 8 różnych typów znaków.",
+            "success": {
+                "title": "Rejestracja zakończona sukcesem!",
+                "description": "Twoje konto zostało utworzone. Sprawdź swoją pocztę, aby potwierdzić adres (jeśli wymagane).",
+                "action": "Przejdź do Logowania"
+            },
+            "error_generic": "Rejestracja nie powiodła się. Spróbuj ponownie później.",
+            "question": "Nie masz jeszcze konta?",
+            "action": "Zarejestruj się",
+            "login_question": "Masz już konto?",
+            "login_action": "Zaloguj się"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Zapomniałeś hasła",
+                "description": "Wprowadź swój adres e-mail, aby otrzymać link do resetowania hasła.",
+                "submit": "Wyślij link",
+                "success": {
+                    "title": "E-mail wysłany",
+                    "description": "Jeśli istnieje konto z tym adresem e-mail, wysłaliśmy Ci link do resetowania hasła."
+                }
+            },
+            "confirm": {
+                "title": "Zresetuj Hasło",
+                "description": "Wprowadź nowe hasło.",
+                "labels": {
+                    "new_password": "Nowe Hasło",
+                    "confirm_password": "Potwierdź Hasło"
+                },
+                "submit": "Zapisz Hasło",
+                "success": {
+                    "title": "Hasło zmienione",
+                    "description": "Twoje hasło zostało pomyślnie zmienione. Możesz się teraz zalogować."
+                }
+            },
+            "actions": {
+                "back_to_login": "Przejdź do Logowania",
+                "wait": "Proszę czekać..."
+            },
+            "errors": {
+                "generic": "Wystąpił błąd.",
+                "mismatch": "Hasła nie są zgodne.",
+                "reset_failed": "Nie udało się zresetować hasła."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Impressum",
+        "help": "Pomoc"
+    },
+    "error": {
+        "title": "Wystąpił nieoczekiwany błąd",
+        "message": "To nie powinno się zdarzyć.",
+        "not_found": {
+            "title": "Strona nie znaleziona (404)",
+            "message": "Żądana strona nie istnieje lub została przeniesiona."
+        },
+        "actions": {
+            "back": "Wstecz",
+            "home": "Strona główna"
+        }
+    },
+    "help": {
+        "title": "Pomoc i Wsparcie",
+        "faq": {
+            "create_club": {
+                "question": "Jak założyć klub?",
+                "answer": "Aby zarejestrować nowy klub w DPV, musisz być zarejestrowany i zalogowany. Kliknij \"Załóż Klub\" w panelu i wypełnij formularz. Twój wniosek zostanie rozpatrzony przez administratora."
+            },
+            "after_registration": {
+                "question": "Co się dzieje po rejestracji?",
+                "answer": "Po rejestracji otrzymasz e-mail w celu potwierdzenia adresu. Następnie możesz się zalogować i zarządzać lub zakładać kluby."
+            },
+            "reset_password": {
+                "question": "Jak mogę zmienić hasło?",
+                "answer": "Jeśli zapomniałeś hasła, skorzystaj z funkcji \"Zapomniałeś hasła\" na stronie logowania. Otrzymasz link do jego zresetowania."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Impressum",
+        "legal_info": "Informacje zgodnie z § 5 TMG:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Telefon: +49 177 211 93 22<br />E-mail: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "bank": {
+            "title": "Konto Bankowe",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Zarząd Upoważniony",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Asesorzy",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Odpowiedzialny za treści redakcyjne",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+        },
+        "register": {
+            "title": "Wpis do Rejestru",
+            "content": "Zarejestrowany w Rejestrze Stowarzyszeń<br />Sąd Rejonowy Hamburg<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Wyłączenie odpowiedzialności",
+            "content": "Jako dostawca usług jesteśmy odpowiedzialni za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy zobowiązani do monitorowania przesyłanych lub przechowywanych informacji osób trzecich ani do badania okoliczności wskazujących na działalność niezgodną z prawem.<br /><br />Obowiązki usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu. Po uzyskaniu informacji o takich naruszeniach niezwłocznie usuniemy te treści."
+        }
+    }
+}

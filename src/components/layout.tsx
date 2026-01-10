@@ -1,9 +1,12 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { LanguageSelector } from "@/components/language-selector";
 
 export function Layout() {
+    const { t } = useTranslation();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,23 +21,24 @@ export function Layout() {
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">
                     <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-                        <span className="text-primary">DPV</span>
-                        <span className="hidden sm:inline-block font-medium text-foreground/80">Mitgliederportal</span>
+                        <span className="text-primary">{t('app.title')}</span>
+                        <span className="hidden sm:inline-block font-medium text-foreground/80">{t('app.portal_name')}</span>
                     </div>
 
                     <nav className="hidden md:flex items-center gap-6">
                         <Link to="/dashboard" className="text-sm font-medium transition-colors hover:text-primary">
-                            Übersicht
+                            {t('layout.nav.dashboard')}
                         </Link>
-                        <Link to="/help" className="text-sm font-medium transition-colors hover:text-primary">Hilfe</Link>
+                        <Link to="/help" className="text-sm font-medium transition-colors hover:text-primary">{t('layout.nav.help')}</Link>
                     </nav>
 
                     <div className="hidden md:flex items-center gap-4">
+                        <LanguageSelector />
                         <Link to="/profile" className="text-sm text-muted-foreground hover:text-foreground transition-colors group flex items-center gap-2">
                             <span className="group-hover:underline">{user?.email}</span>
                         </Link>
                         <button onClick={handleLogout} className="text-sm font-medium text-destructive hover:underline">
-                            Abmelden
+                            {t('layout.nav.logout')}
                         </button>
                     </div>
 
@@ -48,17 +52,20 @@ export function Layout() {
             {mobileMenuOpen && (
                 <div className="md:hidden border-b border-border p-4 space-y-4 bg-background">
                     <Link to="/dashboard" className="block text-sm font-medium hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                        Übersicht
+                        {t('layout.nav.dashboard')}
                     </Link>
                     <Link to="/help" className="block text-sm font-medium hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                        Hilfe
+                        {t('layout.nav.help')}
                     </Link>
-                    <div className="pt-2 border-t border-border">
-                        <Link to="/profile" className="block text-xs text-muted-foreground mb-2 hover:underline" onClick={() => setMobileMenuOpen(false)}>
-                            {user?.email}
-                        </Link>
+                    <div className="pt-2 border-t border-border space-y-3">
+                        <div className="flex items-center justify-between">
+                            <Link to="/profile" className="block text-xs text-muted-foreground hover:underline" onClick={() => setMobileMenuOpen(false)}>
+                                {user?.email}
+                            </Link>
+                            <LanguageSelector />
+                        </div>
                         <button onClick={handleLogout} className="text-sm font-medium text-destructive w-full text-left">
-                            Abmelden
+                            {t('layout.nav.logout')}
                         </button>
                     </div>
                 </div>
@@ -71,11 +78,11 @@ export function Layout() {
             <footer className="border-t border-border/40 py-6 md:px-8 bg-muted/20">
                 <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-xs text-muted-foreground text-center md:text-left">
-                        &copy; {new Date().getFullYear()} Deutscher Parkour Verband e.V.
+                        &copy; {new Date().getFullYear()} {t('app.copyright')}
                     </p>
                     <div className="flex gap-4 text-xs text-muted-foreground">
-                        <Link to="/imprint" className="hover:underline">Impressum</Link>
-                        <Link to="/help" className="hover:underline">Hilfe</Link>
+                        <Link to="/imprint" className="hover:underline">{t('footer.imprint')}</Link>
+                        <Link to="/help" className="hover:underline">{t('footer.help')}</Link>
                     </div>
                 </div>
             </footer>

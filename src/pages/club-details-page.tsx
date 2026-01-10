@@ -1,8 +1,9 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, CLUB_STATUS_LABELS, type VorstandUser } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, type VorstandUser } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +12,7 @@ import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Downl
 import { cn } from "@/lib/utils";
 
 export function ClubDetailsPage() {
+    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { user, token } = useAuth();
@@ -74,11 +76,11 @@ export function ClubDetailsPage() {
             }));
         } catch (err) {
             console.error("Failed to load club", err);
-            setError("Verein konnte nicht geladen werden.");
+            setError(t('club.messages.load_error'));
         } finally {
             setLoading(false);
         }
-    }, [id, token]);
+    }, [id, token, t]);
 
     useEffect(() => {
         const fetchDocuments = async () => {
@@ -159,7 +161,7 @@ export function ClubDetailsPage() {
             if (fileInput) fileInput.value = '';
         } catch (err) {
             console.error(err);
-            setError("Dokument-Upload fehlgeschlagen.");
+            setError(t('club.messages.upload_error'));
         } finally {
             setUploading(false);
         }
@@ -185,7 +187,7 @@ export function ClubDetailsPage() {
             document.body.removeChild(a);
         } catch (err) {
             console.error(err);
-            setError("Download fehlgeschlagen.");
+            setError(t('club.messages.download_error'));
         }
     };
 
@@ -209,7 +211,7 @@ export function ClubDetailsPage() {
             document.body.removeChild(a);
         } catch (err) {
             console.error(err);
-            setError("Zip download fehlgeschlagen.");
+            setError(t('club.messages.download_error'));
         }
     };
 
@@ -221,7 +223,7 @@ export function ClubDetailsPage() {
             await fetchClub(); // refresh
         } catch (err) {
             console.error(err);
-            setError("Aktion fehlgeschlagen.");
+            setError(t('club.messages.action_error'));
         } finally {
             setFormLoading(false);
         }
@@ -240,7 +242,7 @@ export function ClubDetailsPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Hinzufügen fehlgeschlagen.");
+                setError(t('club.messages.action_error'));
             }
         } finally {
             setOwnerLoading(false);
@@ -249,7 +251,7 @@ export function ClubDetailsPage() {
 
     const handleRemoveOwner = async (userKey: string) => {
         if (!id || !token) return;
-        if (!confirm("Diesen Nutzer wirklich als Verwalter entfernen?")) return;
+        if (!confirm(t('club.messages.remove_owner_confirm'))) return;
         setOwnerLoading(true);
         try {
             await api.delete(`/clubs/${id}/owners/${userKey}`, token);
@@ -259,7 +261,7 @@ export function ClubDetailsPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Entfernen fehlgeschlagen.");
+                setError(t('club.messages.action_error'));
             }
         } finally {
             setOwnerLoading(false);
@@ -268,7 +270,7 @@ export function ClubDetailsPage() {
 
     const handleDelete = async () => {
         if (!id || !token) return;
-        if (!confirm("Sind Sie sicher, dass Sie diesen Verein löschen möchten?")) return;
+        if (!confirm(t('club.messages.delete_confirm'))) return;
 
         setFormLoading(true);
         try {
@@ -276,7 +278,7 @@ export function ClubDetailsPage() {
             navigate("/dashboard");
         } catch (err) {
             console.error(err);
-            setError("Löschen fehlgeschlagen.");
+            setError(t('club.messages.action_error'));
             setFormLoading(false);
         }
     };
@@ -294,7 +296,7 @@ export function ClubDetailsPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Speichern fehlgeschlagen.");
+                setError(t('club.messages.save_error'));
             }
         } finally {
             setFormLoading(false);
@@ -302,7 +304,8 @@ export function ClubDetailsPage() {
     };
 
     const formatDate = (unixSeconds: number) => {
-        return new Date(unixSeconds * 1000).toLocaleDateString('de-DE', {
+        // Use i18n language for date formatting if possible, else default to de-DE or use i18next-browser-languagedetector
+        return new Date(unixSeconds * 1000).toLocaleDateString(undefined, {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',
@@ -311,8 +314,8 @@ export function ClubDetailsPage() {
         });
     };
 
-    if (loading) return <div className="text-center py-12">Lade Details...</div>;
-    if (!club) return <div className="text-center py-12">Verein nicht gefunden.</div>;
+    if (loading) return <div className="text-center py-12">{t('club.messages.loading')}</div>;
+    if (!club) return <div className="text-center py-12">{t('club.messages.not_found')}</div>;
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
@@ -323,7 +326,7 @@ export function ClubDetailsPage() {
                     </Link>
                     <h1 className="text-2xl font-bold tracking-tight">{club.name}</h1>
                     <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[club.membership.status])}>
-                        {CLUB_STATUS_LABELS[club.membership.status]}
+                        {t(`club.status.${club.membership.status}`)}
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -331,40 +334,40 @@ export function ClubDetailsPage() {
                         <>
                             {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
                                 <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
-                                    {club.membership.status === 'cancelled' ? 'Erneut beantragen' : 'Mitgliedschaft beantragen'}
+                                    {club.membership.status === 'cancelled' ? t('club.details.membership.reapply') : t('club.details.membership.apply')}
                                 </Button>
                             )}
                             {(club.membership.status === 'requested' || club.membership.status === 'active') && !isAdmin && (
                                 <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleAction('cancel')} disabled={formLoading}>
-                                    {club.membership.status === 'active' ? 'Mitgliedschaft kündigen' : 'Antrag zurückziehen'}
+                                    {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
                                 </Button>
                             )}
                             {isAdmin && (
                                 <>
                                     {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
                                         <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
-                                            Mitgliedschaft beantragen
+                                            {t('club.details.membership.apply')}
                                         </Button>
                                     )}
                                     {(club.membership.status === 'requested' || club.membership.status === 'active') && (
                                         <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleAction('cancel')} disabled={formLoading}>
-                                            {club.membership.status === 'active' ? 'Mitgliedschaft kündigen' : 'Antrag zurückziehen'}
+                                            {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
                                         </Button>
                                     )}
                                     {club.membership.status === 'requested' && (
                                         <>
                                             <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
-                                                <Check className="mr-2 h-4 w-4" /> Genehmigen
+                                                <Check className="mr-2 h-4 w-4" /> {t('club.details.membership.approve')}
                                             </Button>
                                             <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
-                                                <X className="mr-2 h-4 w-4" /> Ablehnen
+                                                <X className="mr-2 h-4 w-4" /> {t('club.details.membership.deny')}
                                             </Button>
                                         </>
                                     )}
                                 </>
                             )}
                             <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
-                                Bearbeiten
+                                {t('club.details.actions.edit')}
                             </Button>
                             <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
                                 <Trash2 className="h-4 w-4" />
@@ -384,13 +387,13 @@ export function ClubDetailsPage() {
             <form onSubmit={handleSave}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Stammdaten</CardTitle>
-                        <CardDescription>Allgemeine Informationen zum Verein.</CardDescription>
+                        <CardTitle>{t('club.details.title')}</CardTitle>
+                        <CardDescription>{t('club.details.description')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">{t('club.details.labels.name')}</Label>
                                 <Input
                                     id="name"
                                     value={formData.name || ''}
@@ -399,7 +402,7 @@ export function ClubDetailsPage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="legal_form">Rechtsform</Label>
+                                <Label htmlFor="legal_form">{t('club.details.labels.legal_form')}</Label>
                                 <Input
                                     id="legal_form"
                                     value={formData.legal_form || ''}
@@ -409,7 +412,7 @@ export function ClubDetailsPage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="email">E-Mail</Label>
+                                <Label htmlFor="email">{t('club.details.labels.email')}</Label>
                                 <Input
                                     id="email"
                                     value={formData.email || ''}
@@ -418,7 +421,7 @@ export function ClubDetailsPage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="address">Adresse</Label>
+                                <Label htmlFor="address">{t('club.details.labels.address')}</Label>
                                 <Input
                                     id="address"
                                     value={formData.address || ''}
@@ -427,7 +430,7 @@ export function ClubDetailsPage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="contact_person">Ansprechpartner</Label>
+                                <Label htmlFor="contact_person">{t('club.details.labels.contact_person')}</Label>
                                 <Input
                                     id="contact_person"
                                     value={formData.contact_person || ''}
@@ -444,15 +447,15 @@ export function ClubDetailsPage() {
                 {isEditing ? (
                     <Card className="mt-6">
                         <CardHeader>
-                            <CardTitle>Zahlungsdetails bearbeiten</CardTitle>
+                            <CardTitle>{t('club.payment.edit_title')}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {loadingPayment ? (
-                                <div className="text-sm">Lade Zahlungsdetails...</div>
+                                <div className="text-sm">{t('club.messages.loading_payment')}</div>
                             ) : (
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="iban">IBAN</Label>
+                                        <Label htmlFor="iban">{t('club.payment.labels.iban')}</Label>
                                         <Input
                                             id="iban"
                                             value={formData.iban || ''}
@@ -461,7 +464,7 @@ export function ClubDetailsPage() {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="sepa">Mandatsreferenz</Label>
+                                        <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
                                         <Input
                                             id="sepa"
                                             value={formData.sepa_mandate_number || ''}
@@ -485,10 +488,10 @@ export function ClubDetailsPage() {
                                     sepa_mandate_number: undefined
                                 });
                             }}>
-                                Abbrechen
+                                {t('club.details.actions.cancel')}
                             </Button>
                             <Button type="submit" disabled={formLoading || loadingPayment}>
-                                <Save className="mr-2 h-4 w-4" /> Speichern
+                                <Save className="mr-2 h-4 w-4" /> {t('club.details.actions.save')}
                             </Button>
                         </CardFooter>
                     </Card>
@@ -505,12 +508,12 @@ export function ClubDetailsPage() {
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle>Dokumente</CardTitle>
-                                <CardDescription>Laden Sie hier Vereinsdokumente hoch.</CardDescription>
+                                <CardTitle>{t('club.documents.title')}</CardTitle>
+                                <CardDescription>{t('club.documents.description')}</CardDescription>
                             </div>
                             {documents.length > 0 && (
                                 <Button variant="outline" size="sm" onClick={handleDownloadAll}>
-                                    <Download className="h-4 w-4 mr-2" /> Alle herunterladen
+                                    <Download className="h-4 w-4 mr-2" /> {t('club.documents.download_all')}
                                 </Button>
                             )}
                         </CardHeader>
@@ -538,14 +541,14 @@ export function ClubDetailsPage() {
                                 </div>
                             ) : (
                                 <div className="text-sm text-muted-foreground text-center py-4 border-2 border-dashed rounded-md">
-                                    Keine Dokumente vorhanden.
+                                    {t('club.documents.empty')}
                                 </div>
                             )}
 
                             {/* Upload Section */}
                             <div className="space-y-4 pt-4 border-t">
                                 <div className="grid w-full max-w-sm items-center gap-1.5">
-                                    <Label htmlFor="document-upload">Neues Dokument hochladen</Label>
+                                    <Label htmlFor="document-upload">{t('club.documents.upload_label')}</Label>
                                     <div className="flex gap-2">
                                         <Input
                                             id="document-upload"
@@ -566,8 +569,8 @@ export function ClubDetailsPage() {
                     {/* Payment Details (View Only) */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Zahlungsdetails</CardTitle>
-                            <CardDescription>Bankverbindung für Beiträge</CardDescription>
+                            <CardTitle>{t('club.payment.title')}</CardTitle>
+                            <CardDescription>{t('club.payment.description')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             {!showPaymentDetails ? (
@@ -580,21 +583,21 @@ export function ClubDetailsPage() {
                                     {loadingPayment ? (
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     ) : null}
-                                    Zahlungsdetails anzeigen
+                                    {t('club.payment.show')}
                                 </Button>
                             ) : (
                                 <div className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label>IBAN</Label>
+                                        <Label>{t('club.payment.labels.iban')}</Label>
                                         <Input
                                             value={viewPaymentDetails?.iban || ''}
                                             disabled
                                             className="bg-muted font-mono"
-                                            placeholder="Keine IBAN hinterlegt"
+                                            placeholder={t('club.payment.no_iban')}
                                         />
                                         {isAdmin && viewPaymentDetails?.sepa_mandate_number && (
                                             <div className="mt-2 space-y-2">
-                                                <Label>Mandatsreferenz</Label>
+                                                <Label>{t('club.payment.labels.sepa')}</Label>
                                                 <Input
                                                     value={viewPaymentDetails.sepa_mandate_number}
                                                     disabled
@@ -609,7 +612,7 @@ export function ClubDetailsPage() {
                                         size="sm"
                                         onClick={() => setShowPaymentDetails(false)}
                                     >
-                                        Ausblenden
+                                        {t('club.payment.hide')}
                                     </Button>
                                 </div>
                             )}
@@ -619,8 +622,8 @@ export function ClubDetailsPage() {
                     {/* Vorstand / Owners */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Vorstand & Verwalter</CardTitle>
-                            <CardDescription>Personen, die diesen Verein verwalten.</CardDescription>
+                            <CardTitle>{t('club.owners.title')}</CardTitle>
+                            <CardDescription>{t('club.owners.description')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {club.vorstand && club.vorstand.length > 0 ? (
@@ -651,12 +654,12 @@ export function ClubDetailsPage() {
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-sm text-muted-foreground">Keine Vorstandsmitglieder gefunden.</p>
+                                <p className="text-sm text-muted-foreground">{t('club.owners.empty')}</p>
                             )}
 
                             <div className="flex gap-2 pt-4 border-t">
                                 <Input
-                                    placeholder="Neuen Verwalter per E-Mail hinzufügen"
+                                    placeholder={t('club.owners.add_placeholder')}
                                     value={newOwnerEmail}
                                     onChange={(e) => setNewOwnerEmail(e.target.value)}
                                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}

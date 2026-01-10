@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Menaxhimi i Anëtarëve",
+        "portal_name": "Portali i Anëtarëve",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Paneli",
+            "help": "Ndihmë",
+            "profile": "Profili",
+            "logout": "Dilni"
+        },
+        "language_selector": {
+            "label": "Zgjidhni gjuhën"
+        }
+    },
+    "dashboard": {
+        "title": "Paneli",
+        "welcome": "Mirë se u kthyet, {{firstname}}. Këtu janë klubet tuaja.",
+        "actions": {
+            "new_club": "Klub i Ri",
+            "create_club": "Krijo një Klub",
+            "load_more": "Ngarko më shumë"
+        },
+        "filter": {
+            "label": "Filtri:",
+            "all_status": "Të gjitha statuset"
+        },
+        "empty": {
+            "title": "Nuk u gjetën klube",
+            "description": "Filloni duke krijuar një klub të ri."
+        },
+        "loading": "Duke ngarkuar klubet...",
+        "club_card": {
+            "no_address": "Pa adresë"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Aktiv",
+            "inactive": "Joaktiv",
+            "requested": "Kërkuar",
+            "denied": "Refuzuar",
+            "cancelled": "Anuluar"
+        },
+        "details": {
+            "title": "Të Dhënat Kryesore",
+            "description": "Informacion i përgjithshëm për klubin.",
+            "labels": {
+                "name": "Emri",
+                "legal_form": "Forma Ligjore",
+                "email": "Email",
+                "address": "Adresa",
+                "contact_person": "Personi i kontaktit"
+            },
+            "actions": {
+                "edit": "Ndrysho",
+                "save": "Ruaj",
+                "cancel": "Anulo",
+                "delete": "Fshi",
+                "back": "Kthehu"
+            },
+            "membership": {
+                "apply": "Apliko për Anëtarësi",
+                "reapply": "Ri-apliko",
+                "cancel": "Anulo Anëtarësinë",
+                "withdraw": "Tërhiq kërkesën",
+                "approve": "Aprovo",
+                "deny": "Refuzo"
+            }
+        },
+        "documents": {
+            "title": "Dokumentet",
+            "description": "Ngarkoni dokumentet e klubit këtu.",
+            "upload_label": "Ngarko dokument të ri",
+            "download_all": "Shkarko të gjitha",
+            "empty": "Nuk ka dokumente."
+        },
+        "payment": {
+            "title": "Detajet e Pagesës",
+            "description": "Detajet bankare për kontribute",
+            "edit_title": "Ndrysho Detajet e Pagesës",
+            "show": "Shfaq Detajet e Pagesës",
+            "hide": "Fshih",
+            "no_iban": "Nuk ka IBAN të regjistruar",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Referenca e Mandatit"
+            }
+        },
+        "owners": {
+            "title": "Bordi dhe Administratorët",
+            "description": "Personat që menaxhojnë këtë klub.",
+            "empty": "Nuk u gjetën anëtarë të bordit.",
+            "add_placeholder": "Shto administrator të ri me email"
+        },
+        "messages": {
+            "load_error": "Nuk u ngarkua klubi.",
+            "not_found": "Klubi nuk u gjet.",
+            "upload_error": "Dështoi ngarkimi i dokumentit.",
+            "download_error": "Dështoi shkarkimi.",
+            "action_error": "Dështoi veprimi.",
+            "save_error": "Dështoi ruajtja.",
+            "delete_confirm": "Jeni të sigurt që doni të fshini këtë klub?",
+            "remove_owner_confirm": "Të hiqet ky përdorues si administrator?",
+            "loading": "Duke ngarkuar...",
+            "loading_payment": "Duke ngarkuar detajet e pagesës..."
+        }
+    },
+    "create_club": {
+        "title": "Krijo një Klub të Ri",
+        "card": {
+            "title": "Të Dhënat e Klubit",
+            "description": "Futni të dhënat bazë të klubit tuaj."
+        },
+        "labels": {
+            "name": "Emri i Klubit",
+            "legal_form": "Forma Ligjore",
+            "email_opt": "Email (opsionale)",
+            "address_opt": "Adresa (opsionale)"
+        },
+        "placeholders": {
+            "name": "Klub Shembull",
+            "legal_form": "p.sh. e.V.",
+            "email": "info@klub.al",
+            "address": "Rruga 1, 12345 Qytet"
+        },
+        "actions": {
+            "cancel": "Anulo",
+            "create": "Krijo Klubin",
+            "creating": "Duke krijuar..."
+        },
+        "errors": {
+            "not_authenticated": "Jo i autentifikuar.",
+            "create_failed": "Dështoi krijimi. Kontrolloni të dhënat."
+        }
+    },
+    "profile": {
+        "title": "Profili Im",
+        "personal_data": {
+            "title": "Të Dhënat Personale",
+            "description": "Përditësoni informacionin tuaj personal këtu."
+        },
+        "labels": {
+            "firstname": "Emri",
+            "lastname": "Mbiemri",
+            "email": "Email",
+            "language": "Gjuha"
+        },
+        "messages": {
+            "success": "Profili u përditësua.",
+            "email_sent": "Email konfirmimi u dërgua te {{email}}.",
+            "email_validation_required": "Ndryshimi kërkon konfirmim me email.",
+            "error_save": "Gabim gjatë ruajtjes."
+        },
+        "actions": {
+            "save": "Ruaj"
+        },
+        "language_options": {
+            "browser_default": "Parazgjedhja e shfletuesit (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Hyrje",
+            "description": "Futni kredencialet tuaja për të vazhduar.",
+            "submit": "Hyr",
+            "submit_loading": "Duke hyrë...",
+            "error_generic": "Dështoi hyrja. Kontrolloni të dhënat."
+        },
+        "fields": {
+            "email": "Email",
+            "password": "Fjalëkalimi",
+            "firstname": "Emri",
+            "lastname": "Mbiemri",
+            "forgot_password": "Keni harruar fjalëkalimin?"
+        },
+        "register": {
+            "title": "Regjistrohu",
+            "description": "Krijoni një llogari të re me DPV.",
+            "submit": "Regjistrohu",
+            "submit_loading": "Duke u regjistruar...",
+            "password_hint": "Të paktën 10 karaktere dhe 8 lloje karakteresh të ndryshme.",
+            "success": {
+                "title": "Regjistrimi u krye!",
+                "description": "Llogaria u krijua. Kontrolloni emailin për konfirmim.",
+                "action": "Shko te Hyrja"
+            },
+            "error_generic": "Dështoi regjistrimi. Provoni më vonë.",
+            "question": "Nuk keni ende llogari?",
+            "action": "Regjistrohu",
+            "login_question": "Keni tashmë llogari?",
+            "login_action": "Hyr"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Fjalëkalim i harruar",
+                "description": "Futni emailin tuaj për të marrë linkun e rivendosjes.",
+                "submit": "Kërko linkun",
+                "success": {
+                    "title": "Emaili u dërgua",
+                    "description": "Nëse ekziston llogari me këtë email, kemi dërguar link rivendosjeje."
+                }
+            },
+            "confirm": {
+                "title": "Rivendos Fjalëkalimin",
+                "description": "Futni një fjalëkalim të ri.",
+                "labels": {
+                    "new_password": "Fjalëkalimi i Ri",
+                    "confirm_password": "Konfirmo Fjalëkalimin"
+                },
+                "submit": "Ruaj Fjalëkalimin",
+                "success": {
+                    "title": "Fjalëkalimi u ndryshua",
+                    "description": "Fjalëkalimi u ndryshua me sukses. Tani mund të hyni."
+                }
+            },
+            "actions": {
+                "back_to_login": "Shko te Hyrja",
+                "wait": "Ju lutem prisni..."
+            },
+            "errors": {
+                "generic": "Ndodhi një gabim.",
+                "mismatch": "Fjalëkalimet nuk përputhen.",
+                "reset_failed": "Nuk u rivendos fjalëkalimi."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Imprint",
+        "help": "Ndihmë"
+    },
+    "error": {
+        "title": "Ndodhi një gabim i papritur",
+        "message": "Kjo nuk duhej të ndodhte.",
+        "not_found": {
+            "title": "Faqja nuk u gjet (404)",
+            "message": "Faqja e kërkuar nuk ekziston ose është zhvendosur."
+        },
+        "actions": {
+            "back": "Kthehu",
+            "home": "Kryefaqja"
+        }
+    },
+    "help": {
+        "title": "Ndihmë dhe Mbështetje",
+        "faq": {
+            "create_club": {
+                "question": "Si të krijoj një klub?",
+                "answer": "Për të regjistruar një klub në DPV, duhet të jeni i regjistruar dhe i hyrë. Klikoni Krijo Klub në panel dhe plotësoni formularin."
+            },
+            "after_registration": {
+                "question": "Çfarë ndodh pas regjistrimit?",
+                "answer": "Pas regjistrimit, do të merrni email për konfirmim. Pastaj mund të hyni dhe të menaxhoni klube."
+            },
+            "reset_password": {
+                "question": "Si mund ta ndryshoj fjalëkalimin?",
+                "answer": "Nëse keni harruar fjalëkalimin, përdorni funksionin Fjalëkalim i harruar në faqen e hyrjes."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Imprint",
+        "legal_info": "Informacion sipas § 5 TMG:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Telefon: +49 177 211 93 22<br />Email: info@parkour-deutschland.de",
+        "bank": {
+            "title": "Llogaria Bankare",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Bordi i Autorizuar",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Vlerësuesit",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Përgjegjës për përmbajtjen redaktuese",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Hamburg"
+        },
+        "register": {
+            "title": "Regjistrimi",
+            "content": "Regjistruar në Regjistrin e Shoqatave<br />Gjykata e Qarkut Hamburg<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Mohim përgjegjësie",
+            "content": "Si ofrues shërbimesh, jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme."
+        }
+    }
+}

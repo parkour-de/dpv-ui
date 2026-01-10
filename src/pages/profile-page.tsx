@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
 import { type User } from "@/types";
@@ -9,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle, Check, Loader2 } from "lucide-react";
 
 export function ProfilePage() {
+    const { t } = useTranslation();
     const { user, token, apiUpdateUser, login } = useAuth();
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
@@ -29,10 +31,6 @@ export function ProfilePage() {
                 email: user.email || '',
                 language: user.language || ''
             });
-            // Also sync local storage if user has setting
-            if (user.language) {
-                localStorage.setItem('dpv_language', user.language);
-            }
         }
     }, [user]);
 
@@ -58,27 +56,22 @@ export function ProfilePage() {
                 login(token, updated);
             }
 
-            const messages = ["Profil aktualisiert."];
+            const messages = [t('profile.messages.success')];
 
             // Request Email Validation if changed
             if (formData.email !== user?.email) {
                 await api.post('/users/request-email-validation', {
                     email: formData.email
                 }, token);
-                messages.push(`Bestätigungs-E-Mail an ${formData.email} gesendet.`);
+                messages.push(t('profile.messages.email_sent', { email: formData.email }));
             }
 
-            if (formData.language) {
-                localStorage.setItem('dpv_language', formData.language);
-            } else {
-                localStorage.removeItem('dpv_language');
-            }
             setMessage(messages.join(" "));
         } catch (err: unknown) {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Fehler beim Speichern.");
+                setError(t('profile.messages.error_save'));
             }
         } finally {
             setLoading(false);
@@ -87,7 +80,7 @@ export function ProfilePage() {
 
     // Language options
     const languages = [
-        { code: "", label: "Browser Default (🗺️)" },
+        { code: "", label: t('profile.language_options.browser_default') },
         { code: "de", label: "Deutsch 🇩🇪" },
         { code: "en", label: "English 🇬🇧" },
         { code: "es", label: "Español 🇪🇸" },
@@ -105,13 +98,13 @@ export function ProfilePage() {
 
     return (
         <div className="max-w-2xl mx-auto space-y-6">
-            <h1 className="text-2xl font-bold">Mein Profil</h1>
+            <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
 
             <form onSubmit={handleSave}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Persönliche Daten</CardTitle>
-                        <CardDescription>Aktualisieren Sie hier Ihre persönlichen Informationen.</CardDescription>
+                        <CardTitle>{t('profile.personal_data.title')}</CardTitle>
+                        <CardDescription>{t('profile.personal_data.description')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {message && (
@@ -127,7 +120,7 @@ export function ProfilePage() {
 
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="firstname">Vorname</Label>
+                                <Label htmlFor="firstname">{t('profile.labels.firstname')}</Label>
                                 <Input
                                     id="firstname"
                                     name="firstname"
@@ -136,7 +129,7 @@ export function ProfilePage() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="lastname">Nachname</Label>
+                                <Label htmlFor="lastname">{t('profile.labels.lastname')}</Label>
                                 <Input
                                     id="lastname"
                                     name="lastname"
@@ -147,7 +140,7 @@ export function ProfilePage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="email">E-Mail</Label>
+                            <Label htmlFor="email">{t('profile.labels.email')}</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -157,13 +150,13 @@ export function ProfilePage() {
                             {formData.email !== user?.email && (
                                 <p className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
                                     <AlertCircle className="h-3 w-3" />
-                                    Änderung erfordert Bestätigung per E-Mail.
+                                    {t('profile.messages.email_validation_required')}
                                 </p>
                             )}
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="language">Sprache / Language</Label>
+                            <Label htmlFor="language">{t('profile.labels.language')}</Label>
                             <select
                                 id="language"
                                 name="language"
@@ -181,7 +174,7 @@ export function ProfilePage() {
                     <CardFooter>
                         <Button type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Speichern
+                            {t('profile.actions.save')}
                         </Button>
                     </CardFooter>
                 </Card>

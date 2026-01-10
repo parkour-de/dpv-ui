@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Üye Yönetimi",
+        "portal_name": "Üye Portalı",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Panel",
+            "help": "Yardım",
+            "profile": "Profil",
+            "logout": "Çıkış"
+        },
+        "language_selector": {
+            "label": "Dil Seçin"
+        }
+    },
+    "dashboard": {
+        "title": "Panel",
+        "welcome": "Tekrar hoş geldiniz, {{firstname}}. İşte kulüpleriniz.",
+        "actions": {
+            "new_club": "Yeni Kulüp",
+            "create_club": "Kulüp Oluştur",
+            "load_more": "Daha fazla yükle"
+        },
+        "filter": {
+            "label": "Filtre:",
+            "all_status": "Tüm durumlar"
+        },
+        "empty": {
+            "title": "Kulüp bulunamadı",
+            "description": "Yeni bir kulüp oluşturarak başlayın."
+        },
+        "loading": "Kulüpler yükleniyor...",
+        "club_card": {
+            "no_address": "Adres yok"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Aktif",
+            "inactive": "Pasif",
+            "requested": "Talep edildi",
+            "denied": "Reddedildi",
+            "cancelled": "İptal edildi"
+        },
+        "details": {
+            "title": "Ana Veriler",
+            "description": "Kulüp hakkında genel bilgiler.",
+            "labels": {
+                "name": "Ad",
+                "legal_form": "Hukuki Şekil",
+                "email": "E-posta",
+                "address": "Adres",
+                "contact_person": "İletişim kişisi"
+            },
+            "actions": {
+                "edit": "Düzenle",
+                "save": "Kaydet",
+                "cancel": "İptal",
+                "delete": "Sil",
+                "back": "Geri"
+            },
+            "membership": {
+                "apply": "Üyelik Başvurusu",
+                "reapply": "Tekrar Başvur",
+                "cancel": "Üyeliği İptal Et",
+                "withdraw": "Başvuruyu Geri Çek",
+                "approve": "Onayla",
+                "deny": "Reddet"
+            }
+        },
+        "documents": {
+            "title": "Belgeler",
+            "description": "Kulüp belgelerini buraya yükleyin.",
+            "upload_label": "Yeni belge yükle",
+            "download_all": "Tümünü indir",
+            "empty": "Belge bulunmuyor."
+        },
+        "payment": {
+            "title": "Ödeme Bilgileri",
+            "description": "Katkılar için banka bilgileri",
+            "edit_title": "Ödeme Bilgilerini Düzenle",
+            "show": "Ödeme Bilgilerini Göster",
+            "hide": "Gizle",
+            "no_iban": "IBAN kayıtlı değil",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Yetki Referansı"
+            }
+        },
+        "owners": {
+            "title": "Yönetim ve Yöneticiler",
+            "description": "Bu kulübü yöneten kişiler.",
+            "empty": "Yönetim kurulu üyesi bulunamadı.",
+            "add_placeholder": "E-posta ile yeni yönetici ekle"
+        },
+        "messages": {
+            "load_error": "Kulüp yüklenemedi.",
+            "not_found": "Kulüp bulunamadı.",
+            "upload_error": "Belge yüklemesi başarısız.",
+            "download_error": "İndirme başarısız.",
+            "action_error": "İşlem başarısız.",
+            "save_error": "Kaydetme başarısız.",
+            "delete_confirm": "Bu kulübü silmek istediğinizden emin misiniz?",
+            "remove_owner_confirm": "Bu kullanıcıyı yönetici olarak kaldırmak istiyor musunuz?",
+            "loading": "Yükleniyor...",
+            "loading_payment": "Ödeme bilgileri yükleniyor..."
+        }
+    },
+    "create_club": {
+        "title": "Yeni Kulüp Oluştur",
+        "card": {
+            "title": "Kulüp Verileri",
+            "description": "Kulübünüzün temel bilgilerini girin."
+        },
+        "labels": {
+            "name": "Kulüp Adı",
+            "legal_form": "Hukuki Şekil",
+            "email_opt": "E-posta (isteğe bağlı)",
+            "address_opt": "Adres (isteğe bağlı)"
+        },
+        "placeholders": {
+            "name": "Örnek Kulüp",
+            "legal_form": "örn. e.V.",
+            "email": "info@kulup.de",
+            "address": "Cadde 1, 12345 Şehir"
+        },
+        "actions": {
+            "cancel": "İptal",
+            "create": "Kulüp Oluştur",
+            "creating": "Oluşturuluyor..."
+        },
+        "errors": {
+            "not_authenticated": "Kimlik doğrulanmadı.",
+            "create_failed": "Oluşturma başarısız. Girişlerinizi kontrol edin."
+        }
+    },
+    "profile": {
+        "title": "Profilim",
+        "personal_data": {
+            "title": "Kişisel Bilgiler",
+            "description": "Kişisel bilgilerinizi buradan güncelleyin."
+        },
+        "labels": {
+            "firstname": "Ad",
+            "lastname": "Soyad",
+            "email": "E-posta",
+            "language": "Dil"
+        },
+        "messages": {
+            "success": "Profil güncellendi.",
+            "email_sent": "Onay e-postası {{email}} adresine gönderildi.",
+            "email_validation_required": "Değişiklik e-posta onayı gerektirir.",
+            "error_save": "Kaydetme hatası."
+        },
+        "actions": {
+            "save": "Kaydet"
+        },
+        "language_options": {
+            "browser_default": "Tarayıcı Varsayılanı (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Giriş",
+            "description": "Devam etmek için kimlik bilgilerinizi girin.",
+            "submit": "Giriş Yap",
+            "submit_loading": "Giriş yapılıyor...",
+            "error_generic": "Giriş başarısız. Bilgilerinizi kontrol edin."
+        },
+        "fields": {
+            "email": "E-posta",
+            "password": "Şifre",
+            "firstname": "Ad",
+            "lastname": "Soyad",
+            "forgot_password": "Şifrenizi mi unuttunuz?"
+        },
+        "register": {
+            "title": "Kayıt Ol",
+            "description": "DPV ile yeni bir hesap oluşturun.",
+            "submit": "Kayıt Ol",
+            "submit_loading": "Kayıt yapılıyor...",
+            "password_hint": "En az 10 karakter ve 8 farklı karakter türü.",
+            "success": {
+                "title": "Kayıt başarılı!",
+                "description": "Hesabınız oluşturuldu. Adresinizi onaylamak için e-postanızı kontrol edin.",
+                "action": "Girişe Git"
+            },
+            "error_generic": "Kayıt başarısız. Daha sonra tekrar deneyin.",
+            "question": "Henüz hesabınız yok mu?",
+            "action": "Kayıt Ol",
+            "login_question": "Zaten hesabınız var mı?",
+            "login_action": "Giriş Yap"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Şifremi Unuttum",
+                "description": "Şifre sıfırlama bağlantısı almak için e-posta adresinizi girin.",
+                "submit": "Bağlantı İste",
+                "success": {
+                    "title": "E-posta gönderildi",
+                    "description": "Bu e-posta ile bir hesap varsa, sıfırlama bağlantısı gönderdik."
+                }
+            },
+            "confirm": {
+                "title": "Şifreyi Sıfırla",
+                "description": "Yeni bir şifre girin.",
+                "labels": {
+                    "new_password": "Yeni Şifre",
+                    "confirm_password": "Şifreyi Onayla"
+                },
+                "submit": "Şifreyi Kaydet",
+                "success": {
+                    "title": "Şifre değiştirildi",
+                    "description": "Şifreniz başarıyla değiştirildi. Şimdi giriş yapabilirsiniz."
+                }
+            },
+            "actions": {
+                "back_to_login": "Girişe Git",
+                "wait": "Lütfen bekleyin..."
+            },
+            "errors": {
+                "generic": "Bir hata oluştu.",
+                "mismatch": "Şifreler eşleşmiyor.",
+                "reset_failed": "Şifre sıfırlanamadı."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Künye",
+        "help": "Yardım"
+    },
+    "error": {
+        "title": "Beklenmeyen bir hata oluştu",
+        "message": "Bu olmamalıydı.",
+        "not_found": {
+            "title": "Sayfa bulunamadı (404)",
+            "message": "İstediğiniz sayfa mevcut değil veya taşındı."
+        },
+        "actions": {
+            "back": "Geri",
+            "home": "Ana Sayfa"
+        }
+    },
+    "help": {
+        "title": "Yardım ve Destek",
+        "faq": {
+            "create_club": {
+                "question": "Nasıl kulüp oluşturabilirim?",
+                "answer": "DPV'ye yeni bir kulüp kaydetmek için kayıtlı ve giriş yapmış olmalısınız. Panelde Kulüp Oluştur'a tıklayın ve formu doldurun."
+            },
+            "after_registration": {
+                "question": "Kayıttan sonra ne olur?",
+                "answer": "Kayıttan sonra adresinizi onaylamak için bir e-posta alacaksınız. Ardından giriş yapabilir ve kulüpleri yönetebilirsiniz."
+            },
+            "reset_password": {
+                "question": "Şifremi nasıl değiştirebilirim?",
+                "answer": "Şifrenizi unuttuysanız, giriş sayfasındaki Şifremi Unuttum işlevini kullanın."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Künye",
+        "legal_info": "§ 5 TMG'ye göre bilgiler:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Telefon: +49 177 211 93 22<br />E-posta: info@parkour-deutschland.de",
+        "bank": {
+            "title": "Banka Hesabı",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Yetkili Yönetim Kurulu",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Danışmanlar",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "İçerikten Sorumlu",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Hamburg"
+        },
+        "register": {
+            "title": "Kayıt",
+            "content": "Dernek Sicilinde Kayıtlı<br />Hamburg Bölge Mahkemesi<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Sorumluluk Reddi",
+            "content": "Hizmet sağlayıcı olarak, genel yasalara göre bu sayfalardaki kendi içeriğimizden sorumluyuz."
+        }
+    }
+}

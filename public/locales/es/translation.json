@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Gestión de Miembros",
+        "portal_name": "Portal de Miembros",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Panel",
+            "help": "Ayuda",
+            "profile": "Perfil",
+            "logout": "Cerrar sesión"
+        },
+        "language_selector": {
+            "label": "Seleccionar idioma"
+        }
+    },
+    "dashboard": {
+        "title": "Panel",
+        "welcome": "Bienvenido de nuevo, {{firstname}}. Aquí están tus clubes.",
+        "actions": {
+            "new_club": "Nuevo Club",
+            "create_club": "Fundar un Club",
+            "load_more": "Cargar más"
+        },
+        "filter": {
+            "label": "Filtro:",
+            "all_status": "Todos los estados"
+        },
+        "empty": {
+            "title": "No se encontraron clubes",
+            "description": "Comienza creando un nuevo club."
+        },
+        "loading": "Cargando clubes...",
+        "club_card": {
+            "no_address": "Sin dirección"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Activo",
+            "inactive": "Inactivo",
+            "requested": "Solicitado",
+            "denied": "Denegado",
+            "cancelled": "Cancelado"
+        },
+        "details": {
+            "title": "Datos Principales",
+            "description": "Información general sobre el club.",
+            "labels": {
+                "name": "Nombre",
+                "legal_form": "Forma Jurídica",
+                "email": "Correo electrónico",
+                "address": "Dirección",
+                "contact_person": "Persona de contacto"
+            },
+            "actions": {
+                "edit": "Editar",
+                "save": "Guardar",
+                "cancel": "Cancelar",
+                "delete": "Eliminar",
+                "back": "Volver"
+            },
+            "membership": {
+                "apply": "Solicitar Membresía",
+                "reapply": "Volver a solicitar",
+                "cancel": "Cancelar Membresía",
+                "withdraw": "Retirar Solicitud",
+                "approve": "Aprobar",
+                "deny": "Denegar"
+            }
+        },
+        "documents": {
+            "title": "Documentos",
+            "description": "Sube aquí los documentos del club.",
+            "upload_label": "Subir nuevo documento",
+            "download_all": "Descargar todo",
+            "empty": "No hay documentos disponibles."
+        },
+        "payment": {
+            "title": "Datos de Pago",
+            "description": "Datos bancarios para contribuciones",
+            "edit_title": "Editar Datos de Pago",
+            "show": "Mostrar Datos de Pago",
+            "hide": "Ocultar",
+            "no_iban": "No hay IBAN registrado",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Referencia del Mandato"
+            }
+        },
+        "owners": {
+            "title": "Junta y Administradores",
+            "description": "Personas que gestionan este club.",
+            "empty": "No se encontraron miembros de la junta.",
+            "add_placeholder": "Añadir nuevo administrador por correo"
+        },
+        "messages": {
+            "load_error": "No se pudo cargar el club.",
+            "not_found": "Club no encontrado.",
+            "upload_error": "La carga del documento falló.",
+            "download_error": "La descarga falló.",
+            "action_error": "La acción falló.",
+            "save_error": "Error al guardar.",
+            "delete_confirm": "¿Estás seguro de que quieres eliminar este club?",
+            "remove_owner_confirm": "¿Realmente quieres eliminar a este usuario como administrador?",
+            "loading": "Cargando detalles...",
+            "loading_payment": "Cargando datos de pago..."
+        }
+    },
+    "create_club": {
+        "title": "Fundar un Nuevo Club",
+        "card": {
+            "title": "Datos del Club",
+            "description": "Introduce los datos básicos de tu club."
+        },
+        "labels": {
+            "name": "Nombre del Club",
+            "legal_form": "Forma Jurídica",
+            "email_opt": "Correo (opcional)",
+            "address_opt": "Dirección (opcional)"
+        },
+        "placeholders": {
+            "name": "Club de ejemplo",
+            "legal_form": "p.ej. e.V.",
+            "email": "info@club.de",
+            "address": "Calle 1, 12345 Ciudad"
+        },
+        "actions": {
+            "cancel": "Cancelar",
+            "create": "Crear Club",
+            "creating": "Creando..."
+        },
+        "errors": {
+            "not_authenticated": "No autenticado.",
+            "create_failed": "Error en la creación. Por favor, verifica tus datos."
+        }
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "personal_data": {
+            "title": "Datos Personales",
+            "description": "Actualiza aquí tu información personal."
+        },
+        "labels": {
+            "firstname": "Nombre",
+            "lastname": "Apellido",
+            "email": "Correo electrónico",
+            "language": "Idioma"
+        },
+        "messages": {
+            "success": "Perfil actualizado.",
+            "email_sent": "Correo de confirmación enviado a {{email}}.",
+            "email_validation_required": "El cambio requiere confirmación por correo.",
+            "error_save": "Error al guardar."
+        },
+        "actions": {
+            "save": "Guardar"
+        },
+        "language_options": {
+            "browser_default": "Predeterminado del navegador (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Iniciar sesión",
+            "description": "Introduce tus credenciales para continuar.",
+            "submit": "Iniciar sesión",
+            "submit_loading": "Iniciando sesión...",
+            "error_generic": "Error en el inicio de sesión. Por favor, verifica tus datos."
+        },
+        "fields": {
+            "email": "Correo electrónico",
+            "password": "Contraseña",
+            "firstname": "Nombre",
+            "lastname": "Apellido",
+            "forgot_password": "¿Olvidaste tu contraseña?"
+        },
+        "register": {
+            "title": "Registrarse",
+            "description": "Crea una nueva cuenta con DPV.",
+            "submit": "Registrarse",
+            "submit_loading": "Registrando...",
+            "password_hint": "Al menos 10 caracteres y 8 tipos de caracteres diferentes.",
+            "success": {
+                "title": "¡Registro exitoso!",
+                "description": "Tu cuenta ha sido creada. Por favor, revisa tu correo para confirmar tu dirección (si es necesario).",
+                "action": "Ir a Iniciar sesión"
+            },
+            "error_generic": "Error en el registro. Por favor, inténtalo de nuevo más tarde.",
+            "question": "¿Aún no tienes cuenta?",
+            "action": "Registrarse",
+            "login_question": "¿Ya tienes una cuenta?",
+            "login_action": "Iniciar sesión"
+        },
+        "reset_password": {
+            "request": {
+                "title": "¿Olvidaste tu contraseña?",
+                "description": "Introduce tu dirección de correo para recibir un enlace para restablecer tu contraseña.",
+                "submit": "Solicitar enlace",
+                "success": {
+                    "title": "Correo enviado",
+                    "description": "Si existe una cuenta con este correo, te hemos enviado un enlace para restablecer tu contraseña."
+                }
+            },
+            "confirm": {
+                "title": "Restablecer Contraseña",
+                "description": "Por favor, introduce una nueva contraseña.",
+                "labels": {
+                    "new_password": "Nueva Contraseña",
+                    "confirm_password": "Confirmar Contraseña"
+                },
+                "submit": "Guardar Contraseña",
+                "success": {
+                    "title": "Contraseña cambiada",
+                    "description": "Tu contraseña ha sido cambiada exitosamente. Ahora puedes iniciar sesión."
+                }
+            },
+            "actions": {
+                "back_to_login": "Ir a Iniciar sesión",
+                "wait": "Por favor, espera..."
+            },
+            "errors": {
+                "generic": "Ha ocurrido un error.",
+                "mismatch": "Las contraseñas no coinciden.",
+                "reset_failed": "No se pudo restablecer la contraseña."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Aviso Legal",
+        "help": "Ayuda"
+    },
+    "error": {
+        "title": "Ha ocurrido un error inesperado",
+        "message": "Esto no debería haber pasado.",
+        "not_found": {
+            "title": "Página no encontrada (404)",
+            "message": "La página que solicitaste no existe o ha sido movida."
+        },
+        "actions": {
+            "back": "Volver",
+            "home": "Inicio"
+        }
+    },
+    "help": {
+        "title": "Ayuda y Soporte",
+        "faq": {
+            "create_club": {
+                "question": "¿Cómo fundo un club?",
+                "answer": "Para registrar un nuevo club con DPV, debes estar registrado e iniciar sesión. Haz clic en \"Fundar un Club\" en el panel y completa el formulario. Tu solicitud será revisada por un administrador."
+            },
+            "after_registration": {
+                "question": "¿Qué pasa después del registro?",
+                "answer": "Después del registro, recibirás un correo para confirmar tu dirección. Luego podrás iniciar sesión y gestionar o fundar clubes."
+            },
+            "reset_password": {
+                "question": "¿Cómo puedo cambiar mi contraseña?",
+                "answer": "Si has olvidado tu contraseña, usa la función \"¿Olvidaste tu contraseña?\" en la página de inicio de sesión. Recibirás un enlace para restablecerla."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Aviso Legal",
+        "legal_info": "Información según § 5 TMG:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Teléfono: +49 177 211 93 22<br />Correo: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "bank": {
+            "title": "Cuenta Bancaria",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Junta Autorizada",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Asesores",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Responsable del contenido editorial",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+        },
+        "register": {
+            "title": "Registro",
+            "content": "Registrado en el Registro de Asociaciones<br />Tribunal de Distrito de Hamburgo<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Aviso de exención de responsabilidad",
+            "content": "Como proveedor de servicios, somos responsables de nuestro propio contenido en estas páginas de acuerdo con las leyes generales según § 7 Par. 1 TMG. Según §§ 8 a 10 TMG, no estamos obligados a monitorear información de terceros transmitida o almacenada ni a investigar circunstancias que indiquen actividad ilegal.<br /><br />Las obligaciones de eliminar o bloquear el uso de información de acuerdo con las leyes generales no se ven afectadas. Sin embargo, la responsabilidad en este sentido solo es posible a partir del momento en que se tenga conocimiento de una infracción concreta. Al tener conocimiento de tales infracciones, eliminaremos este contenido de inmediato."
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api, ApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
 
 export function ResetPasswordPage() {
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const token = searchParams.get("token");
     const key = searchParams.get("key");
@@ -40,7 +42,7 @@ export function ResetPasswordPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Ein Fehler ist aufgetreten.");
+                setError(t('auth.reset_password.errors.generic'));
             }
         } finally {
             setLoading(false);
@@ -50,7 +52,7 @@ export function ResetPasswordPage() {
     const handleResetSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (formData.password !== formData.confirm) {
-            setError("Passwörter stimmen nicht überein.");
+            setError(t('auth.reset_password.errors.mismatch'));
             return;
         }
 
@@ -71,7 +73,7 @@ export function ResetPasswordPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Passwort konnte nicht zurückgesetzt werden.");
+                setError(t('auth.reset_password.errors.reset_failed'));
             }
         } finally {
             setLoading(false);
@@ -86,16 +88,16 @@ export function ResetPasswordPage() {
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
                             <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-300" />
                         </div>
-                        <CardTitle>{isResetMode ? "Passwort geändert" : "E-Mail gesendet"}</CardTitle>
+                        <CardTitle>{isResetMode ? t('auth.reset_password.confirm.success.title') : t('auth.reset_password.request.success.title')}</CardTitle>
                         <CardDescription>
                             {isResetMode
-                                ? "Ihr Passwort wurde erfolgreich geändert. Sie können sich nun anmelden."
-                                : "Falls ein Konto mit dieser E-Mail existiert, haben wir Ihnen einen Link zum Zurücksetzen gesendet."}
+                                ? t('auth.reset_password.confirm.success.description')
+                                : t('auth.reset_password.request.success.description')}
                         </CardDescription>
                     </CardHeader>
                     <CardFooter className="flex justify-center">
                         <Link to="/">
-                            <Button>Zur Anmeldung</Button>
+                            <Button>{t('auth.reset_password.actions.back_to_login')}</Button>
                         </Link>
                     </CardFooter>
                 </Card>
@@ -111,12 +113,12 @@ export function ResetPasswordPage() {
                         <Link to="/" className="text-muted-foreground hover:text-foreground">
                             <ArrowLeft className="h-4 w-4" />
                         </Link>
-                        <CardTitle>{isResetMode ? "Passwort neu setzen" : "Passwort vergessen"}</CardTitle>
+                        <CardTitle>{isResetMode ? t('auth.reset_password.confirm.title') : t('auth.reset_password.request.title')}</CardTitle>
                     </div>
                     <CardDescription>
                         {isResetMode
-                            ? "Bitte geben Sie ein neues Passwort ein."
-                            : "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten."}
+                            ? t('auth.reset_password.confirm.description')
+                            : t('auth.reset_password.request.description')}
                     </CardDescription>
                 </CardHeader>
                 <form onSubmit={isResetMode ? handleResetSubmit : handleRequestSubmit}>
@@ -124,17 +126,17 @@ export function ResetPasswordPage() {
                         {isResetMode ? (
                             <>
                                 <div className="space-y-2">
-                                    <Label htmlFor="password">Neues Passwort</Label>
+                                    <Label htmlFor="password">{t('auth.reset_password.confirm.labels.new_password')}</Label>
                                     <Input id="password" type="password" value={formData.password} onChange={(e) => setFormData(p => ({ ...p, password: e.target.value }))} required minLength={10} />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="confirm">Passwort bestätigen</Label>
+                                    <Label htmlFor="confirm">{t('auth.reset_password.confirm.labels.confirm_password')}</Label>
                                     <Input id="confirm" type="password" value={formData.confirm} onChange={(e) => setFormData(p => ({ ...p, confirm: e.target.value }))} required />
                                 </div>
                             </>
                         ) : (
                             <div className="space-y-2">
-                                <Label htmlFor="email">E-Mail</Label>
+                                <Label htmlFor="email">{t('auth.fields.email')}</Label>
                                 <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                             </div>
                         )}
@@ -148,7 +150,13 @@ export function ResetPasswordPage() {
                     </CardContent>
                     <CardFooter>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Bitte warten..." : (isResetMode ? "Passwort speichern" : "Link anfordern")}
+                            {loading
+                                ? t('auth.reset_password.actions.wait')
+                                : (isResetMode
+                                    ? t('auth.reset_password.confirm.submit')
+                                    : t('auth.reset_password.request.submit')
+                                )
+                            }
                         </Button>
                     </CardFooter>
                 </form>

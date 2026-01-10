@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Mitgliederverwaltung",
+        "portal_name": "Mitgliederportal",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Übersicht",
+            "help": "Hilfe",
+            "profile": "Profil",
+            "logout": "Abmelden"
+        },
+        "language_selector": {
+            "label": "Sprache auswählen"
+        }
+    },
+    "dashboard": {
+        "title": "Übersicht",
+        "welcome": "Willkommen zurück, {{firstname}}. Hier sind Ihre Vereine.",
+        "actions": {
+            "new_club": "Neuer Verein",
+            "create_club": "Einen Verein gründen",
+            "load_more": "Mehr laden"
+        },
+        "filter": {
+            "label": "Filter:",
+            "all_status": "Alle Status"
+        },
+        "empty": {
+            "title": "Keine Vereine gefunden",
+            "description": "Starten Sie, indem Sie einen neuen Verein anlegen."
+        },
+        "loading": "Lade Vereine...",
+        "club_card": {
+            "no_address": "Keine Adresse"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Aktiv",
+            "inactive": "Inaktiv",
+            "requested": "Beantragt",
+            "denied": "Abgelehnt",
+            "cancelled": "Gekündigt"
+        },
+        "details": {
+            "title": "Stammdaten",
+            "description": "Allgemeine Informationen zum Verein.",
+            "labels": {
+                "name": "Name",
+                "legal_form": "Rechtsform",
+                "email": "E-Mail",
+                "address": "Adresse",
+                "contact_person": "Ansprechpartner"
+            },
+            "actions": {
+                "edit": "Bearbeiten",
+                "save": "Speichern",
+                "cancel": "Abbrechen",
+                "delete": "Löschen",
+                "back": "Zurück"
+            },
+            "membership": {
+                "apply": "Mitgliedschaft beantragen",
+                "reapply": "Erneut beantragen",
+                "cancel": "Mitgliedschaft kündigen",
+                "withdraw": "Antrag zurückziehen",
+                "approve": "Genehmigen",
+                "deny": "Ablehnen"
+            }
+        },
+        "documents": {
+            "title": "Dokumente",
+            "description": "Laden Sie hier Vereinsdokumente hoch.",
+            "upload_label": "Neues Dokument hochladen",
+            "download_all": "Alle herunterladen",
+            "empty": "Keine Dokumente vorhanden."
+        },
+        "payment": {
+            "title": "Zahlungsdetails",
+            "description": "Bankverbindung für Beiträge",
+            "edit_title": "Zahlungsdetails bearbeiten",
+            "show": "Zahlungsdetails anzeigen",
+            "hide": "Ausblenden",
+            "no_iban": "Keine IBAN hinterlegt",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Mandatsreferenz"
+            }
+        },
+        "owners": {
+            "title": "Vorstand & Verwalter",
+            "description": "Personen, die diesen Verein verwalten.",
+            "empty": "Keine Vorstandsmitglieder gefunden.",
+            "add_placeholder": "Neuen Verwalter per E-Mail hinzufügen"
+        },
+        "messages": {
+            "load_error": "Verein konnte nicht geladen werden.",
+            "not_found": "Verein nicht gefunden.",
+            "upload_error": "Dokument-Upload fehlgeschlagen.",
+            "download_error": "Download fehlgeschlagen.",
+            "action_error": "Aktion fehlgeschlagen.",
+            "save_error": "Speichern fehlgeschlagen.",
+            "delete_confirm": "Sind Sie sicher, dass Sie diesen Verein löschen möchten?",
+            "remove_owner_confirm": "Diesen Nutzer wirklich als Verwalter entfernen?",
+            "loading": "Lade Details...",
+            "loading_payment": "Lade Zahlungsdetails..."
+        }
+    },
+    "create_club": {
+        "title": "Neuen Verein gründen",
+        "card": {
+            "title": "Vereinsdaten",
+            "description": "Tragen Sie die Basisdaten Ihres Vereins ein."
+        },
+        "labels": {
+            "name": "Name des Vereins",
+            "legal_form": "Rechtsform",
+            "email_opt": "E-Mail (optional)",
+            "address_opt": "Adresse (optional)"
+        },
+        "placeholders": {
+            "name": "Musterverein",
+            "legal_form": "z.B. e.V.",
+            "email": "info@verein.de",
+            "address": "Strasse 1, 12345 Stadt"
+        },
+        "actions": {
+            "cancel": "Abbrechen",
+            "create": "Verein erstellen",
+            "creating": "Wird erstellt..."
+        },
+        "errors": {
+            "not_authenticated": "Nicht authentifiziert.",
+            "create_failed": "Erstellen fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben."
+        }
+    },
+    "profile": {
+        "title": "Mein Profil",
+        "personal_data": {
+            "title": "Persönliche Daten",
+            "description": "Aktualisieren Sie hier Ihre persönlichen Informationen."
+        },
+        "labels": {
+            "firstname": "Vorname",
+            "lastname": "Nachname",
+            "email": "E-Mail",
+            "language": "Sprache / Language"
+        },
+        "messages": {
+            "success": "Profil aktualisiert.",
+            "email_sent": "Bestätigungs-E-Mail an {{email}} gesendet.",
+            "email_validation_required": "Änderung erfordert Bestätigung per E-Mail.",
+            "error_save": "Fehler beim Speichern."
+        },
+        "actions": {
+            "save": "Speichern"
+        },
+        "language_options": {
+            "browser_default": "Browser Standard (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Anmelden",
+            "description": "Geben Sie Ihre Zugangsdaten ein, um fortzufahren.",
+            "submit": "Anmelden",
+            "submit_loading": "Anmelden...",
+            "error_generic": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben."
+        },
+        "fields": {
+            "email": "E-Mail",
+            "password": "Passwort",
+            "firstname": "Vorname",
+            "lastname": "Nachname",
+            "forgot_password": "Passwort vergessen?"
+        },
+        "register": {
+            "title": "Registrieren",
+            "description": "Erstellen Sie ein neues Konto beim DPV.",
+            "submit": "Registrieren",
+            "submit_loading": "Registrieren...",
+            "password_hint": "Mindestens 10 Zeichen und 8 verschiedene Zeichentypen.",
+            "success": {
+                "title": "Registrierung erfolgreich!",
+                "description": "Ihr Konto wurde erstellt. Bitte überprüfen Sie Ihre E-Mails, um Ihre Adresse zu bestätigen (falls erforderlich).",
+                "action": "Zur Anmeldung"
+            },
+            "error_generic": "Registrierung fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+            "question": "Noch kein Konto?",
+            "action": "Registrieren",
+            "login_question": "Bereits ein Konto?",
+            "login_action": "Anmelden"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Passwort vergessen",
+                "description": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten.",
+                "submit": "Link anfordern",
+                "success": {
+                    "title": "E-Mail gesendet",
+                    "description": "Falls ein Konto mit dieser E-Mail existiert, haben wir Ihnen einen Link zum Zurücksetzen gesendet."
+                }
+            },
+            "confirm": {
+                "title": "Passwort neu setzen",
+                "description": "Bitte geben Sie ein neues Passwort ein.",
+                "labels": {
+                    "new_password": "Neues Passwort",
+                    "confirm_password": "Passwort bestätigen"
+                },
+                "submit": "Passwort speichern",
+                "success": {
+                    "title": "Passwort geändert",
+                    "description": "Ihr Passwort wurde erfolgreich geändert. Sie können sich nun anmelden."
+                }
+            },
+            "actions": {
+                "back_to_login": "Zur Anmeldung",
+                "wait": "Bitte warten..."
+            },
+            "errors": {
+                "generic": "Ein Fehler ist aufgetreten.",
+                "mismatch": "Passwörter stimmen nicht überein.",
+                "reset_failed": "Passwort konnte nicht zurückgesetzt werden."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Impressum",
+        "help": "Hilfe"
+    },
+    "error": {
+        "title": "Ein unerwarteter Fehler ist aufgetreten",
+        "message": "Das hätte nicht passieren sollen.",
+        "not_found": {
+            "title": "Seite nicht gefunden (404)",
+            "message": "Die von Ihnen aufgerufene Seite existiert nicht oder wurde verschoben."
+        },
+        "actions": {
+            "back": "Zurück",
+            "home": "Startseite"
+        }
+    },
+    "help": {
+        "title": "Hilfe & Support",
+        "faq": {
+            "create_club": {
+                "question": "Wie gründe ich einen Verein?",
+                "answer": "Um einen neuen Verein beim DPV anzumelden, müssen Sie registriert und angemeldet sein. Klicken Sie im Dashboard auf \"Neuen Verein gründen\" und füllen Sie das Formular aus. Ihr Antrag wird anschließend von einem Administrator geprüft."
+            },
+            "after_registration": {
+                "question": "Was passiert nach der Registrierung?",
+                "answer": "Nach der Registrierung erhalten Sie eine E-Mail zur Bestätigung Ihrer Adresse. Anschließend können Sie sich anmelden und Vereine verwalten oder gründen."
+            },
+            "reset_password": {
+                "question": "Wie kann ich mein Passwort ändern?",
+                "answer": "Wenn Sie Ihr Passwort vergessen haben, nutzen Sie die \"Passwort vergessen\"-Funktion auf der Anmeldeseite. Sie erhalten dann einen Link zum Zurücksetzen."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Impressum",
+        "legal_info": "Angaben gemäß § 5 TMG:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Telefon: +49 177 211 93 22<br />E-Mail.: <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "bank": {
+            "title": "Kontoverbindung",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Vertretungsberechtigter Vorstand",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Beisitzer",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Verantwortlich für redaktionelle Inhalte",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+        },
+        "register": {
+            "title": "Registereintrag",
+            "content": "Eingetragen im Vereinsregister<br />Amtsgericht Hamburg<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Haftungsausschluss",
+            "content": "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzten verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.<br /><br />Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzten bleiben hiervon unberührt. Eine diesbezügliche Haftung is jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtverletzungen werden wir diese Inhalte umgehend entfernen."
+        }
+    }
+}

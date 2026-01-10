@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api, ApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ArrowLeft, AlertCircle } from "lucide-react";
 
 export function CreateClubPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
@@ -29,7 +31,7 @@ export function CreateClubPage() {
 
         const token = sessionStorage.getItem('dpv_auth_token');
         if (!token) {
-            setError("Nicht authentifiziert.");
+            setError(t('create_club.errors.not_authenticated'));
             setLoading(false);
             return;
         }
@@ -42,7 +44,7 @@ export function CreateClubPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Erstellen fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+                setError(t('create_club.errors.create_failed'));
             }
         } finally {
             setLoading(false);
@@ -55,26 +57,26 @@ export function CreateClubPage() {
                 <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
                     <ArrowLeft className="h-4 w-4" />
                 </Link>
-                <h1 className="text-2xl font-bold tracking-tight">Neuen Verein gründen</h1>
+                <h1 className="text-2xl font-bold tracking-tight">{t('create_club.title')}</h1>
             </div>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Vereinsdaten</CardTitle>
-                    <CardDescription>Tragen Sie die Basisdaten Ihres Vereins ein.</CardDescription>
+                    <CardTitle>{t('create_club.card.title')}</CardTitle>
+                    <CardDescription>{t('create_club.card.description')}</CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Name des Vereins</Label>
-                            <Input id="name" placeholder="Musterverein" value={formData.name} onChange={handleChange} required />
+                            <Label htmlFor="name">{t('create_club.labels.name')}</Label>
+                            <Input id="name" placeholder={t('create_club.placeholders.name')} value={formData.name} onChange={handleChange} required />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="legal_form">Rechtsform</Label>
+                            <Label htmlFor="legal_form">{t('create_club.labels.legal_form')}</Label>
                             <Input
                                 id="legal_form"
-                                placeholder="z.B. e.V."
+                                placeholder={t('create_club.placeholders.legal_form')}
                                 value={formData.legal_form}
                                 onChange={handleChange}
                                 required
@@ -82,13 +84,13 @@ export function CreateClubPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="email">E-Mail (optional)</Label>
-                            <Input id="email" type="email" placeholder="info@verein.de" value={formData.email} onChange={handleChange} />
+                            <Label htmlFor="email">{t('create_club.labels.email_opt')}</Label>
+                            <Input id="email" type="email" placeholder={t('create_club.placeholders.email')} value={formData.email} onChange={handleChange} />
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="address">Adresse (optional)</Label>
-                            <Input id="address" placeholder="Strasse 1, 12345 Stadt" value={formData.address} onChange={handleChange} />
+                            <Label htmlFor="address">{t('create_club.labels.address_opt')}</Label>
+                            <Input id="address" placeholder={t('create_club.placeholders.address')} value={formData.address} onChange={handleChange} />
                         </div>
 
                         {error && (
@@ -100,10 +102,10 @@ export function CreateClubPage() {
                     </CardContent>
                     <CardFooter className="justify-end gap-2">
                         <Link to="/dashboard">
-                            <Button type="button" variant="ghost">Abbrechen</Button>
+                            <Button type="button" variant="ghost">{t('create_club.actions.cancel')}</Button>
                         </Link>
                         <Button type="submit" disabled={loading}>
-                            {loading ? "Wird erstellt..." : "Verein erstellen"}
+                            {loading ? t('create_club.actions.creating') : t('create_club.actions.create')}
                         </Button>
                     </CardFooter>
                 </form>

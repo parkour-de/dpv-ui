@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Managementul Membrilor",
+        "portal_name": "Portal Membri",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Panou",
+            "help": "Ajutor",
+            "profile": "Profil",
+            "logout": "Deconectare"
+        },
+        "language_selector": {
+            "label": "Selectați limba"
+        }
+    },
+    "dashboard": {
+        "title": "Panou",
+        "welcome": "Bine ai revenit, {{firstname}}. Iată cluburile tale.",
+        "actions": {
+            "new_club": "Club Nou",
+            "create_club": "Înființează un Club",
+            "load_more": "Încarcă mai mult"
+        },
+        "filter": {
+            "label": "Filtru:",
+            "all_status": "Toate statusurile"
+        },
+        "empty": {
+            "title": "Nu s-au găsit cluburi",
+            "description": "Începe prin a crea un club nou."
+        },
+        "loading": "Se încarcă cluburile...",
+        "club_card": {
+            "no_address": "Fără adresă"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Activ",
+            "inactive": "Inactiv",
+            "requested": "Solicitat",
+            "denied": "Respins",
+            "cancelled": "Anulat"
+        },
+        "details": {
+            "title": "Date Principale",
+            "description": "Informații generale despre club.",
+            "labels": {
+                "name": "Nume",
+                "legal_form": "Formă Juridică",
+                "email": "E-mail",
+                "address": "Adresă",
+                "contact_person": "Persoană de contact"
+            },
+            "actions": {
+                "edit": "Editează",
+                "save": "Salvează",
+                "cancel": "Anulează",
+                "delete": "Șterge",
+                "back": "Înapoi"
+            },
+            "membership": {
+                "apply": "Solicită Membriea",
+                "reapply": "Solicită din nou",
+                "cancel": "Anulează Membriea",
+                "withdraw": "Retrage cererea",
+                "approve": "Aprobă",
+                "deny": "Respinge"
+            }
+        },
+        "documents": {
+            "title": "Documente",
+            "description": "Încarcă aici documentele clubului.",
+            "upload_label": "Încarcă document nou",
+            "download_all": "Descarcă tot",
+            "empty": "Nu sunt documente disponibile."
+        },
+        "payment": {
+            "title": "Detalii Plată",
+            "description": "Detalii bancare pentru contribuții",
+            "edit_title": "Editează Detaliile de Plată",
+            "show": "Afișează Detaliile de Plată",
+            "hide": "Ascunde",
+            "no_iban": "Niciun IBAN înregistrat",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Referință Mandat"
+            }
+        },
+        "owners": {
+            "title": "Consiliu și Administratori",
+            "description": "Persoane care gestionează acest club.",
+            "empty": "Nu s-au găsit membri ai consiliului.",
+            "add_placeholder": "Adaugă administrator nou prin e-mail"
+        },
+        "messages": {
+            "load_error": "Nu s-a putut încărca clubul.",
+            "not_found": "Clubul nu a fost găsit.",
+            "upload_error": "Încărcarea documentului a eșuat.",
+            "download_error": "Descărcarea a eșuat.",
+            "action_error": "Acțiunea a eșuat.",
+            "save_error": "Salvarea a eșuat.",
+            "delete_confirm": "Sigur doriți să ștergeți acest club?",
+            "remove_owner_confirm": "Chiar doriți să eliminați acest utilizator ca administrator?",
+            "loading": "Se încarcă detaliile...",
+            "loading_payment": "Se încarcă detaliile de plată..."
+        }
+    },
+    "create_club": {
+        "title": "Înființează un Club Nou",
+        "card": {
+            "title": "Date Club",
+            "description": "Introduceți datele de bază ale clubului."
+        },
+        "labels": {
+            "name": "Numele Clubului",
+            "legal_form": "Formă Juridică",
+            "email_opt": "E-mail (opțional)",
+            "address_opt": "Adresă (opțional)"
+        },
+        "placeholders": {
+            "name": "Club Exemplu",
+            "legal_form": "ex. e.V.",
+            "email": "info@club.ro",
+            "address": "Strada 1, 12345 Oraș"
+        },
+        "actions": {
+            "cancel": "Anulează",
+            "create": "Creează Club",
+            "creating": "Se creează..."
+        },
+        "errors": {
+            "not_authenticated": "Neautentificat.",
+            "create_failed": "Crearea a eșuat. Verificați datele introduse."
+        }
+    },
+    "profile": {
+        "title": "Profilul Meu",
+        "personal_data": {
+            "title": "Date Personale",
+            "description": "Actualizați aici informațiile personale."
+        },
+        "labels": {
+            "firstname": "Prenume",
+            "lastname": "Nume",
+            "email": "E-mail",
+            "language": "Limbă"
+        },
+        "messages": {
+            "success": "Profil actualizat.",
+            "email_sent": "E-mail de confirmare trimis la {{email}}.",
+            "email_validation_required": "Schimbarea necesită confirmare prin e-mail.",
+            "error_save": "Eroare la salvare."
+        },
+        "actions": {
+            "save": "Salvează"
+        },
+        "language_options": {
+            "browser_default": "Implicit browser (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Autentificare",
+            "description": "Introduceți datele de autentificare.",
+            "submit": "Autentificare",
+            "submit_loading": "Se autentifică...",
+            "error_generic": "Autentificarea a eșuat. Verificați datele introduse."
+        },
+        "fields": {
+            "email": "E-mail",
+            "password": "Parolă",
+            "firstname": "Prenume",
+            "lastname": "Nume",
+            "forgot_password": "Ați uitat parola?"
+        },
+        "register": {
+            "title": "Înregistrare",
+            "description": "Creați un cont nou la DPV.",
+            "submit": "Înregistrare",
+            "submit_loading": "Se înregistrează...",
+            "password_hint": "Minim 10 caractere și 8 tipuri diferite de caractere.",
+            "success": {
+                "title": "Înregistrare reușită!",
+                "description": "Contul a fost creat. Verificați e-mailul pentru a confirma adresa.",
+                "action": "Mergi la Autentificare"
+            },
+            "error_generic": "Înregistrarea a eșuat. Încercați din nou mai târziu.",
+            "question": "Nu aveți încă cont?",
+            "action": "Înregistrare",
+            "login_question": "Aveți deja cont?",
+            "login_action": "Autentificare"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Parolă uitată",
+                "description": "Introduceți adresa de e-mail pentru a primi un link de resetare.",
+                "submit": "Solicită link",
+                "success": {
+                    "title": "E-mail trimis",
+                    "description": "Dacă există un cont cu acest e-mail, v-am trimis un link de resetare."
+                }
+            },
+            "confirm": {
+                "title": "Resetează Parola",
+                "description": "Introduceți o parolă nouă.",
+                "labels": {
+                    "new_password": "Parolă Nouă",
+                    "confirm_password": "Confirmă Parola"
+                },
+                "submit": "Salvează Parola",
+                "success": {
+                    "title": "Parolă schimbată",
+                    "description": "Parola a fost schimbată cu succes."
+                }
+            },
+            "actions": {
+                "back_to_login": "Mergi la Autentificare",
+                "wait": "Vă rugăm așteptați..."
+            },
+            "errors": {
+                "generic": "A apărut o eroare.",
+                "mismatch": "Parolele nu se potrivesc.",
+                "reset_failed": "Nu s-a putut reseta parola."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Imprimat",
+        "help": "Ajutor"
+    },
+    "error": {
+        "title": "A apărut o eroare neașteptată",
+        "message": "Acest lucru nu ar fi trebuit să se întâmple.",
+        "not_found": {
+            "title": "Pagină negăsită (404)",
+            "message": "Pagina solicitată nu există sau a fost mutată."
+        },
+        "actions": {
+            "back": "Înapoi",
+            "home": "Acasă"
+        }
+    },
+    "help": {
+        "title": "Ajutor și Suport",
+        "faq": {
+            "create_club": {
+                "question": "Cum înființez un club?",
+                "answer": "Pentru a înregistra un club nou la DPV, trebuie să fiți înregistrat și autentificat. Faceți clic pe Înființează un Club în panou și completați formularul."
+            },
+            "after_registration": {
+                "question": "Ce se întâmplă după înregistrare?",
+                "answer": "După înregistrare, veți primi un e-mail pentru a confirma adresa. Apoi vă puteți autentifica și gestiona sau înființa cluburi."
+            },
+            "reset_password": {
+                "question": "Cum îmi pot schimba parola?",
+                "answer": "Dacă ați uitat parola, folosiți funcția Parolă uitată de pe pagina de autentificare."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Imprimat",
+        "legal_info": "Informații conform § 5 TMG:",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Telefon: +49 177 211 93 22<br />E-mail: info@parkour-deutschland.de",
+        "bank": {
+            "title": "Cont Bancar",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Consiliu Autorizat",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Asesori",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Responsabil pentru conținutul editorial",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+        },
+        "register": {
+            "title": "Înregistrare",
+            "content": "Înregistrat în Registrul Asociațiilor<br />Tribunalul Districtual Hamburg<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Declinare de responsabilitate",
+            "content": "Ca furnizor de servicii, suntem responsabili pentru propriul conținut de pe aceste pagini conform legilor generale."
+        }
+    }
+}

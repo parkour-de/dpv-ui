@@ -1,0 +1,294 @@
+{
+    "app": {
+        "title": "DPV",
+        "subtitle": "Gestion des Membres",
+        "portal_name": "Portail des Membres",
+        "copyright": "Deutscher Parkour Verband e.V."
+    },
+    "layout": {
+        "nav": {
+            "dashboard": "Tableau de bord",
+            "help": "Aide",
+            "profile": "Profil",
+            "logout": "Déconnexion"
+        },
+        "language_selector": {
+            "label": "Sélectionner la langue"
+        }
+    },
+    "dashboard": {
+        "title": "Tableau de bord",
+        "welcome": "Bienvenue, {{firstname}}. Voici vos clubs.",
+        "actions": {
+            "new_club": "Nouveau Club",
+            "create_club": "Fonder un Club",
+            "load_more": "Charger plus"
+        },
+        "filter": {
+            "label": "Filtre :",
+            "all_status": "Tous les statuts"
+        },
+        "empty": {
+            "title": "Aucun club trouvé",
+            "description": "Commencez par créer un nouveau club."
+        },
+        "loading": "Chargement des clubs...",
+        "club_card": {
+            "no_address": "Pas d'adresse"
+        }
+    },
+    "club": {
+        "status": {
+            "active": "Actif",
+            "inactive": "Inactif",
+            "requested": "Demandé",
+            "denied": "Refusé",
+            "cancelled": "Annulé"
+        },
+        "details": {
+            "title": "Données Principales",
+            "description": "Informations générales sur le club.",
+            "labels": {
+                "name": "Nom",
+                "legal_form": "Forme Juridique",
+                "email": "E-mail",
+                "address": "Adresse",
+                "contact_person": "Personne de contact"
+            },
+            "actions": {
+                "edit": "Modifier",
+                "save": "Enregistrer",
+                "cancel": "Annuler",
+                "delete": "Supprimer",
+                "back": "Retour"
+            },
+            "membership": {
+                "apply": "Demander l'adhésion",
+                "reapply": "Redemander",
+                "cancel": "Annuler l'adhésion",
+                "withdraw": "Retirer la demande",
+                "approve": "Approuver",
+                "deny": "Refuser"
+            }
+        },
+        "documents": {
+            "title": "Documents",
+            "description": "Téléchargez ici les documents du club.",
+            "upload_label": "Télécharger un nouveau document",
+            "download_all": "Tout télécharger",
+            "empty": "Aucun document disponible."
+        },
+        "payment": {
+            "title": "Détails de Paiement",
+            "description": "Coordonnées bancaires pour les cotisations",
+            "edit_title": "Modifier les Détails de Paiement",
+            "show": "Afficher les Détails de Paiement",
+            "hide": "Masquer",
+            "no_iban": "Aucun IBAN enregistré",
+            "labels": {
+                "iban": "IBAN",
+                "sepa": "Référence du Mandat"
+            }
+        },
+        "owners": {
+            "title": "Conseil et Gestionnaires",
+            "description": "Personnes qui gèrent ce club.",
+            "empty": "Aucun membre du conseil trouvé.",
+            "add_placeholder": "Ajouter un nouveau gestionnaire par e-mail"
+        },
+        "messages": {
+            "load_error": "Impossible de charger le club.",
+            "not_found": "Club non trouvé.",
+            "upload_error": "Échec du téléchargement du document.",
+            "download_error": "Échec du téléchargement.",
+            "action_error": "Échec de l'action.",
+            "save_error": "Échec de l'enregistrement.",
+            "delete_confirm": "Êtes-vous sûr de vouloir supprimer ce club ?",
+            "remove_owner_confirm": "Voulez-vous vraiment retirer cet utilisateur comme gestionnaire ?",
+            "loading": "Chargement des détails...",
+            "loading_payment": "Chargement des détails de paiement..."
+        }
+    },
+    "create_club": {
+        "title": "Fonder un Nouveau Club",
+        "card": {
+            "title": "Données du Club",
+            "description": "Entrez les données de base de votre club."
+        },
+        "labels": {
+            "name": "Nom du Club",
+            "legal_form": "Forme Juridique",
+            "email_opt": "E-mail (optionnel)",
+            "address_opt": "Adresse (optionnel)"
+        },
+        "placeholders": {
+            "name": "Club exemple",
+            "legal_form": "ex. e.V.",
+            "email": "info@club.de",
+            "address": "Rue 1, 12345 Ville"
+        },
+        "actions": {
+            "cancel": "Annuler",
+            "create": "Créer le Club",
+            "creating": "Création..."
+        },
+        "errors": {
+            "not_authenticated": "Non authentifié.",
+            "create_failed": "Échec de la création. Veuillez vérifier vos entrées."
+        }
+    },
+    "profile": {
+        "title": "Mon Profil",
+        "personal_data": {
+            "title": "Données Personnelles",
+            "description": "Mettez à jour vos informations personnelles ici."
+        },
+        "labels": {
+            "firstname": "Prénom",
+            "lastname": "Nom",
+            "email": "E-mail",
+            "language": "Langue"
+        },
+        "messages": {
+            "success": "Profil mis à jour.",
+            "email_sent": "E-mail de confirmation envoyé à {{email}}.",
+            "email_validation_required": "Le changement nécessite une confirmation par e-mail.",
+            "error_save": "Erreur lors de l'enregistrement."
+        },
+        "actions": {
+            "save": "Enregistrer"
+        },
+        "language_options": {
+            "browser_default": "Par défaut du navigateur (🗺️)"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Connexion",
+            "description": "Entrez vos identifiants pour continuer.",
+            "submit": "Se connecter",
+            "submit_loading": "Connexion...",
+            "error_generic": "Échec de la connexion. Veuillez vérifier vos entrées."
+        },
+        "fields": {
+            "email": "E-mail",
+            "password": "Mot de passe",
+            "firstname": "Prénom",
+            "lastname": "Nom",
+            "forgot_password": "Mot de passe oublié ?"
+        },
+        "register": {
+            "title": "S'inscrire",
+            "description": "Créez un nouveau compte avec DPV.",
+            "submit": "S'inscrire",
+            "submit_loading": "Inscription...",
+            "password_hint": "Au moins 10 caractères et 8 types de caractères différents.",
+            "success": {
+                "title": "Inscription réussie !",
+                "description": "Votre compte a été créé. Veuillez vérifier vos e-mails pour confirmer votre adresse (si nécessaire).",
+                "action": "Aller à la Connexion"
+            },
+            "error_generic": "Échec de l'inscription. Veuillez réessayer plus tard.",
+            "question": "Pas encore de compte ?",
+            "action": "S'inscrire",
+            "login_question": "Vous avez déjà un compte ?",
+            "login_action": "Se connecter"
+        },
+        "reset_password": {
+            "request": {
+                "title": "Mot de passe oublié",
+                "description": "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.",
+                "submit": "Demander le lien",
+                "success": {
+                    "title": "E-mail envoyé",
+                    "description": "Si un compte avec cet e-mail existe, nous vous avons envoyé un lien de réinitialisation."
+                }
+            },
+            "confirm": {
+                "title": "Réinitialiser le Mot de passe",
+                "description": "Veuillez entrer un nouveau mot de passe.",
+                "labels": {
+                    "new_password": "Nouveau Mot de passe",
+                    "confirm_password": "Confirmer le Mot de passe"
+                },
+                "submit": "Enregistrer le Mot de passe",
+                "success": {
+                    "title": "Mot de passe modifié",
+                    "description": "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter."
+                }
+            },
+            "actions": {
+                "back_to_login": "Aller à la Connexion",
+                "wait": "Veuillez patienter..."
+            },
+            "errors": {
+                "generic": "Une erreur s'est produite.",
+                "mismatch": "Les mots de passe ne correspondent pas.",
+                "reset_failed": "Impossible de réinitialiser le mot de passe."
+            }
+        }
+    },
+    "footer": {
+        "imprint": "Mentions légales",
+        "help": "Aide"
+    },
+    "error": {
+        "title": "Une erreur inattendue s'est produite",
+        "message": "Cela n'aurait pas dû arriver.",
+        "not_found": {
+            "title": "Page non trouvée (404)",
+            "message": "La page que vous avez demandée n'existe pas ou a été déplacée."
+        },
+        "actions": {
+            "back": "Retour",
+            "home": "Accueil"
+        }
+    },
+    "help": {
+        "title": "Aide et Support",
+        "faq": {
+            "create_club": {
+                "question": "Comment fonder un club ?",
+                "answer": "Pour enregistrer un nouveau club auprès du DPV, vous devez être inscrit et connecté. Cliquez sur \"Fonder un Club\" dans le tableau de bord et remplissez le formulaire. Votre demande sera examinée par un administrateur."
+            },
+            "after_registration": {
+                "question": "Que se passe-t-il après l'inscription ?",
+                "answer": "Après l'inscription, vous recevrez un e-mail pour confirmer votre adresse. Vous pourrez ensuite vous connecter et gérer ou fonder des clubs."
+            },
+            "reset_password": {
+                "question": "Comment puis-je changer mon mot de passe ?",
+                "answer": "Si vous avez oublié votre mot de passe, utilisez la fonction \"Mot de passe oublié\" sur la page de connexion. Vous recevrez un lien pour le réinitialiser."
+            }
+        }
+    },
+    "imprint": {
+        "title": "Mentions légales",
+        "legal_info": "Informations selon § 5 TMG :",
+        "address": "Deutscher Parkourverband e.V.<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg",
+        "contact": "Téléphone : +49 177 211 93 22<br />E-mail : <a href=\"mailto:info@parkour-deutschland.de\" class=\"text-primary hover:underline\">info@parkour-deutschland.de</a>",
+        "bank": {
+            "title": "Compte Bancaire",
+            "content": "GLS Gemeinschaftsbank eG<br />DE56 4306 0967 1374 7488 00<br />GENODEM1GLS"
+        },
+        "board": {
+            "title": "Conseil Autorisé",
+            "content": "Maren Baufeld<br />Max Heckl<br />Eike Plenter"
+        },
+        "assessors": {
+            "title": "Assesseurs",
+            "content": "Merlin Szymanski<br />Jewgeni Eisenberg"
+        },
+        "editorial": {
+            "title": "Responsable du contenu éditorial",
+            "content": "Jewgeni Eisenberg<br />c/o betahaus<br />Haus des Engagements<br />Eifflerstraße 43<br />22769 Hamburg"
+        },
+        "register": {
+            "title": "Inscription au Registre",
+            "content": "Inscrit au Registre des Associations<br />Tribunal de District de Hambourg<br />VR 25860"
+        },
+        "disclaimer": {
+            "title": "Avis de non-responsabilité",
+            "content": "En tant que fournisseur de services, nous sommes responsables de notre propre contenu sur ces pages conformément aux lois générales selon § 7 Par. 1 TMG. Selon §§ 8 à 10 TMG, nous ne sommes pas tenus de surveiller les informations de tiers transmises ou stockées ni d'enquêter sur les circonstances indiquant une activité illégale.<br /><br />Les obligations de supprimer ou de bloquer l'utilisation d'informations conformément aux lois générales ne sont pas affectées. Cependant, la responsabilité à cet égard n'est possible qu'à partir du moment où l'on a connaissance d'une infraction concrète. Dès que nous aurons connaissance de telles infractions, nous supprimerons ce contenu immédiatement."
+        }
+    }
+}

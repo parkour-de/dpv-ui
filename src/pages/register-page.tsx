@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api, ApiError } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export function RegisterPage() {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -35,7 +37,7 @@ export function RegisterPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError("Registrierung fehlgeschlagen. Bitte versuchen Sie es später erneut.");
+                setError(t('auth.register.error_generic'));
             }
         } finally {
             setLoading(false);
@@ -50,14 +52,14 @@ export function RegisterPage() {
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
                             <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-300" />
                         </div>
-                        <CardTitle>Registrierung erfolgreich!</CardTitle>
+                        <CardTitle>{t('auth.register.success.title')}</CardTitle>
                         <CardDescription>
-                            Ihr Konto wurde erstellt. Bitte überprüfen Sie Ihre E-Mails, um Ihre Adresse zu bestätigen (falls erforderlich).
+                            {t('auth.register.success.description')}
                         </CardDescription>
                     </CardHeader>
                     <CardFooter className="flex justify-center">
                         <Link to="/">
-                            <Button>Zur Anmeldung</Button>
+                            <Button>{t('auth.register.success.action')}</Button>
                         </Link>
                     </CardFooter>
                 </Card>
@@ -69,30 +71,30 @@ export function RegisterPage() {
         <div className="min-h-screen flex items-center justify-center p-4 bg-background">
             <Card className="w-full max-w-md">
                 <CardHeader>
-                    <CardTitle>Registrieren</CardTitle>
-                    <CardDescription>Erstellen Sie ein neues Konto beim DPV.</CardDescription>
+                    <CardTitle>{t('auth.register.title')}</CardTitle>
+                    <CardDescription>{t('auth.register.description')}</CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="firstname">Vorname</Label>
+                                <Label htmlFor="firstname">{t('auth.fields.firstname')}</Label>
                                 <Input id="firstname" value={formData.firstname} onChange={handleChange} required />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="lastname">Nachname</Label>
+                                <Label htmlFor="lastname">{t('auth.fields.lastname')}</Label>
                                 <Input id="lastname" value={formData.lastname} onChange={handleChange} required />
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="email">E-Mail</Label>
+                            <Label htmlFor="email">{t('auth.fields.email')}</Label>
                             <Input id="email" type="email" value={formData.email} onChange={handleChange} required />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Passwort</Label>
+                            <Label htmlFor="password">{t('auth.fields.password')}</Label>
                             <Input id="password" type="password" value={formData.password} onChange={handleChange} required minLength={10} />
                             <p className="text-[0.8rem] text-muted-foreground">
-                                Mindestens 10 Zeichen und 8 verschiedene Zeichentypen.
+                                {t('auth.register.password_hint')}
                             </p>
                         </div>
                         {error && (
@@ -104,12 +106,12 @@ export function RegisterPage() {
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Registrieren..." : "Registrieren"}
+                            {loading ? t('auth.register.submit_loading') : t('auth.register.submit')}
                         </Button>
                         <div className="text-center text-sm text-muted-foreground">
-                            Bereits ein Konto?{" "}
+                            {t('auth.register.login_question')}{" "}
                             <Link to="/" className="text-primary hover:underline font-medium">
-                                Anmelden
+                                {t('auth.register.login_action')}
                             </Link>
                         </div>
                     </CardFooter>
