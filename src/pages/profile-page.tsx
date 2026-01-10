@@ -91,7 +91,7 @@ export function ProfilePage() {
         { code: "sq", label: "🇦🇱 Shqip" },
         { code: "tr", label: "🇹🇷 Türkçe" },
         { code: "ru", label: "🇷🇺 Русский" },
-        { code: "ua", label: "🇺🇦 Українська" },
+        { code: "uk", label: "🇺🇦 Українська" },
         { code: "ar", label: "🇸🇦 العربية" },
     ];
 
