@@ -68,6 +68,7 @@ export function ProfilePage() {
             }
 
             setMessage(messages.join(" "));
+            setError(null); // Clear any previous errors on success
         } catch (err: unknown) {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);

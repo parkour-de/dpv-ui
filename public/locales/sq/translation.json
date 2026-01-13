@@ -93,6 +93,22 @@
             "empty": "Nuk u gjetën anëtarë të bordit.",
             "add_placeholder": "Shto administrator të ri me email"
         },
+        "census": {
+            "title": "Raporti i Regjistrimit",
+            "description": "Raporti vjetor i regjistrimit të anëtarëve të klubit tek shoqata.",
+            "download_sample": "Shkarko Mostër",
+            "upload_year_label": "Viti",
+            "upload_file_label": "Skedar",
+            "members_count": "anëtarë",
+            "header": {
+                "firstname": "Emri",
+                "lastname": "Mbiemri",
+                "birthyear": "Viti i Lindjes",
+                "gender": "Gjinia"
+            },
+            "empty": "Nuk ka raporte regjistrimi të disponueshme.",
+            "confirm_overwrite": "Ekziston tashmë një raport regjistrimi për vitin {{year}}. Dëshironi ta mbishkruani?"
+        },
         "messages": {
             "load_error": "Nuk u ngarkua klubi.",
             "not_found": "Klubi nuk u gjet.",

@@ -93,6 +93,22 @@
             "empty": "No board members found.",
             "add_placeholder": "Add new manager by email"
         },
+        "census": {
+            "title": "Census Report",
+            "description": "Annual membership census report from clubs to the association.",
+            "download_sample": "Download Sample",
+            "upload_year_label": "Year",
+            "upload_file_label": "File",
+            "members_count": "members",
+            "header": {
+                "firstname": "First Name",
+                "lastname": "Last Name",
+                "birthyear": "Birth Year",
+                "gender": "Gender"
+            },
+            "empty": "No census reports available.",
+            "confirm_overwrite": "A census report for the year {{year}} already exists. Do you want to overwrite it?"
+        },
         "messages": {
             "load_error": "Could not load club.",
             "not_found": "Club not found.",

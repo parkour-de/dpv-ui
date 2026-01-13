@@ -34,6 +34,7 @@ export function ResetPasswordPage() {
 
         try {
             await api.post('/users/request-password-reset', { email });
+            setError(null); // Clear any previous errors on success
             setSuccess(true);
         } catch (err: unknown) {
             console.error(err);
@@ -67,6 +68,7 @@ export function ResetPasswordPage() {
                 password: formData.password,
                 confirm: formData.confirm
             });
+            setError(null); // Clear any previous errors on success
             setSuccess(true);
         } catch (err: unknown) {
             console.error(err);

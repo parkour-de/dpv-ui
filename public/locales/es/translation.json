@@ -93,6 +93,22 @@
             "empty": "No se encontraron miembros de la junta.",
             "add_placeholder": "Añadir nuevo administrador por correo"
         },
+        "census": {
+            "title": "Informe de Censo",
+            "description": "Informe anual de censo de miembros de los clubes a la asociación.",
+            "download_sample": "Descargar Muestra",
+            "upload_year_label": "Año",
+            "upload_file_label": "Archivo",
+            "members_count": "miembros",
+            "header": {
+                "firstname": "Nombre",
+                "lastname": "Apellido",
+                "birthyear": "Año de Nacimiento",
+                "gender": "Género"
+            },
+            "empty": "No hay informes de censo disponibles.",
+            "confirm_overwrite": "Ya existe un informe de censo para el año {{year}}. ¿Desea sobrescribirlo?"
+        },
         "messages": {
             "load_error": "No se pudo cargar el club.",
             "not_found": "Club no encontrado.",

@@ -31,6 +31,7 @@ export function RegisterPage() {
 
         try {
             await api.post('/users', formData);
+            setError(null); // Clear any previous errors on success
             setSuccess(true);
         } catch (err: unknown) {
             console.error(err);

@@ -93,6 +93,22 @@
             "empty": "Keine Vorstandsmitglieder gefunden.",
             "add_placeholder": "Neuen Verwalter per E-Mail hinzufügen"
         },
+        "census": {
+            "title": "Bestandsmeldung",
+            "description": "Jährliche Mitgliederbestandsmeldung der Vereine an den Fachverband.",
+            "download_sample": "Musterdatei herunterladen",
+            "upload_year_label": "Jahr",
+            "upload_file_label": "Datei",
+            "members_count": "Mitglieder",
+            "header": {
+                "firstname": "Vorname",
+                "lastname": "Nachname",
+                "birthyear": "Geburtsjahr",
+                "gender": "Geschlecht"
+            },
+            "empty": "Keine Bestandsmeldungen vorhanden.",
+            "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchten Sie diese überschreiben?"
+        },
         "messages": {
             "load_error": "Verein konnte nicht geladen werden.",
             "not_found": "Verein nicht gefunden.",

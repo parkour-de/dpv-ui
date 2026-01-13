@@ -93,6 +93,22 @@
             "empty": "لم يتم العثور على أعضاء مجلس الإدارة.",
             "add_placeholder": "إضافة مدير جديد عبر البريد الإلكتروني"
         },
+        "census": {
+            "title": "تقرير الإحصاء",
+            "description": "تقرير إحصاء سنوي لأعضاء الأندية إلى الجمعية.",
+            "download_sample": "تحميل نموذج",
+            "upload_year_label": "السنة",
+            "upload_file_label": "الملف",
+            "members_count": "عضو",
+            "header": {
+                "firstname": "الاسم الأول",
+                "lastname": "اسم العائلة",
+                "birthyear": "سنة الميلاد",
+                "gender": "الجنس"
+            },
+            "empty": "لا توجد تقارير إحصاء متاحة.",
+            "confirm_overwrite": "يوجد بالفعل تقرير إحصاء للعام {{year}}. هل تريد استبداله؟"
+        },
         "messages": {
             "load_error": "تعذر تحميل النادي.",
             "not_found": "لم يتم العثور على النادي.",

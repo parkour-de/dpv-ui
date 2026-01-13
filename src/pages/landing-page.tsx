@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertCircle } from "lucide-react";
 
 export function LandingPage() {
     const { t } = useTranslation();
@@ -32,7 +33,11 @@ export function LandingPage() {
             navigate("/dashboard");
         } catch (err: unknown) {
             console.error(err);
-            setError(t('auth.login.error_generic'));
+            if (err instanceof ApiError && err.data?.message) {
+                setError(err.data.message);
+            } else {
+                setError(t('auth.login.error_generic'));
+            }
         } finally {
             setLoading(false);
         }
@@ -79,7 +84,12 @@ export function LandingPage() {
                                     required
                                 />
                             </div>
-                            {error && <p className="text-sm text-destructive">{error}</p>}
+                            {error && (
+                                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <p>{error}</p>
+                                </div>
+                            )}
                         </CardContent>
                         <CardFooter className="flex flex-col gap-4">
                             <Button type="submit" className="w-full" disabled={loading}>

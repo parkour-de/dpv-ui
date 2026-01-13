@@ -93,6 +93,22 @@
             "empty": "Yönetim kurulu üyesi bulunamadı.",
             "add_placeholder": "E-posta ile yeni yönetici ekle"
         },
+        "census": {
+            "title": "Nüfus Sayımı Raporu",
+            "description": "Kulüplerden derneğe yıllık üye nüfus sayımı raporu.",
+            "download_sample": "Örnek İndir",
+            "upload_year_label": "Yıl",
+            "upload_file_label": "Dosya",
+            "members_count": "üye",
+            "header": {
+                "firstname": "Ad",
+                "lastname": "Soyad",
+                "birthyear": "Doğum Yılı",
+                "gender": "Cinsiyet"
+            },
+            "empty": "Nüfus sayımı raporu bulunmuyor.",
+            "confirm_overwrite": "{{year}} yılı için zaten bir nüfus sayımı raporu var. Üzerine yazmak istiyor musunuz?"
+        },
         "messages": {
             "load_error": "Kulüp yüklenemedi.",
             "not_found": "Kulüp bulunamadı.",

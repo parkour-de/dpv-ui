@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { type Club, CLUB_STATUS_COLORS, type ClubStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Plus, Filter } from "lucide-react";
+import { Plus, Filter, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function DashboardPage() {
@@ -14,6 +14,7 @@ export function DashboardPage() {
     const { user, token } = useAuth();
     const [clubs, setClubs] = useState<Club[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
 
     // Admin filters
@@ -30,6 +31,7 @@ export function DashboardPage() {
     useEffect(() => {
         const fetchClubs = async () => {
             setLoading(true);
+            setError(null);
             try {
                 let query = `?limit=${LIMIT}&skip=${page * LIMIT}`;
                 if (statusFilter) {
@@ -40,15 +42,20 @@ export function DashboardPage() {
                     const data = await api.get<Club[]>(`/clubs${query}`, token);
                     setClubs(data || []);
                 }
-            } catch (err) {
+            } catch (err: unknown) {
                 console.error("Failed to fetch clubs", err);
+                if (err instanceof ApiError && err.data?.message) {
+                    setError(err.data.message);
+                } else {
+                    setError(t('dashboard.errors.load_failed'));
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchClubs();
-    }, [token, statusFilter, page]);
+    }, [token, statusFilter, page, t]);
 
     const clubsByStatus = clubs.reduce((acc, club) => {
         const status = club.membership.status;
@@ -79,6 +86,13 @@ export function DashboardPage() {
                     </Button>
                 </Link>
             </div>
+
+            {error && (
+                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                    <AlertCircle className="h-4 w-4" />
+                    <p>{error}</p>
+                </div>
+            )}
 
             {isAdmin && (
                 <Card className="bg-muted/50">

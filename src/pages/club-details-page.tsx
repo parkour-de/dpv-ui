@@ -19,6 +19,11 @@ export function ClubDetailsPage() {
     const [club, setClub] = useState<Club | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [formError, setFormError] = useState<string | null>(null);
+    const [actionError, setActionError] = useState<string | null>(null);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+    const [ownerError, setOwnerError] = useState<string | null>(null);
+    const [censusError, setCensusError] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [formLoading, setFormLoading] = useState(false);
@@ -56,6 +61,7 @@ export function ClubDetailsPage() {
 
     // Census State
     const [censusDetails, setCensusDetails] = useState<Record<number, Census>>({});
+    const [censusFetchErrors, setCensusFetchErrors] = useState<Record<number, string>>({});
 
     useEffect(() => {
         if (user?.roles?.includes('admin') || user?.roles?.includes('global_admin')) {
@@ -77,9 +83,13 @@ export function ClubDetailsPage() {
                 address: data.membership.address,
                 contact_person: data.contact_person,
             }));
-        } catch (err) {
+        } catch (err: unknown) {
             console.error("Failed to load club", err);
-            setError(t('club.messages.load_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setError(err.data.message);
+            } else {
+                setError(t('club.messages.load_error'));
+            }
         } finally {
             setLoading(false);
         }
@@ -135,6 +145,7 @@ export function ClubDetailsPage() {
     const handleUpload = async () => {
         if (!id || !token || !selectedFile) return;
         setUploading(true);
+        setUploadError(null);
         const formData = new FormData();
         formData.append("document", selectedFile);
 
@@ -146,9 +157,13 @@ export function ClubDetailsPage() {
             setDocuments(docs);
             const fileInput = document.getElementById('document-upload') as HTMLInputElement;
             if (fileInput) fileInput.value = '';
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(t('club.messages.upload_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setUploadError(err.data.message);
+            } else {
+                setUploadError(t('club.messages.upload_error'));
+            }
         } finally {
             setUploading(false);
         }
@@ -156,12 +171,16 @@ export function ClubDetailsPage() {
 
     const handleDownload = async (filename: string) => {
         if (!id || !token) return;
+        setUploadError(null);
         try {
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
             const res = await fetch(`${API_BASE}/clubs/${id}/documents/${filename}`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
-            if (!res.ok) throw new Error("Download failed");
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                throw new ApiError(res.status, res.statusText, errorData);
+            }
 
             const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
@@ -172,20 +191,28 @@ export function ClubDetailsPage() {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(t('club.messages.download_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setUploadError(err.data.message);
+            } else {
+                setUploadError(t('club.messages.download_error'));
+            }
         }
     };
 
     const handleDownloadAll = async () => {
         if (!id || !token) return;
+        setUploadError(null);
         try {
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
             const res = await fetch(`${API_BASE}/clubs/${id}/download-documents`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
-            if (!res.ok) throw new Error("Download failed");
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                throw new ApiError(res.status, res.statusText, errorData);
+            }
 
             const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
@@ -196,21 +223,30 @@ export function ClubDetailsPage() {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(t('club.messages.download_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setUploadError(err.data.message);
+            } else {
+                setUploadError(t('club.messages.download_error'));
+            }
         }
     };
 
     const handleAction = async (action: 'approve' | 'deny' | 'apply' | 'cancel') => {
         if (!id || !token) return;
         setFormLoading(true);
+        setActionError(null);
         try {
             await api.post(`/clubs/${id}/${action}`, {}, token);
             await fetchClub(); // refresh
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(t('club.messages.action_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setActionError(err.data.message);
+            } else {
+                setActionError(t('club.messages.action_error'));
+            }
         } finally {
             setFormLoading(false);
         }
@@ -220,6 +256,7 @@ export function ClubDetailsPage() {
     const handleAddOwner = async () => {
         if (!id || !token || !newOwnerEmail) return;
         setOwnerLoading(true);
+        setOwnerError(null);
         try {
             await api.post(`/clubs/${id}/owners`, { email: newOwnerEmail }, token);
             setNewOwnerEmail("");
@@ -227,9 +264,9 @@ export function ClubDetailsPage() {
         } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
+                setOwnerError(err.data.message);
             } else {
-                setError(t('club.messages.action_error'));
+                setOwnerError(t('club.messages.action_error'));
             }
         } finally {
             setOwnerLoading(false);
@@ -240,15 +277,16 @@ export function ClubDetailsPage() {
         if (!id || !token) return;
         if (!confirm(t('club.messages.remove_owner_confirm'))) return;
         setOwnerLoading(true);
+        setOwnerError(null);
         try {
             await api.delete(`/clubs/${id}/owners/${userKey}`, token);
             await fetchClub();
         } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
+                setOwnerError(err.data.message);
             } else {
-                setError(t('club.messages.action_error'));
+                setOwnerError(t('club.messages.action_error'));
             }
         } finally {
             setOwnerLoading(false);
@@ -260,12 +298,17 @@ export function ClubDetailsPage() {
         if (!confirm(t('club.messages.delete_confirm'))) return;
 
         setFormLoading(true);
+        setActionError(null);
         try {
             await api.delete(`/clubs/${id}`, token);
             navigate("/dashboard");
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(t('club.messages.action_error'));
+            if (err instanceof ApiError && err.data?.message) {
+                setActionError(err.data.message);
+            } else {
+                setActionError(t('club.messages.action_error'));
+            }
             setFormLoading(false);
         }
     };
@@ -274,6 +317,7 @@ export function ClubDetailsPage() {
         e.preventDefault();
         if (!id || !token) return;
         setFormLoading(true);
+        setFormError(null);
         try {
             await api.patch<Club>(`/clubs/${id}`, formData, token);
             await fetchClub();
@@ -281,9 +325,9 @@ export function ClubDetailsPage() {
         } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
+                setFormError(err.data.message);
             } else {
-                setError(t('club.messages.save_error'));
+                setFormError(t('club.messages.save_error'));
             }
         } finally {
             setFormLoading(false);
@@ -355,6 +399,7 @@ export function ClubDetailsPage() {
                             )}
                             <Button size="sm" variant="outline" onClick={() => {
                                 setIsEditing(true);
+                                setFormError(null);
                                 // Clear payment fields in edit mode to avoid overwriting with masked values
                                 setFormData(prev => ({
                                     ...prev,
@@ -379,6 +424,13 @@ export function ClubDetailsPage() {
                 </div>
             )}
 
+            {actionError && (
+                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                    <AlertCircle className="h-4 w-4" />
+                    <p>{actionError}</p>
+                </div>
+            )}
+
             <form onSubmit={handleSave}>
                 <Card>
                     <CardHeader>
@@ -386,6 +438,12 @@ export function ClubDetailsPage() {
                         <CardDescription>{t('club.details.description')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
+                        {formError && (
+                            <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                <AlertCircle className="h-4 w-4" />
+                                <p>{formError}</p>
+                            </div>
+                        )}
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="name">{t('club.details.labels.name')}</Label>
@@ -468,6 +526,7 @@ export function ClubDetailsPage() {
                         <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
                             <Button type="button" variant="ghost" onClick={() => {
                                 setIsEditing(false);
+                                setFormError(null);
                                 setFormData({
                                     name: club.name,
                                     legal_form: club.legal_form,
@@ -509,6 +568,12 @@ export function ClubDetailsPage() {
                             )}
                         </CardHeader>
                         <CardContent className="space-y-6">
+                            {uploadError && (
+                                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <p>{uploadError}</p>
+                                </div>
+                            )}
                             {documents.length > 0 ? (
                                 <div className="space-y-2">
                                     {documents.map((doc) => (
@@ -617,6 +682,12 @@ export function ClubDetailsPage() {
                             <CardDescription>{t('club.owners.description')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
+                            {ownerError && (
+                                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <p>{ownerError}</p>
+                                </div>
+                            )}
                             {club.vorstand && club.vorstand.length > 0 ? (
                                 <ul className="space-y-2">
                                     {club.vorstand.map((member: VorstandUser) => (
@@ -677,6 +748,12 @@ export function ClubDetailsPage() {
                             </Button>
                         </CardHeader>
                         <CardContent className="space-y-6">
+                            {censusError && (
+                                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <p>{censusError}</p>
+                                </div>
+                            )}
                             {/* Upload New Year */}
                             <div className="space-y-4 border-b pb-4">
                                 <div className="flex items-end gap-2">
@@ -700,7 +777,18 @@ export function ClubDetailsPage() {
                                             const fileInput = document.getElementById('census-file') as HTMLInputElement;
                                             if (!yearInput.value || !fileInput.files?.[0]) return;
 
+                                            const year = parseInt(yearInput.value);
+                                            
+                                            // Check if year already exists in census
+                                            if (club?.census && club.census.some(c => c.year === year)) {
+                                                const confirmMessage = t('club.census.confirm_overwrite', { year });
+                                                if (!window.confirm(confirmMessage)) {
+                                                    return;
+                                                }
+                                            }
+
                                             setUploading(true);
+                                            setCensusError(null);
                                             const formData = new FormData();
                                             formData.append("file", fileInput.files[0]);
                                             try {
@@ -709,11 +797,11 @@ export function ClubDetailsPage() {
                                                 await fetchClub(); // Refresh list
                                             } catch (err: unknown) {
                                                 console.error(err);
-                                                // Parse line number error from message if possible?
-                                                let msg = t('club.messages.upload_error');
-                                                if (err instanceof ApiError && err.data?.message) msg = err.data.message;
-                                                setError(msg);
-                                                // Ideally scroll to error
+                                                if (err instanceof ApiError && err.data?.message) {
+                                                    setCensusError(err.data.message);
+                                                } else {
+                                                    setCensusError(t('club.messages.upload_error'));
+                                                }
                                             } finally {
                                                 setUploading(false);
                                             }
@@ -739,13 +827,22 @@ export function ClubDetailsPage() {
                                                         if (isHidden) {
                                                             content.classList.remove('hidden');
                                                             // Fetch if not present
-                                                            if (!censusDetails[c.year]) {
+                                                            if (!censusDetails[c.year] && !censusFetchErrors[c.year]) {
                                                                 try {
                                                                     const data = await api.get<Census>(`/clubs/${id}/census/${c.year}`, token || undefined);
                                                                     setCensusDetails(prev => ({ ...prev, [c.year]: data }));
-                                                                } catch (err) {
+                                                                    setCensusFetchErrors(prev => {
+                                                                        const updated = { ...prev };
+                                                                        delete updated[c.year];
+                                                                        return updated;
+                                                                    });
+                                                                } catch (err: unknown) {
                                                                     console.error(err);
-                                                                    // Handle error visually inside the expanded section?
+                                                                    if (err instanceof ApiError && err.data?.message) {
+                                                                        setCensusFetchErrors(prev => ({ ...prev, [c.year]: err.data!.message! }));
+                                                                    } else {
+                                                                        setCensusFetchErrors(prev => ({ ...prev, [c.year]: t('club.messages.load_error') }));
+                                                                    }
                                                                 }
                                                             }
                                                         } else {
@@ -761,7 +858,12 @@ export function ClubDetailsPage() {
                                             </div>
                                             {/* Details */}
                                             <div id={`census-content-${c.year}`} className="hidden p-3 border-t bg-muted/5">
-                                                {censusDetails[c.year] ? (
+                                                {censusFetchErrors[c.year] ? (
+                                                    <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                                        <AlertCircle className="h-4 w-4" />
+                                                        <p>{censusFetchErrors[c.year]}</p>
+                                                    </div>
+                                                ) : censusDetails[c.year] ? (
                                                     <div className="overflow-x-auto">
                                                         <table className="w-full text-sm">
                                                             <thead>

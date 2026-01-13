@@ -93,6 +93,22 @@
             "empty": "Aucun membre du conseil trouvé.",
             "add_placeholder": "Ajouter un nouveau gestionnaire par e-mail"
         },
+        "census": {
+            "title": "Rapport de Recensement",
+            "description": "Rapport annuel de recensement des membres des clubs à l'association.",
+            "download_sample": "Télécharger un Exemple",
+            "upload_year_label": "Année",
+            "upload_file_label": "Fichier",
+            "members_count": "membres",
+            "header": {
+                "firstname": "Prénom",
+                "lastname": "Nom",
+                "birthyear": "Année de Naissance",
+                "gender": "Genre"
+            },
+            "empty": "Aucun rapport de recensement disponible.",
+            "confirm_overwrite": "Un rapport de recensement pour l'année {{year}} existe déjà. Voulez-vous le remplacer ?"
+        },
         "messages": {
             "load_error": "Impossible de charger le club.",
             "not_found": "Club non trouvé.",

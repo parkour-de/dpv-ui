@@ -93,6 +93,22 @@
             "empty": "Члены правления не найдены.",
             "add_placeholder": "Добавить администратора по email"
         },
+        "census": {
+            "title": "Отчёт о Переписи",
+            "description": "Ежегодный отчёт о переписи членов клубов для ассоциации.",
+            "download_sample": "Скачать Образец",
+            "upload_year_label": "Год",
+            "upload_file_label": "Файл",
+            "members_count": "членов",
+            "header": {
+                "firstname": "Имя",
+                "lastname": "Фамилия",
+                "birthyear": "Год Рождения",
+                "gender": "Пол"
+            },
+            "empty": "Нет доступных отчётов о переписи.",
+            "confirm_overwrite": "Отчёт о переписи за {{year}} год уже существует. Хотите перезаписать его?"
+        },
         "messages": {
             "load_error": "Не удалось загрузить клуб.",
             "not_found": "Клуб не найден.",

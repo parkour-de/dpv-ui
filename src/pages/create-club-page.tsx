@@ -38,6 +38,7 @@ export function CreateClubPage() {
 
         try {
             await api.post('/clubs', formData, token);
+            setError(null); // Clear any previous errors on success
             navigate("/dashboard");
         } catch (err: unknown) {
             console.error(err);

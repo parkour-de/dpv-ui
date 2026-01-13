@@ -93,6 +93,22 @@
             "empty": "Nu s-au găsit membri ai consiliului.",
             "add_placeholder": "Adaugă administrator nou prin e-mail"
         },
+        "census": {
+            "title": "Raport de Recensământ",
+            "description": "Raport anual de recensământ al membrilor cluburilor către asociație.",
+            "download_sample": "Descarcă Exemplu",
+            "upload_year_label": "An",
+            "upload_file_label": "Fișier",
+            "members_count": "membri",
+            "header": {
+                "firstname": "Prenume",
+                "lastname": "Nume",
+                "birthyear": "Anul Nașterii",
+                "gender": "Gen"
+            },
+            "empty": "Nu sunt disponibile rapoarte de recensământ.",
+            "confirm_overwrite": "Există deja un raport de recensământ pentru anul {{year}}. Doriți să îl suprascrieți?"
+        },
         "messages": {
             "load_error": "Nu s-a putut încărca clubul.",
             "not_found": "Clubul nu a fost găsit.",

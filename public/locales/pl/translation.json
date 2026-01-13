@@ -93,6 +93,22 @@
             "empty": "Nie znaleziono członków zarządu.",
             "add_placeholder": "Dodaj nowego administratora przez e-mail"
         },
+        "census": {
+            "title": "Raport Spisowy",
+            "description": "Roczny raport spisowy członków klubów do stowarzyszenia.",
+            "download_sample": "Pobierz Przykład",
+            "upload_year_label": "Rok",
+            "upload_file_label": "Plik",
+            "members_count": "członków",
+            "header": {
+                "firstname": "Imię",
+                "lastname": "Nazwisko",
+                "birthyear": "Rok Urodzenia",
+                "gender": "Płeć"
+            },
+            "empty": "Brak dostępnych raportów spisowych.",
+            "confirm_overwrite": "Raport spisowy dla roku {{year}} już istnieje. Czy chcesz go nadpisać?"
+        },
         "messages": {
             "load_error": "Nie udało się załadować klubu.",
             "not_found": "Nie znaleziono klubu.",
