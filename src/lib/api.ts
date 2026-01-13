@@ -83,5 +83,29 @@ export const api = {
         });
         if (!res.ok) throw new ApiError(res.status, res.statusText, await res.json().catch(() => { }));
         return res.json();
+    },
+
+    put: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+            method: 'PUT',
+            headers: getHeaders(token),
+            body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new ApiError(res.status, res.statusText, await res.json().catch(() => { }));
+        return res.json();
+    },
+
+    uploadPut: async <T>(endpoint: string, formData: FormData, token?: string): Promise<T> => {
+        const headers: HeadersInit = {};
+        if (token) {
+            headers['Authorization'] = `Basic ${token}`;
+        }
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+            method: 'PUT',
+            headers,
+            body: formData
+        });
+        if (!res.ok) throw new ApiError(res.status, res.statusText, await res.json().catch(() => { }));
+        return res.json();
     }
 };

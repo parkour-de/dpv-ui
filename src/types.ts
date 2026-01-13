@@ -36,6 +36,24 @@ export interface Club {
     website_ok: boolean;
     owner_key: string;
     vorstand?: VorstandUser[]; // Board members
+    census?: CensusSummary[];
+}
+
+export interface CensusSummary {
+    year: number;
+    count: number;
+}
+
+export interface CensusMember {
+    firstname: string;
+    lastname: string;
+    gender: string;
+    birthYear: number;
+}
+
+export interface Census {
+    year: number;
+    members: CensusMember[];
 }
 
 export interface VorstandUser {

@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, type VorstandUser } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +53,9 @@ export function ClubDetailsPage() {
         iban?: string;
         sepa_mandate_number?: string;
     }>({});
+
+    // Census State
+    const [censusDetails, setCensusDetails] = useState<Record<number, Census>>({});
 
     useEffect(() => {
         if (user?.roles?.includes('admin') || user?.roles?.includes('global_admin')) {
@@ -668,6 +671,145 @@ export function ClubDetailsPage() {
                                     {ownerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                                 </Button>
                             </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Census Section */}
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>{t('club.census.title')}</CardTitle>
+                                <CardDescription>{t('club.census.description')}</CardDescription>
+                            </div>
+                            <Button variant="outline" size="sm" onClick={() => {
+                                const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+                                window.location.href = `${API_BASE}/census/sample`;
+                            }}>
+                                <Download className="h-4 w-4 mr-2" /> {t('club.census.download_sample')}
+                            </Button>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {/* Upload New Year */}
+                            <div className="space-y-4 border-b pb-4">
+                                <div className="flex items-end gap-2">
+                                    <div className="space-y-2 flex-grow">
+                                        <Label htmlFor="census-year">{t('club.census.upload_year_label')}</Label>
+                                        <Input
+                                            id="census-year"
+                                            type="number"
+                                            placeholder="YYYY"
+                                            defaultValue={new Date().getFullYear()}
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div className="space-y-2 flex-grow-[2]">
+                                        <Label htmlFor="census-file">{t('club.census.upload_file_label')}</Label>
+                                        <Input id="census-file" type="file" />
+                                    </div>
+                                    <Button
+                                        onClick={async () => {
+                                            const yearInput = document.getElementById('census-year') as HTMLInputElement;
+                                            const fileInput = document.getElementById('census-file') as HTMLInputElement;
+                                            if (!yearInput.value || !fileInput.files?.[0]) return;
+
+                                            setUploading(true);
+                                            const formData = new FormData();
+                                            formData.append("file", fileInput.files[0]);
+                                            try {
+                                                await api.uploadPut(`/clubs/${id}/census/${yearInput.value}`, formData, token || undefined);
+                                                fileInput.value = '';
+                                                await fetchClub(); // Refresh list
+                                            } catch (err: any) {
+                                                console.error(err);
+                                                // Parse line number error from message if possible?
+                                                let msg = t('club.messages.upload_error');
+                                                if (err.data?.message) msg = err.data.message;
+                                                setError(msg);
+                                                // Ideally scroll to error
+                                            } finally {
+                                                setUploading(false);
+                                            }
+                                        }}
+                                        disabled={uploading}
+                                    >
+                                        {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* List Years */}
+                            {club.census && club.census.length > 0 ? (
+                                <div className="space-y-2">
+                                    {club.census.sort((a, b) => b.year - a.year).map((c) => (
+                                        <div key={c.year} className="border rounded-md">
+                                            <div
+                                                className="flex items-center justify-between p-3 hover:bg-muted/10 cursor-pointer"
+                                                onClick={async () => {
+                                                    const content = document.getElementById(`census-content-${c.year}`);
+                                                    if (content) {
+                                                        const isHidden = content.classList.contains('hidden');
+                                                        if (isHidden) {
+                                                            content.classList.remove('hidden');
+                                                            // Fetch if not present
+                                                            if (!censusDetails[c.year]) {
+                                                                try {
+                                                                    const data = await api.get<Census>(`/clubs/${id}/census/${c.year}`, token || undefined);
+                                                                    setCensusDetails(prev => ({ ...prev, [c.year]: data }));
+                                                                } catch (err) {
+                                                                    console.error(err);
+                                                                    // Handle error visually inside the expanded section?
+                                                                }
+                                                            }
+                                                        } else {
+                                                            content.classList.add('hidden');
+                                                        }
+                                                    }
+                                                }}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <div className="font-semibold">{c.year}</div>
+                                                    <div className="text-sm text-muted-foreground">{c.count} {t('club.census.members_count')}</div>
+                                                </div>
+                                            </div>
+                                            {/* Details */}
+                                            <div id={`census-content-${c.year}`} className="hidden p-3 border-t bg-muted/5">
+                                                {censusDetails[c.year] ? (
+                                                    <div className="overflow-x-auto">
+                                                        <table className="w-full text-sm">
+                                                            <thead>
+                                                                <tr className="border-b text-left">
+                                                                    <th className="py-2 px-1">{t('club.census.header.firstname')}</th>
+                                                                    <th className="py-2 px-1">{t('club.census.header.lastname')}</th>
+                                                                    <th className="py-2 px-1">{t('club.census.header.birthyear')}</th>
+                                                                    <th className="py-2 px-1">{t('club.census.header.gender')}</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {censusDetails[c.year].members.map((m, idx) => (
+                                                                    <tr key={idx} className="border-b last:border-0 hover:bg-muted/10">
+                                                                        <td className="py-1 px-1">{m.firstname}</td>
+                                                                        <td className="py-1 px-1">{m.lastname}</td>
+                                                                        <td className="py-1 px-1">{m.birthYear}</td>
+                                                                        <td className="py-1 px-1">{m.gender}</td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex justify-center py-4">
+                                                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-sm text-muted-foreground text-center py-4">
+                                    {t('club.census.empty')}
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </>
