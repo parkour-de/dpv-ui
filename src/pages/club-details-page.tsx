@@ -707,11 +707,11 @@ export function ClubDetailsPage() {
                                                 await api.uploadPut(`/clubs/${id}/census/${yearInput.value}`, formData, token || undefined);
                                                 fileInput.value = '';
                                                 await fetchClub(); // Refresh list
-                                            } catch (err: any) {
+                                            } catch (err: unknown) {
                                                 console.error(err);
                                                 // Parse line number error from message if possible?
                                                 let msg = t('club.messages.upload_error');
-                                                if (err.data?.message) msg = err.data.message;
+                                                if (err instanceof ApiError && err.data?.message) msg = err.data.message;
                                                 setError(msg);
                                                 // Ideally scroll to error
                                             } finally {
