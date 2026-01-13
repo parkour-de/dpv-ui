@@ -115,22 +115,6 @@ export function ClubDetailsPage() {
         }
     }, [id, token]);
 
-    // When entering edit mode, ensure we have payment details
-    useEffect(() => {
-        if (isEditing && id && token) {
-            setLoadingPayment(true);
-            fetchPayment().then(details => {
-                if (details) {
-                    setFormData(prev => ({
-                        ...prev,
-                        iban: details.iban,
-                        sepa_mandate_number: details.sepa_mandate_number
-                    }));
-                }
-                setLoadingPayment(false);
-            });
-        }
-    }, [isEditing, id, token, fetchPayment]);
 
     // Toggle view handler
     const handleShowPaymentDetails = async () => {
@@ -369,7 +353,15 @@ export function ClubDetailsPage() {
                                     )}
                                 </>
                             )}
-                            <Button size="sm" variant="outline" onClick={() => setIsEditing(true)}>
+                            <Button size="sm" variant="outline" onClick={() => {
+                                setIsEditing(true);
+                                // Clear payment fields in edit mode to avoid overwriting with masked values
+                                setFormData(prev => ({
+                                    ...prev,
+                                    iban: undefined,
+                                    sepa_mandate_number: undefined
+                                }));
+                            }}>
                                 {t('club.details.actions.edit')}
                             </Button>
                             <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
@@ -453,29 +445,25 @@ export function ClubDetailsPage() {
                             <CardTitle>{t('club.payment.edit_title')}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {loadingPayment ? (
-                                <div className="text-sm">{t('club.messages.loading_payment')}</div>
-                            ) : (
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="iban">{t('club.payment.labels.iban')}</Label>
-                                        <Input
-                                            id="iban"
-                                            value={formData.iban || ''}
-                                            onChange={(e) => setFormData(p => ({ ...p, iban: e.target.value }))}
-                                            placeholder="DE..."
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
-                                        <Input
-                                            id="sepa"
-                                            value={formData.sepa_mandate_number || ''}
-                                            onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
-                                        />
-                                    </div>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="iban">{t('club.payment.labels.iban')}</Label>
+                                    <Input
+                                        id="iban"
+                                        value={formData.iban || ''}
+                                        onChange={(e) => setFormData(p => ({ ...p, iban: e.target.value }))}
+                                        placeholder="DE..."
+                                    />
                                 </div>
-                            )}
+                                <div className="space-y-2">
+                                    <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
+                                    <Input
+                                        id="sepa"
+                                        value={formData.sepa_mandate_number || ''}
+                                        onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
                         </CardContent>
                         <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
                             <Button type="button" variant="ghost" onClick={() => {
@@ -493,7 +481,7 @@ export function ClubDetailsPage() {
                             }}>
                                 {t('club.details.actions.cancel')}
                             </Button>
-                            <Button type="submit" disabled={formLoading || loadingPayment}>
+                            <Button type="submit" disabled={formLoading}>
                                 <Save className="mr-2 h-4 w-4" /> {t('club.details.actions.save')}
                             </Button>
                         </CardFooter>
