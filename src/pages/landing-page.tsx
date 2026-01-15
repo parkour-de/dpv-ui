@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
+import logoBlack from "@/assets/logo-black.svg";
+import logoWhite from "@/assets/logo-white.svg";
 
 export function LandingPage() {
     const { t } = useTranslation();
@@ -45,9 +47,14 @@ export function LandingPage() {
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
-            <div className="w-full max-w-md space-y-8">
-                <div className="text-center space-y-2">
-                    <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl text-primary">{t('app.title')}</h1>
+            <div className="w-full max-w-md space-y-8 text-center">
+                <div className="flex justify-center mb-8">
+                    <img src={logoBlack} alt="Deutscher Parkourverband" className="dark:hidden h-20 w-auto" />
+                    <img src={logoWhite} alt="Deutscher Parkourverband" className="hidden dark:block h-20 w-auto" />
+                </div>
+
+                <div className="space-y-2">
+                    <h1 className="text-3xl font-bold tracking-tight">{t('app.portal_name')}</h1>
                     <p className="text-muted-foreground">{t('app.subtitle')}</p>
                 </div>
 

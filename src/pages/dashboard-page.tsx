@@ -80,7 +80,7 @@ export function DashboardPage() {
                     </p>
                 </div>
                 <Link to="/clubs/new">
-                    <Button>
+                    <Button variant="accent">
                         <Plus className="mr-2 h-4 w-4" />
                         {t('dashboard.actions.new_club')}
                     </Button>
@@ -122,7 +122,7 @@ export function DashboardPage() {
                     <h3 className="text-lg font-medium">{t('dashboard.empty.title')}</h3>
                     <p className="text-muted-foreground mb-4">{t('dashboard.empty.description')}</p>
                     <Link to="/clubs/new">
-                        <Button variant="outline">{t('dashboard.actions.create_club')}</Button>
+                        <Button variant="accent">{t('dashboard.actions.create_club')}</Button>
                     </Link>
                 </div>
             ) : (
