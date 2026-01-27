@@ -40,7 +40,9 @@
             "inactive": "Inactiv",
             "requested": "Solicitat",
             "denied": "Respins",
-            "cancelled": "Anulat"
+            "cancelled": "Anulat",
+            "upcoming_membership": "Calitate de membru viitoare 🚀",
+            "pending_cancellation": "Anulare în așteptare ⏳"
         },
         "details": {
             "title": "Date Principale",
@@ -65,7 +67,12 @@
                 "cancel": "Anulează Membriea",
                 "withdraw": "Retrage cererea",
                 "approve": "Aprobă",
-                "deny": "Respinge"
+                "deny": "Respinge",
+                "apply_description": "Vă rugăm să specificați când ar trebui să înceapă calitatea de membru (opțional):",
+                "cancel_description": "Vă rugăm să specificați când ar trebui să se încheie calitatea de membru (opțional):",
+                "confirm": "Confirmă",
+                "date_label": "Data",
+                "date_format_hint": "Format: Zi.Lună.An (implicit este astăzi)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "Niciun IBAN înregistrat",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Titularul contului",
                 "sepa": "Referință Mandat"
+            },
+            "placeholders": {
+                "account_holder": "Numele titularului contului"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "ex. e.V.",
             "email": "info@club.ro",
             "address": "Strada 1, 12345 Oraș"
+        },
+        "search": {
+            "title": "Cluburi similare",
+            "description": "Pentru a evita duplicatele, vă rugăm să verificați dacă clubul dvs. există deja:",
+            "found_matches": "Am găsit următoarele cluburi similare:",
+            "no_matches": "Nu s-au găsit cluburi similare."
         },
         "actions": {
             "cancel": "Anulează",
@@ -198,7 +215,7 @@
             "password_hint": "Minim 10 caractere și 8 tipuri diferite de caractere.",
             "success": {
                 "title": "Înregistrare reușită!",
-                "description": "Contul a fost creat. Verificați e-mailul pentru a confirma adresa.",
+                "description": "Contul dvs. a fost creat. Vă puteți autentifica imediat cu adresa dvs. de e-mail. V-am trimis un e-mail de confirmare.",
                 "action": "Mergi la Autentificare"
             },
             "error_generic": "Înregistrarea a eșuat. Încercați din nou mai târziu.",

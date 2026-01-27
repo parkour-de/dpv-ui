@@ -40,7 +40,9 @@
             "inactive": "Inactivo",
             "requested": "Solicitado",
             "denied": "Denegado",
-            "cancelled": "Cancelado"
+            "cancelled": "Cancelado",
+            "upcoming_membership": "Membresía futura 🚀",
+            "pending_cancellation": "Cancelación pendiente ⏳"
         },
         "details": {
             "title": "Datos Principales",
@@ -65,7 +67,12 @@
                 "cancel": "Cancelar Membresía",
                 "withdraw": "Retirar Solicitud",
                 "approve": "Aprobar",
-                "deny": "Denegar"
+                "deny": "Denegar",
+                "apply_description": "Indique cuándo debe comenzar la membresía (opcional):",
+                "cancel_description": "Indique cuándo debe finalizar la membresía (opcional):",
+                "confirm": "Confirmar",
+                "date_label": "Fecha",
+                "date_format_hint": "Formato: Día.Mes.Año (por defecto es hoy)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "No hay IBAN registrado",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Titular de la Cuenta",
                 "sepa": "Referencia del Mandato"
+            },
+            "placeholders": {
+                "account_holder": "Nombre del titular de la cuenta"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "p.ej. e.V.",
             "email": "info@club.de",
             "address": "Calle 1, 12345 Ciudad"
+        },
+        "search": {
+            "title": "Clubes similares",
+            "description": "Para evitar duplicados, comprueba si tu club ya existe:",
+            "found_matches": "Hemos encontrado los siguientes clubes similares:",
+            "no_matches": "No se han encontrado clubes similares."
         },
         "actions": {
             "cancel": "Cancelar",
@@ -198,7 +215,7 @@
             "password_hint": "Al menos 10 caracteres y 8 tipos de caracteres diferentes.",
             "success": {
                 "title": "¡Registro exitoso!",
-                "description": "Tu cuenta ha sido creada. Por favor, revisa tu correo para confirmar tu dirección (si es necesario).",
+                "description": "Tu cuenta ha sido creada. Ahora puedes iniciar sesión inmediatamente con tu dirección de correo electrónico. Te hemos enviado un correo electrónico de confirmación.",
                 "action": "Ir a Iniciar sesión"
             },
             "error_generic": "Error en el registro. Por favor, inténtalo de nuevo más tarde.",

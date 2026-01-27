@@ -40,7 +40,9 @@
             "inactive": "Joaktiv",
             "requested": "Kërkuar",
             "denied": "Refuzuar",
-            "cancelled": "Anuluar"
+            "cancelled": "Anuluar",
+            "upcoming_membership": "Anëtarësimi i ardhshëm 🚀",
+            "pending_cancellation": "Anulimi në pritje ⏳"
         },
         "details": {
             "title": "Të Dhënat Kryesore",
@@ -65,7 +67,12 @@
                 "cancel": "Anulo Anëtarësinë",
                 "withdraw": "Tërhiq kërkesën",
                 "approve": "Aprovo",
-                "deny": "Refuzo"
+                "deny": "Refuzo",
+                "apply_description": "Ju lutemi specifikoni se kur duhet të fillojë anëtarësimi (opsionale):",
+                "cancel_description": "Ju lutemi specifikoni se kur duhet të përfundojë anëtarësimi (opsionale):",
+                "confirm": "Konfirmo",
+                "date_label": "Data",
+                "date_format_hint": "Formati: Dita.Muaji.Viti (parazgjedhur është sot)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "Nuk ka IBAN të regjistruar",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Mbajtësi i llogarisë",
                 "sepa": "Referenca e Mandatit"
+            },
+            "placeholders": {
+                "account_holder": "Emri i mbajtësit të llogarisë"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "p.sh. e.V.",
             "email": "info@klub.al",
             "address": "Rruga 1, 12345 Qytet"
+        },
+        "search": {
+            "title": "Klube të ngjashme",
+            "description": "Për të shmangur dublikatat, ju lutemi kontrolloni nëse klubi juaj ekziston tashmë:",
+            "found_matches": "Kemi gjetur klubet e mëposhtme të ngjashme:",
+            "no_matches": "Nuk u gjet asnjë klub i ngjashëm."
         },
         "actions": {
             "cancel": "Anulo",
@@ -198,7 +215,7 @@
             "password_hint": "Të paktën 10 karaktere dhe 8 lloje karakteresh të ndryshme.",
             "success": {
                 "title": "Regjistrimi u krye!",
-                "description": "Llogaria u krijua. Kontrolloni emailin për konfirmim.",
+                "description": "Llogaria juaj u krijua. Ju mund të identifikoheni menjëherë me adresën tuaj të email-it. Ju kemi dërguar një email konfirmimi.",
                 "action": "Shko te Hyrja"
             },
             "error_generic": "Dështoi regjistrimi. Provoni më vonë.",

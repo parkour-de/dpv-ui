@@ -40,7 +40,9 @@
             "inactive": "Pasif",
             "requested": "Talep edildi",
             "denied": "Reddedildi",
-            "cancelled": "İptal edildi"
+            "cancelled": "İptal edildi",
+            "upcoming_membership": "Gelecek Üyelik 🚀",
+            "pending_cancellation": "İptal Bekliyor ⏳"
         },
         "details": {
             "title": "Ana Veriler",
@@ -65,7 +67,12 @@
                 "cancel": "Üyeliği İptal Et",
                 "withdraw": "Başvuruyu Geri Çek",
                 "approve": "Onayla",
-                "deny": "Reddet"
+                "deny": "Reddet",
+                "apply_description": "Üyeliğin ne zaman başlayacağını belirtin (isteğe bağlı):",
+                "cancel_description": "Üyeliğin ne zaman sona ereceğini belirtin (isteğe bağlı):",
+                "confirm": "Onayla",
+                "date_label": "Tarih",
+                "date_format_hint": "Format: Gün.Ay.Yıl (varsayılan bugündür)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "IBAN kayıtlı değil",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Hesap Sahibi",
                 "sepa": "Yetki Referansı"
+            },
+            "placeholders": {
+                "account_holder": "Banka Hesap Sahibi Adı"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "örn. e.V.",
             "email": "info@kulup.de",
             "address": "Cadde 1, 12345 Şehir"
+        },
+        "search": {
+            "title": "Benzer Kulüpler",
+            "description": "Mükerrerlikleri önlemek için lütfen kulübünüzün zaten var olup olmadığını kontrol edin:",
+            "found_matches": "Aşağıdaki benzer kulüpleri bulduk:",
+            "no_matches": "Benzer kulüp bulunamadı."
         },
         "actions": {
             "cancel": "İptal",
@@ -198,7 +215,7 @@
             "password_hint": "En az 10 karakter ve 8 farklı karakter türü.",
             "success": {
                 "title": "Kayıt başarılı!",
-                "description": "Hesabınız oluşturuldu. Adresinizi onaylamak için e-postanızı kontrol edin.",
+                "description": "Hesabınız oluşturuldu. E-posta adresinizle hemen giriş yapabilirsiniz. Size bir onay e-postası gönderdik.",
                 "action": "Girişe Git"
             },
             "error_generic": "Kayıt başarısız. Daha sonra tekrar deneyin.",

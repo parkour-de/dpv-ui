@@ -40,7 +40,9 @@
             "inactive": "Nieaktywny",
             "requested": "Zgłoszony",
             "denied": "Odrzucony",
-            "cancelled": "Anulowany"
+            "cancelled": "Anulowany",
+            "upcoming_membership": "Nadchodzące członkostwo 🚀",
+            "pending_cancellation": "Oczekiwanie na anulowanie ⏳"
         },
         "details": {
             "title": "Dane Główne",
@@ -65,7 +67,12 @@
                 "cancel": "Anuluj członkostwo",
                 "withdraw": "Wycofaj wniosek",
                 "approve": "Zatwierdź",
-                "deny": "Odrzuć"
+                "deny": "Odrzuć",
+                "apply_description": "Podaj, kiedy ma się rozpocząć członkostwo (opcjonalnie):",
+                "cancel_description": "Podaj, kiedy ma się zakończyć członkostwo (opcjonalnie):",
+                "confirm": "Potwierdź",
+                "date_label": "Data",
+                "date_format_hint": "Format: Dzień.Miesiąc.Rok (domyślnie dzisiaj)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "Brak zapisanego IBAN",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Właściciel konta",
                 "sepa": "Numer Mandatu"
+            },
+            "placeholders": {
+                "account_holder": "Imię i nazwisko właściciela konta"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "np. e.V.",
             "email": "info@klub.pl",
             "address": "Ulica 1, 12345 Miasto"
+        },
+        "search": {
+            "title": "Podobne kluby",
+            "description": "Aby uniknąć duplikacji, sprawdź, czy Twój klub już istnieje:",
+            "found_matches": "Znaleźliśmy następujące podobne kluby:",
+            "no_matches": "Nie znaleziono podobnych klubów."
         },
         "actions": {
             "cancel": "Anuluj",
@@ -198,7 +215,7 @@
             "password_hint": "Co najmniej 10 znaków i 8 różnych typów znaków.",
             "success": {
                 "title": "Rejestracja zakończona sukcesem!",
-                "description": "Twoje konto zostało utworzone. Sprawdź swoją pocztę, aby potwierdzić adres (jeśli wymagane).",
+                "description": "Twoje konto zostało utworzone. Możesz zalogować się natychmiast za pomocą adresu e-mail. Wysłaliśmy do Ciebie wiadomość e-mail z potwierdzeniem.",
                 "action": "Przejdź do Logowania"
             },
             "error_generic": "Rejestracja nie powiodła się. Spróbuj ponownie później.",

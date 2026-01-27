@@ -64,11 +64,21 @@ export function DashboardPage() {
         return acc;
     }, {} as Record<string, Club[]>);
 
-    const StatusBadge = ({ status }: { status: ClubStatus }) => (
-        <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[status])}>
-            {t(`club.status.${status}`)}
-        </span>
-    );
+    const StatusBadge = ({ club }: { club: Club }) => {
+        const { status, begin_date, end_date } = club.membership;
+        const now = Math.floor(Date.now() / 1000);
+        let labelKey = `club.status.${status}`;
+        if (status === 'active' && begin_date && begin_date > now) {
+            labelKey = 'club.status.upcoming_membership';
+        } else if (status === 'cancelled' && end_date && end_date > now) {
+            labelKey = 'club.status.pending_cancellation';
+        }
+        return (
+            <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap", CLUB_STATUS_COLORS[status])}>
+                {t(labelKey)}
+            </span>
+        );
+    };
 
     return (
         <div className="space-y-6">
@@ -143,7 +153,7 @@ export function DashboardPage() {
                                                         <p className="text-sm text-muted-foreground">{club.legal_form}</p>
                                                     </div>
                                                 </div>
-                                                <StatusBadge status={club.membership.status} />
+                                                <StatusBadge club={club} />
                                             </div>
                                         </CardHeader>
                                         <CardContent>
@@ -160,7 +170,9 @@ export function DashboardPage() {
                             {Object.entries(clubsByStatus).map(([status, groupClubs]) => (
                                 <div key={status} className="space-y-4">
                                     <h2 className="text-xl font-semibold flex items-center gap-2">
-                                        <StatusBadge status={status as ClubStatus} />
+                                        <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[status as ClubStatus])}>
+                                            {t(`club.status.${status}`)}
+                                        </span>
                                         <span>({groupClubs.length})</span>
                                     </h2>
                                     <div className="grid gap-4">
@@ -178,7 +190,7 @@ export function DashboardPage() {
                                                                     <p className="text-sm text-muted-foreground">{club.legal_form}</p>
                                                                 </div>
                                                             </div>
-                                                            <StatusBadge status={club.membership.status} />
+                                                            <StatusBadge club={club} />
                                                         </div>
                                                     </CardHeader>
                                                     <CardContent>

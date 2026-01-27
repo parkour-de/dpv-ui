@@ -39,8 +39,10 @@
             "active": "Actif",
             "inactive": "Inactif",
             "requested": "Demandé",
-            "denied": "Refusé",
-            "cancelled": "Annulé"
+            "denied": "Demandé",
+            "cancelled": "Annulé",
+            "upcoming_membership": "Futur Membre 🚀",
+            "pending_cancellation": "Résiliation en attente ⏳"
         },
         "details": {
             "title": "Données Principales",
@@ -65,7 +67,12 @@
                 "cancel": "Annuler l'adhésion",
                 "withdraw": "Retirer la demande",
                 "approve": "Approuver",
-                "deny": "Refuser"
+                "deny": "Refuser",
+                "apply_description": "Veuillez préciser quand l'adhésion doit commencer (facultatif) :",
+                "cancel_description": "Veuillez préciser quand l'adhésion doit prendre fin (facultatif) :",
+                "confirm": "Confirmer",
+                "date_label": "Date",
+                "date_format_hint": "Format : Jour.Mois.Année (par défaut aujourd'hui)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "Aucun IBAN enregistré",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Titulaire du Compte",
                 "sepa": "Référence du Mandat"
+            },
+            "placeholders": {
+                "account_holder": "Nom du titulaire du compte"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "ex. e.V.",
             "email": "info@club.de",
             "address": "Rue 1, 12345 Ville"
+        },
+        "search": {
+            "title": "Clubs similaires",
+            "description": "Pour éviter les doublons, veuillez vérifier si votre club existe déjà :",
+            "found_matches": "Nous avons trouvé les clubs similaires suivants :",
+            "no_matches": "Aucun club similaire trouvé."
         },
         "actions": {
             "cancel": "Annuler",
@@ -198,7 +215,7 @@
             "password_hint": "Au moins 10 caractères et 8 types de caractères différents.",
             "success": {
                 "title": "Inscription réussie !",
-                "description": "Votre compte a été créé. Veuillez vérifier vos e-mails pour confirmer votre adresse (si nécessaire).",
+                "description": "Votre compte a été créé. Vous pouvez maintenant vous connecter immédiatement avec votre adresse e-mail. Nous vous avons envoyé un e-mail de confirmation.",
                 "action": "Aller à la Connexion"
             },
             "error_generic": "Échec de l'inscription. Veuillez réessayer plus tard.",

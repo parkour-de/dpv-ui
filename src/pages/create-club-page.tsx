@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api, ApiError } from "@/lib/api";
@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle, Info, ExternalLink } from "lucide-react";
+import { useAuth } from "@/context/auth-context-core";
+import { type Club } from "@/types";
 
 export function CreateClubPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { token } = useAuth();
     const [formData, setFormData] = useState({
         name: "",
         legal_form: "",
@@ -19,6 +22,30 @@ export function CreateClubPage() {
     });
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+    // Search logic for duplicate prevention
+    const [searchResults, setSearchResults] = useState<Club[]>([]);
+    const [searching, setSearching] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (formData.name.length >= 3 && token) {
+                setSearching(true);
+                try {
+                    const results = await api.get<Club[]>(`/search/clubs?q=${encodeURIComponent(formData.name)}`, token);
+                    setSearchResults(results || []);
+                } catch (err) {
+                    console.error("Search failed", err);
+                } finally {
+                    setSearching(false);
+                }
+            } else {
+                setSearchResults([]);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [formData.name, token]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
@@ -29,7 +56,6 @@ export function CreateClubPage() {
         setError(null);
         setLoading(true);
 
-        const token = sessionStorage.getItem('dpv_auth_token');
         if (!token) {
             setError(t('create_club.errors.not_authenticated'));
             setLoading(false);
@@ -53,7 +79,7 @@ export function CreateClubPage() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="max-w-2xl mx-auto space-y-6 pb-12">
             <div className="flex items-center gap-2">
                 <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
                     <ArrowLeft className="h-4 w-4" />
@@ -72,6 +98,29 @@ export function CreateClubPage() {
                             <Label htmlFor="name">{t('create_club.labels.name')}</Label>
                             <Input id="name" placeholder={t('create_club.placeholders.name')} value={formData.name} onChange={handleChange} required />
                         </div>
+
+                        {/* Search Results / Duplicate Warning */}
+                        {searchResults.length > 0 && (
+                            <div className="p-4 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-md space-y-2 animate-in fade-in slide-in-from-top-1">
+                                <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200 font-medium text-sm">
+                                    <Info className="h-4 w-4" />
+                                    <span>{t('create_club.search.found_matches')}</span>
+                                </div>
+                                <ul className="space-y-1">
+                                    {searchResults.map(club => (
+                                        <li key={club._key} className="text-sm flex items-center justify-between">
+                                            <span className="font-semibold text-amber-900 dark:text-amber-100">{club.name} ({club.legal_form})</span>
+                                            <Link to={`/clubs/${club._key}`} className="text-primary hover:underline flex items-center gap-1 text-xs" target="_blank">
+                                                {t('club.details.actions.back')} <ExternalLink className="h-3 w-3" />
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p className="text-xs text-amber-700 dark:text-amber-300 italic pt-1">
+                                    {t('create_club.search.description')}
+                                </p>
+                            </div>
+                        )}
 
                         <div className="space-y-2">
                             <Label htmlFor="legal_form">{t('create_club.labels.legal_form')}</Label>
@@ -105,7 +154,7 @@ export function CreateClubPage() {
                         <Link to="/dashboard">
                             <Button type="button" variant="ghost">{t('create_club.actions.cancel')}</Button>
                         </Link>
-                        <Button type="submit" disabled={loading}>
+                        <Button type="submit" disabled={loading || searching}>
                             {loading ? t('create_club.actions.creating') : t('create_club.actions.create')}
                         </Button>
                     </CardFooter>

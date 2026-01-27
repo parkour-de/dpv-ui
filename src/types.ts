@@ -21,7 +21,10 @@ export interface Membership {
     contribution?: number;
     address?: string;
     iban?: string; // usually omitted except for owners
+    account_holder?: string;
     sepa_mandate_number?: string;
+    begin_date?: number; // unix seconds
+    end_date?: number;   // unix seconds
 }
 
 export interface Club {
@@ -60,6 +63,7 @@ export interface VorstandUser {
     _key: string;
     firstname: string;
     lastname: string;
+    email?: string;
 }
 
 export interface User {

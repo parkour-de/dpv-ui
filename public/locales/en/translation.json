@@ -40,7 +40,9 @@
             "inactive": "Inactive",
             "requested": "Requested",
             "denied": "Denied",
-            "cancelled": "Cancelled"
+            "cancelled": "Cancelled",
+            "upcoming_membership": "Upcoming Membership 🚀",
+            "pending_cancellation": "Pending Cancellation ⏳"
         },
         "details": {
             "title": "Master Data",
@@ -65,7 +67,12 @@
                 "cancel": "Cancel Membership",
                 "withdraw": "Withdraw Application",
                 "approve": "Approve",
-                "deny": "Deny"
+                "deny": "Deny",
+                "apply_description": "Please specify when the membership should start (optional):",
+                "cancel_description": "Please specify when the membership should end (optional):",
+                "confirm": "Confirm",
+                "date_label": "Date",
+                "date_format_hint": "Format: Day.Month.Year (default is today)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "No IBAN stored",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Account Holder",
                 "sepa": "Mandate Reference"
+            },
+            "placeholders": {
+                "account_holder": "Bank Account Holder Name"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "e.g. e.V.",
             "email": "info@club.de",
             "address": "Street 1, 12345 City"
+        },
+        "search": {
+            "title": "Similar Clubs",
+            "description": "To avoid duplicates, please check if your club already exists:",
+            "found_matches": "We found the following similar clubs:",
+            "no_matches": "No similar clubs found."
         },
         "actions": {
             "cancel": "Cancel",
@@ -198,7 +215,7 @@
             "password_hint": "At least 10 characters and 8 different character types.",
             "success": {
                 "title": "Registration successful!",
-                "description": "Your account has been created. Please check your emails to confirm your address (if required).",
+                "description": "Your account has been created. You can now log in immediately with your email address. We have sent you a confirmation email.",
                 "action": "Go to Login"
             },
             "error_generic": "Registration failed. Please try again later.",

@@ -40,7 +40,7 @@ export function ClubDetailsPage() {
 
     // Payment details state
     // We merge these into formData when editing, but keep them for view mode
-    const [viewPaymentDetails, setViewPaymentDetails] = useState<{ iban: string; sepa_mandate_number?: string } | null>(null);
+    const [viewPaymentDetails, setViewPaymentDetails] = useState<{ iban: string; account_holder?: string; sepa_mandate_number?: string } | null>(null);
     const [loadingPayment, setLoadingPayment] = useState(false);
     const [showPaymentDetails, setShowPaymentDetails] = useState(false);
 
@@ -56,8 +56,13 @@ export function ClubDetailsPage() {
         address?: string;
         contact_person?: string;
         iban?: string;
+        account_holder?: string;
         sepa_mandate_number?: string;
     }>({});
+
+    // Modal state for Apply/Cancel with dates
+    const [actionModal, setActionModal] = useState<'apply' | 'cancel' | null>(null);
+    const [actionDate, setActionDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
     // Census State
     const [censusDetails, setCensusDetails] = useState<Record<number, Census>>({});
@@ -114,7 +119,7 @@ export function ClubDetailsPage() {
     const fetchPayment = useCallback(async () => {
         if (!id || !token) return null;
         try {
-            const details = await api.get<{ iban: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
+            const details = await api.get<{ iban: string; account_holder?: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
             setViewPaymentDetails(details);
             return details;
         } catch (err) {
@@ -233,13 +238,14 @@ export function ClubDetailsPage() {
         }
     };
 
-    const handleAction = async (action: 'approve' | 'deny' | 'apply' | 'cancel') => {
+    const handleAction = async (action: 'approve' | 'deny' | 'apply' | 'cancel', extraData?: Record<string, unknown>) => {
         if (!id || !token) return;
         setFormLoading(true);
         setActionError(null);
         try {
-            await api.post(`/clubs/${id}/${action}`, {}, token);
+            await api.post(`/clubs/${id}/${action}`, extraData || {}, token);
             await fetchClub(); // refresh
+            setActionModal(null);
         } catch (err: unknown) {
             console.error(err);
             if (err instanceof ApiError && err.data?.message) {
@@ -249,6 +255,38 @@ export function ClubDetailsPage() {
             }
         } finally {
             setFormLoading(false);
+        }
+    };
+
+    const handleActionWithDate = () => {
+        if (!actionModal) return;
+
+        // Convert date string to unix seconds if present
+        const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
+
+        if (actionModal === 'apply') {
+            handleAction('apply', { begin_date: unixSeconds });
+        } else if (actionModal === 'cancel') {
+            handleAction('cancel', { end_date: unixSeconds });
+        }
+    };
+
+    const handleDeleteDocument = async (filename: string) => {
+        if (!id || !token) return;
+        if (!confirm(t('club.messages.delete_confirm'))) return;
+
+        try {
+            await api.delete(`/clubs/${id}/documents/${filename}`, token);
+            // Refresh documents
+            const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
+            setDocuments(docs);
+        } catch (err: unknown) {
+            console.error(err);
+            if (err instanceof ApiError && err.data?.message) {
+                setUploadError(err.data.message);
+            } else {
+                setUploadError(t('club.messages.action_error'));
+            }
         }
     };
 
@@ -351,51 +389,59 @@ export function ClubDetailsPage() {
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
-                        <ArrowLeft className="h-4 w-4" />
-                    </Link>
-                    <h1 className="text-2xl font-bold tracking-tight">{club.name}</h1>
-                    <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[club.membership.status])}>
-                        {t(`club.status.${club.membership.status}`)}
-                    </span>
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
+                            <ArrowLeft className="h-4 w-4" />
+                        </Link>
+                        <h1 className="text-2xl font-bold tracking-tight">{club.name}</h1>
+                        {(() => {
+                            const { status, begin_date, end_date } = club.membership;
+                            const now = Math.floor(Date.now() / 1000);
+                            let labelKey = `club.status.${status}`;
+                            if (status === 'active' && begin_date && begin_date > now) {
+                                labelKey = 'club.status.upcoming_membership';
+                            } else if (status === 'cancelled' && end_date && end_date > now) {
+                                labelKey = 'club.status.pending_cancellation';
+                            }
+                            return (
+                                <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap", CLUB_STATUS_COLORS[club.membership.status])}>
+                                    {t(labelKey)}
+                                </span>
+                            );
+                        })()}
+                    </div>
+                    <div className="text-xs text-muted-foreground flex gap-3 ml-6 font-mono">
+                        {club.membership.begin_date ? (
+                            <span>{t('club.status.active')} seit {new Date(club.membership.begin_date * 1000).toLocaleDateString()}</span>
+                        ) : null}
+                        {club.membership.end_date ? (
+                            <span className="font-bold text-destructive">Gekündigt zum {new Date(club.membership.end_date * 1000).toLocaleDateString()}</span>
+                        ) : null}
+                    </div>
                 </div>
                 <div className="flex items-center gap-2">
                     {!isEditing && (
                         <>
                             {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
-                                <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
+                                <Button size="sm" onClick={() => setActionModal('apply')} disabled={formLoading}>
                                     {club.membership.status === 'cancelled' ? t('club.details.membership.reapply') : t('club.details.membership.apply')}
                                 </Button>
                             )}
-                            {(club.membership.status === 'requested' || club.membership.status === 'active') && !isAdmin && (
-                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleAction('cancel')} disabled={formLoading}>
+                            {(club.membership.status === 'requested' || club.membership.status === 'active') && (
+                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={formLoading}>
                                     {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
                                 </Button>
                             )}
-                            {isAdmin && (
-                                <>
-                                    {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
-                                        <Button size="sm" onClick={() => handleAction('apply')} disabled={formLoading}>
-                                            {t('club.details.membership.apply')}
-                                        </Button>
-                                    )}
-                                    {(club.membership.status === 'requested' || club.membership.status === 'active') && (
-                                        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => handleAction('cancel')} disabled={formLoading}>
-                                            {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
-                                        </Button>
-                                    )}
-                                    {club.membership.status === 'requested' && (
-                                        <>
-                                            <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
-                                                <Check className="mr-2 h-4 w-4" /> {t('club.details.membership.approve')}
-                                            </Button>
-                                            <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
-                                                <X className="mr-2 h-4 w-4" /> {t('club.details.membership.deny')}
-                                            </Button>
-                                        </>
-                                    )}
-                                </>
+                            {isAdmin && club.membership.status === 'requested' && (
+                                <div className="flex gap-2">
+                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
+                                        <Check className="mr-2 h-4 w-4" /> {t('club.details.membership.approve')}
+                                    </Button>
+                                    <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
+                                        <X className="mr-2 h-4 w-4" /> {t('club.details.membership.deny')}
+                                    </Button>
+                                </div>
                             )}
                             <Button size="sm" variant="outline" onClick={() => {
                                 setIsEditing(true);
@@ -403,8 +449,9 @@ export function ClubDetailsPage() {
                                 // Clear payment fields in edit mode to avoid overwriting with masked values
                                 setFormData(prev => ({
                                     ...prev,
-                                    iban: undefined,
-                                    sepa_mandate_number: undefined
+                                    iban: viewPaymentDetails?.iban,
+                                    account_holder: viewPaymentDetails?.account_holder,
+                                    sepa_mandate_number: viewPaymentDetails?.sepa_mandate_number
                                 }));
                             }}>
                                 {t('club.details.actions.edit')}
@@ -514,13 +561,24 @@ export function ClubDetailsPage() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
+                                    <Label htmlFor="account_holder">{t('club.payment.labels.account_holder')}</Label>
                                     <Input
-                                        id="sepa"
-                                        value={formData.sepa_mandate_number || ''}
-                                        onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
+                                        id="account_holder"
+                                        value={formData.account_holder || ''}
+                                        onChange={(e) => setFormData(p => ({ ...p, account_holder: e.target.value }))}
+                                        placeholder={t('club.payment.placeholders.account_holder')}
                                     />
                                 </div>
+                                {isAdmin && (
+                                    <div className="space-y-2">
+                                        <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
+                                        <Input
+                                            id="sepa"
+                                            value={formData.sepa_mandate_number || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </CardContent>
                         <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
@@ -535,6 +593,7 @@ export function ClubDetailsPage() {
                                     contact_person: club.contact_person,
                                     // Reset payment fields
                                     iban: undefined,
+                                    account_holder: undefined,
                                     sepa_mandate_number: undefined
                                 });
                             }}>
@@ -589,9 +648,16 @@ export function ClubDetailsPage() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)} title="Herunterladen">
-                                                <Download className="h-4 w-4" />
-                                            </Button>
+                                            <div className="flex items-center gap-1">
+                                                <Button variant="ghost" size="icon" onClick={() => handleDownload(doc.name)} title="Herunterladen">
+                                                    <Download className="h-4 w-4" />
+                                                </Button>
+                                                {(isAdmin || (club.membership.status !== 'requested' && club.membership.status !== 'active')) && (
+                                                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive" onClick={() => handleDeleteDocument(doc.name)} title="Löschen">
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                )}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -651,17 +717,25 @@ export function ClubDetailsPage() {
                                             className="bg-muted font-mono"
                                             placeholder={t('club.payment.no_iban')}
                                         />
-                                        {isAdmin && viewPaymentDetails?.sepa_mandate_number && (
-                                            <div className="mt-2 space-y-2">
-                                                <Label>{t('club.payment.labels.sepa')}</Label>
-                                                <Input
-                                                    value={viewPaymentDetails.sepa_mandate_number}
-                                                    disabled
-                                                    className="bg-muted"
-                                                />
-                                            </div>
-                                        )}
                                     </div>
+                                    <div className="space-y-2">
+                                        <Label>{t('club.payment.labels.account_holder')}</Label>
+                                        <Input
+                                            value={viewPaymentDetails?.account_holder || ''}
+                                            disabled
+                                            className="bg-muted"
+                                        />
+                                    </div>
+                                    {isAdmin && viewPaymentDetails?.sepa_mandate_number && (
+                                        <div className="mt-2 space-y-2">
+                                            <Label>{t('club.payment.labels.sepa')}</Label>
+                                            <Input
+                                                value={viewPaymentDetails.sepa_mandate_number}
+                                                disabled
+                                                className="bg-muted"
+                                            />
+                                        </div>
+                                    )}
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -778,7 +852,7 @@ export function ClubDetailsPage() {
                                             if (!yearInput.value || !fileInput.files?.[0]) return;
 
                                             const year = parseInt(yearInput.value);
-                                            
+
                                             // Check if year already exists in census
                                             if (club?.census && club.census.some(c => c.year === year)) {
                                                 const confirmMessage = t('club.census.confirm_overwrite', { year });
@@ -903,7 +977,51 @@ export function ClubDetailsPage() {
                         </CardContent>
                     </Card>
                 </>
-            )}
-        </div >
+            )
+            }
+
+            {/* Action Confirmation Modal (Apply/Cancel with Date) */}
+            {
+                actionModal && (
+                    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                        <Card className="w-full max-w-md shadow-2xl">
+                            <CardHeader>
+                                <CardTitle>
+                                    {actionModal === 'apply' ? t('club.details.membership.apply') : t('club.details.membership.cancel')}
+                                </CardTitle>
+                                <CardDescription>
+                                    {actionModal === 'apply'
+                                        ? t('club.details.membership.apply_description', { defaultValue: "Specify when the membership should start (optional):" })
+                                        : t('club.details.membership.cancel_description', { defaultValue: "Specify when the membership should end (optional):" })}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="action-date">{t('club.details.membership.date_label', { defaultValue: "Date" })}</Label>
+                                    <Input
+                                        id="action-date"
+                                        type="date"
+                                        value={actionDate}
+                                        onChange={(e) => setActionDate(e.target.value)}
+                                    />
+                                    <p className="text-[10px] text-muted-foreground italic">
+                                        {t('club.details.membership.date_format_hint', { defaultValue: "Format: Day.Month.Year (default is today)" })}
+                                    </p>
+                                </div>
+                            </CardContent>
+                            <CardFooter className="justify-end gap-2">
+                                <Button variant="ghost" onClick={() => setActionModal(null)}>
+                                    {t('club.details.actions.cancel')}
+                                </Button>
+                                <Button onClick={handleActionWithDate} disabled={formLoading}>
+                                    {formLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                                    {t('club.details.membership.confirm', { defaultValue: "Confirm" })}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                )
+            }
+        </div>
     );
 }

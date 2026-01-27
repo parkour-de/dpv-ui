@@ -40,7 +40,9 @@
             "inactive": "Inaktiv",
             "requested": "Beantragt",
             "denied": "Abgelehnt",
-            "cancelled": "Gekündigt"
+            "cancelled": "Gekündigt",
+            "upcoming_membership": "Zukünftiges Mitglied 🚀",
+            "pending_cancellation": "Kündigung vorgemerkt ⏳"
         },
         "details": {
             "title": "Stammdaten",
@@ -65,7 +67,12 @@
                 "cancel": "Mitgliedschaft kündigen",
                 "withdraw": "Antrag zurückziehen",
                 "approve": "Genehmigen",
-                "deny": "Ablehnen"
+                "deny": "Ablehnen",
+                "apply_description": "Geben Sie an, ab wann die Mitgliedschaft beginnen soll (optional):",
+                "cancel_description": "Geben Sie an, zu wann die Mitgliedschaft enden soll (optional):",
+                "confirm": "Bestätigen",
+                "date_label": "Datum",
+                "date_format_hint": "Format: Tag.Monat.Jahr (Standard ist heute)"
             }
         },
         "documents": {
@@ -84,7 +91,11 @@
             "no_iban": "Keine IBAN hinterlegt",
             "labels": {
                 "iban": "IBAN",
+                "account_holder": "Kontoinhaber",
                 "sepa": "Mandatsreferenz"
+            },
+            "placeholders": {
+                "account_holder": "Name des Kontoinhabers"
             }
         },
         "owners": {
@@ -139,6 +150,12 @@
             "legal_form": "z.B. e.V.",
             "email": "info@verein.de",
             "address": "Strasse 1, 12345 Stadt"
+        },
+        "search": {
+            "title": "Ähnliche Vereine",
+            "description": "Um Dubletten zu vermeiden, prüfen Sie bitte, ob Ihr Verein bereits existiert:",
+            "found_matches": "Wir haben folgende ähnliche Vereine gefunden:",
+            "no_matches": "Keine ähnlichen Vereine gefunden."
         },
         "actions": {
             "cancel": "Abbrechen",
@@ -198,7 +215,7 @@
             "password_hint": "Mindestens 10 Zeichen und 8 verschiedene Zeichentypen.",
             "success": {
                 "title": "Registrierung erfolgreich!",
-                "description": "Ihr Konto wurde erstellt. Bitte überprüfen Sie Ihre E-Mails, um Ihre Adresse zu bestätigen (falls erforderlich).",
+                "description": "Ihr Konto wurde erstellt. Sie können sich ab sofort mit Ihrer E-Mail-Adresse anmelden. Wir haben Ihnen eine Bestätigungs-E-Mail gesendet.",
                 "action": "Zur Anmeldung"
             },
             "error_generic": "Registrierung fehlgeschlagen. Bitte versuchen Sie es später erneut.",
