@@ -423,14 +423,22 @@ export function ClubDetailsPage() {
                 <div className="flex items-center gap-2">
                     {!isEditing && (
                         <>
-                            {(club.membership.status === 'inactive' || club.membership.status === 'cancelled') && (
-                                <Button size="sm" onClick={() => setActionModal('apply')} disabled={formLoading}>
-                                    {club.membership.status === 'cancelled' ? t('club.details.membership.reapply') : t('club.details.membership.apply')}
-                                </Button>
-                            )}
-                            {(club.membership.status === 'requested' || club.membership.status === 'active') && (
-                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={formLoading}>
+                            {/* Membership Status Actions */}
+                            {club.membership.status === 'active' || club.membership.status === 'requested' ? (
+                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
+                                    if (club.membership.status === 'requested') {
+                                        handleAction('cancel');
+                                    } else {
+                                        setActionModal('cancel');
+                                    }
+                                }} disabled={formLoading}>
                                     {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
+                                </Button>
+                            ) : (
+                                <Button size="sm" onClick={() => setActionModal('apply')} disabled={formLoading}>
+                                    {(club.membership.status === 'cancelled' || club.membership.status === 'denied')
+                                        ? t('club.details.membership.reapply')
+                                        : t('club.details.membership.apply')}
                                 </Button>
                             )}
                             {isAdmin && club.membership.status === 'requested' && (
