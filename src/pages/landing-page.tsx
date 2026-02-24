@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { AlertCircle } from "lucide-react";
 import logoBlack from "@/assets/logo-black.svg";
 import logoWhite from "@/assets/logo-white.svg";
+import loginBg from "@/assets/login.webp";
 
 export function LandingPage() {
     const { t } = useTranslation();
@@ -46,7 +47,14 @@ export function LandingPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+        <div
+            className="min-h-screen flex flex-col items-center justify-center p-4 bg-background"
+            style={{
+                backgroundImage: `url(${loginBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+            }}
+        >
             <div className="w-full max-w-md space-y-8 text-center">
                 <div className="flex justify-center mb-8">
                     <img src={logoBlack} alt="Deutscher Parkourverband" className="dark:hidden h-20 w-auto" />

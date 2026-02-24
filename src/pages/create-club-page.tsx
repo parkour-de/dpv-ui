@@ -32,7 +32,7 @@ export function CreateClubPage() {
             if (formData.name.length >= 3 && token) {
                 setSearching(true);
                 try {
-                    const results = await api.get<Club[]>(`/search/clubs?q=${encodeURIComponent(formData.name)}`, token);
+                    const results = await api.get<Club[]>(`/clubs/search?q=${encodeURIComponent(formData.name)}`, token);
                     setSearchResults(results || []);
                 } catch (err) {
                     console.error("Search failed", err);

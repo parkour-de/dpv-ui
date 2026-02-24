@@ -73,4 +73,5 @@ export interface User {
     lastname: string;
     roles: string[];
     language?: string;
+    membership?: Membership;
 }

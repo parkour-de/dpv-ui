@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PaymentDetails } from "@/components/payment-details";
 
 export function ClubDetailsPage() {
     const { t } = useTranslation();
@@ -37,12 +38,6 @@ export function ClubDetailsPage() {
     const [documents, setDocuments] = useState<Document[]>([]);
     const [uploading, setUploading] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-    // Payment details state
-    // We merge these into formData when editing, but keep them for view mode
-    const [viewPaymentDetails, setViewPaymentDetails] = useState<{ iban: string; account_holder?: string; sepa_mandate_number?: string } | null>(null);
-    const [loadingPayment, setLoadingPayment] = useState(false);
-    const [showPaymentDetails, setShowPaymentDetails] = useState(false);
 
     // Owner management
     const [newOwnerEmail, setNewOwnerEmail] = useState("");
@@ -77,7 +72,7 @@ export function ClubDetailsPage() {
     const fetchClub = useCallback(async () => {
         if (!id || !token) return;
         try {
-            const data = await api.get<Club>(`/clubs/${id}`, token);
+            const data = await api.get<Club>(`/club/${id}`, token);
             setClub(data);
             // Initialize form data (without payment initially)
             setFormData(p => ({
@@ -104,7 +99,7 @@ export function ClubDetailsPage() {
         const fetchDocuments = async () => {
             if (!id || !token) return;
             try {
-                const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
+                const docs = await api.get<Document[]>(`/club/${id}/documents`, token);
                 setDocuments(docs);
             } catch (err) {
                 console.error("Failed to load documents", err);
@@ -114,32 +109,7 @@ export function ClubDetailsPage() {
         fetchClub();
         fetchDocuments();
     }, [id, token, fetchClub]);
-
-    // Fetch payment details helper
-    const fetchPayment = useCallback(async () => {
-        if (!id || !token) return null;
-        try {
-            const details = await api.get<{ iban: string; account_holder?: string; sepa_mandate_number?: string }>(`/clubs/${id}/payment-details`, token);
-            setViewPaymentDetails(details);
-            return details;
-        } catch (err) {
-            console.error(err);
-            // Ignore error if 403 or similar in some cases, but generally warn
-            // actually invalid permission might occur if not admin/owner
-            return null;
-        }
-    }, [id, token]);
-
-
     // Toggle view handler
-    const handleShowPaymentDetails = async () => {
-        if (!showPaymentDetails && !viewPaymentDetails) {
-            setLoadingPayment(true);
-            await fetchPayment();
-            setLoadingPayment(false);
-        }
-        setShowPaymentDetails(!showPaymentDetails);
-    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -155,10 +125,10 @@ export function ClubDetailsPage() {
         formData.append("document", selectedFile);
 
         try {
-            await api.upload(`/clubs/${id}/documents`, formData, token);
+            await api.upload(`/club/${id}/documents`, formData, token);
             setSelectedFile(null);
             // Refresh documents
-            const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
+            const docs = await api.get<Document[]>(`/club/${id}/documents`, token);
             setDocuments(docs);
             const fileInput = document.getElementById('document-upload') as HTMLInputElement;
             if (fileInput) fileInput.value = '';
@@ -179,7 +149,7 @@ export function ClubDetailsPage() {
         setUploadError(null);
         try {
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
-            const res = await fetch(`${API_BASE}/clubs/${id}/documents/${filename}`, {
+            const res = await fetch(`${API_BASE}/club/${id}/documents/${filename}`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
             if (!res.ok) {
@@ -211,7 +181,7 @@ export function ClubDetailsPage() {
         setUploadError(null);
         try {
             const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
-            const res = await fetch(`${API_BASE}/clubs/${id}/download-documents`, {
+            const res = await fetch(`${API_BASE}/club/${id}/download-documents`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
             if (!res.ok) {
@@ -243,7 +213,7 @@ export function ClubDetailsPage() {
         setFormLoading(true);
         setActionError(null);
         try {
-            await api.post(`/clubs/${id}/${action}`, extraData || {}, token);
+            await api.post(`/club/${id}/${action}`, extraData || {}, token);
             await fetchClub(); // refresh
             setActionModal(null);
         } catch (err: unknown) {
@@ -276,9 +246,9 @@ export function ClubDetailsPage() {
         if (!confirm(t('club.messages.delete_confirm'))) return;
 
         try {
-            await api.delete(`/clubs/${id}/documents/${filename}`, token);
+            await api.delete(`/club/${id}/documents/${filename}`, token);
             // Refresh documents
-            const docs = await api.get<Document[]>(`/clubs/${id}/documents`, token);
+            const docs = await api.get<Document[]>(`/club/${id}/documents`, token);
             setDocuments(docs);
         } catch (err: unknown) {
             console.error(err);
@@ -296,7 +266,7 @@ export function ClubDetailsPage() {
         setOwnerLoading(true);
         setOwnerError(null);
         try {
-            await api.post(`/clubs/${id}/owners`, { email: newOwnerEmail }, token);
+            await api.post(`/club/${id}/owners`, { email: newOwnerEmail }, token);
             setNewOwnerEmail("");
             await fetchClub();
         } catch (err: unknown) {
@@ -317,7 +287,7 @@ export function ClubDetailsPage() {
         setOwnerLoading(true);
         setOwnerError(null);
         try {
-            await api.delete(`/clubs/${id}/owners/${userKey}`, token);
+            await api.delete(`/club/${id}/owners/${userKey}`, token);
             await fetchClub();
         } catch (err: unknown) {
             console.error(err);
@@ -338,7 +308,7 @@ export function ClubDetailsPage() {
         setFormLoading(true);
         setActionError(null);
         try {
-            await api.delete(`/clubs/${id}`, token);
+            await api.delete(`/club/${id}`, token);
             navigate("/dashboard");
         } catch (err: unknown) {
             console.error(err);
@@ -357,7 +327,7 @@ export function ClubDetailsPage() {
         setFormLoading(true);
         setFormError(null);
         try {
-            await api.patch<Club>(`/clubs/${id}`, formData, token);
+            await api.patch<Club>(`/club/${id}`, formData, token);
             await fetchClub();
             setIsEditing(false);
         } catch (err: unknown) {
@@ -455,11 +425,9 @@ export function ClubDetailsPage() {
                                 setIsEditing(true);
                                 setFormError(null);
                                 // Clear payment fields in edit mode to avoid overwriting with masked values
+                                // We don't populate here, because PaymentDetails auto-fetches them on mount if we're authorized!
                                 setFormData(prev => ({
-                                    ...prev,
-                                    iban: viewPaymentDetails?.iban,
-                                    account_holder: viewPaymentDetails?.account_holder,
-                                    sepa_mandate_number: viewPaymentDetails?.sepa_mandate_number
+                                    ...prev
                                 }));
                             }}>
                                 {t('club.details.actions.edit')}
@@ -552,69 +520,40 @@ export function ClubDetailsPage() {
                 </Card>
 
                 {/* Payment Details in Form or Separate? If editing, we show fields here. */}
-                {isEditing ? (
-                    <Card className="mt-6">
-                        <CardHeader>
-                            <CardTitle>{t('club.payment.edit_title')}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="iban">{t('club.payment.labels.iban')}</Label>
-                                    <Input
-                                        id="iban"
-                                        value={formData.iban || ''}
-                                        onChange={(e) => setFormData(p => ({ ...p, iban: e.target.value }))}
-                                        placeholder="DE..."
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="account_holder">{t('club.payment.labels.account_holder')}</Label>
-                                    <Input
-                                        id="account_holder"
-                                        value={formData.account_holder || ''}
-                                        onChange={(e) => setFormData(p => ({ ...p, account_holder: e.target.value }))}
-                                        placeholder={t('club.payment.placeholders.account_holder')}
-                                    />
-                                </div>
-                                {isAdmin && (
-                                    <div className="space-y-2">
-                                        <Label htmlFor="sepa">{t('club.payment.labels.sepa')}</Label>
-                                        <Input
-                                            id="sepa"
-                                            value={formData.sepa_mandate_number || ''}
-                                            onChange={(e) => setFormData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        </CardContent>
-                        <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
-                            <Button type="button" variant="ghost" onClick={() => {
-                                setIsEditing(false);
-                                setFormError(null);
-                                setFormData({
-                                    name: club.name,
-                                    legal_form: club.legal_form,
-                                    email: club.email,
-                                    address: club.membership.address,
-                                    contact_person: club.contact_person,
-                                    // Reset payment fields
-                                    iban: undefined,
-                                    account_holder: undefined,
-                                    sepa_mandate_number: undefined
-                                });
-                            }}>
-                                {t('club.details.actions.cancel')}
-                            </Button>
-                            <Button type="submit" disabled={formLoading}>
-                                <Save className="mr-2 h-4 w-4" /> {t('club.details.actions.save')}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ) : (
-                    /* View Mode: Documents & Payment & Owners Cards */
-                    null
+                {isEditing && (
+                    <PaymentDetails
+                        token={token!}
+                        fetchUrl={`/club/${id}/payment-details`}
+                        isAdmin={isAdmin}
+                        isReadOnly={false}
+                        alwaysOpen={true}
+                        formData={formData}
+                        onChange={(field, val) => setFormData(p => ({ ...p, [field]: val }))}
+                    />
+                )}
+
+                {isEditing && (
+                    <div className="flex justify-end gap-2 mt-6">
+                        <Button type="button" variant="ghost" onClick={() => {
+                            setIsEditing(false);
+                            setFormError(null);
+                            setFormData({
+                                name: club.name,
+                                legal_form: club.legal_form,
+                                email: club.email,
+                                address: club.membership.address,
+                                contact_person: club.contact_person,
+                                iban: undefined,
+                                account_holder: undefined,
+                                sepa_mandate_number: undefined
+                            });
+                        }}>
+                            {t('club.details.actions.cancel')}
+                        </Button>
+                        <Button type="submit" disabled={formLoading}>
+                            <Save className="mr-2 h-4 w-4" /> {t('club.details.actions.save')}
+                        </Button>
+                    </div>
                 )}
             </form>
 
@@ -697,65 +636,13 @@ export function ClubDetailsPage() {
                     </Card>
 
                     {/* Payment Details (View Only) */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t('club.payment.title')}</CardTitle>
-                            <CardDescription>{t('club.payment.description')}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            {!showPaymentDetails ? (
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={handleShowPaymentDetails}
-                                    disabled={loadingPayment}
-                                >
-                                    {loadingPayment ? (
-                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    ) : null}
-                                    {t('club.payment.show')}
-                                </Button>
-                            ) : (
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label>{t('club.payment.labels.iban')}</Label>
-                                        <Input
-                                            value={viewPaymentDetails?.iban || ''}
-                                            disabled
-                                            className="bg-muted font-mono"
-                                            placeholder={t('club.payment.no_iban')}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>{t('club.payment.labels.account_holder')}</Label>
-                                        <Input
-                                            value={viewPaymentDetails?.account_holder || ''}
-                                            disabled
-                                            className="bg-muted"
-                                        />
-                                    </div>
-                                    {isAdmin && viewPaymentDetails?.sepa_mandate_number && (
-                                        <div className="mt-2 space-y-2">
-                                            <Label>{t('club.payment.labels.sepa')}</Label>
-                                            <Input
-                                                value={viewPaymentDetails.sepa_mandate_number}
-                                                disabled
-                                                className="bg-muted"
-                                            />
-                                        </div>
-                                    )}
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setShowPaymentDetails(false)}
-                                    >
-                                        {t('club.payment.hide')}
-                                    </Button>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
+                    <PaymentDetails
+                        token={token!}
+                        fetchUrl={`/club/${id}/payment-details`}
+                        isAdmin={isAdmin}
+                        isReadOnly={true}
+                        alwaysOpen={false}
+                    />
 
                     {/* Vorstand / Owners */}
                     <Card>
@@ -874,7 +761,7 @@ export function ClubDetailsPage() {
                                             const formData = new FormData();
                                             formData.append("file", fileInput.files[0]);
                                             try {
-                                                await api.uploadPut(`/clubs/${id}/census/${yearInput.value}`, formData, token || undefined);
+                                                await api.uploadPut(`/club/${id}/census/${yearInput.value}`, formData, token || undefined);
                                                 fileInput.value = '';
                                                 await fetchClub(); // Refresh list
                                             } catch (err: unknown) {
@@ -911,7 +798,7 @@ export function ClubDetailsPage() {
                                                             // Fetch if not present
                                                             if (!censusDetails[c.year] && !censusFetchErrors[c.year]) {
                                                                 try {
-                                                                    const data = await api.get<Census>(`/clubs/${id}/census/${c.year}`, token || undefined);
+                                                                    const data = await api.get<Census>(`/club/${id}/census/${c.year}`, token || undefined);
                                                                     setCensusDetails(prev => ({ ...prev, [c.year]: data }));
                                                                     setCensusFetchErrors(prev => {
                                                                         const updated = { ...prev };
