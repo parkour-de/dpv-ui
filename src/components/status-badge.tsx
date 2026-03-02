@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { type Membership, CLUB_STATUS_COLORS } from "@/types";
@@ -9,11 +10,11 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ membership, className }: StatusBadgeProps) {
     const { t } = useTranslation();
+    const [now] = useState(() => Math.floor(Date.now() / 1000));
 
     if (!membership) return null;
 
     const { status, begin_date, end_date } = membership;
-    const now = Math.floor(Date.now() / 1000);
 
     let labelKey = `club.status.${status}`;
 
