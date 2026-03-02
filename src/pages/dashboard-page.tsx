@@ -6,8 +6,9 @@ import { api, ApiError } from "@/lib/api";
 import { type Club, CLUB_STATUS_COLORS, type ClubStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Plus, Filter, AlertCircle } from "lucide-react";
+import { Filter, Plus, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { StatusBadge } from "@/components/status-badge";
 
 export function DashboardPage() {
     const { t } = useTranslation();
@@ -63,22 +64,6 @@ export function DashboardPage() {
         acc[status].push(club);
         return acc;
     }, {} as Record<string, Club[]>);
-
-    const StatusBadge = ({ club }: { club: Club }) => {
-        const { status, begin_date, end_date } = club.membership;
-        const now = Math.floor(Date.now() / 1000);
-        let labelKey = `club.status.${status}`;
-        if (status === 'active' && begin_date && begin_date > now) {
-            labelKey = 'club.status.upcoming_membership';
-        } else if (status === 'cancelled' && end_date && end_date > now) {
-            labelKey = 'club.status.pending_cancellation';
-        }
-        return (
-            <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap", CLUB_STATUS_COLORS[status])}>
-                {t(labelKey)}
-            </span>
-        );
-    };
 
     return (
         <div className="space-y-6">
@@ -153,7 +138,7 @@ export function DashboardPage() {
                                                         <p className="text-sm text-muted-foreground">{club.legal_form}</p>
                                                     </div>
                                                 </div>
-                                                <StatusBadge club={club} />
+                                                <StatusBadge membership={club.membership} />
                                             </div>
                                         </CardHeader>
                                         <CardContent>
@@ -190,7 +175,7 @@ export function DashboardPage() {
                                                                     <p className="text-sm text-muted-foreground">{club.legal_form}</p>
                                                                 </div>
                                                             </div>
-                                                            <StatusBadge club={club} />
+                                                            <StatusBadge membership={club.membership} />
                                                         </div>
                                                     </CardHeader>
                                                     <CardContent>

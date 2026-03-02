@@ -1,0 +1,31 @@
+import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
+import { type Membership, CLUB_STATUS_COLORS } from "@/types";
+
+interface StatusBadgeProps {
+    membership?: Membership;
+    className?: string; // Additional classes
+}
+
+export function StatusBadge({ membership, className }: StatusBadgeProps) {
+    const { t } = useTranslation();
+
+    if (!membership) return null;
+
+    const { status, begin_date, end_date } = membership;
+    const now = Math.floor(Date.now() / 1000);
+
+    let labelKey = `club.status.${status}`;
+
+    if (status === 'active' && begin_date && begin_date > now) {
+        labelKey = 'club.status.upcoming_membership';
+    } else if (status === 'cancelled' && end_date && end_date > now) {
+        labelKey = 'club.status.pending_cancellation';
+    }
+
+    return (
+        <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap", CLUB_STATUS_COLORS[status], className)}>
+            {t(labelKey)}
+        </span>
+    );
+}
