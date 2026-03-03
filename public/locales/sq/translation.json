@@ -5,6 +5,9 @@
         "portal_name": "Portali i Anëtarëve",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "Gabim në rrjet"
+    },
     "layout": {
         "nav": {
             "dashboard": "Paneli",
@@ -32,6 +35,12 @@
         "loading": "Duke ngarkuar klubet...",
         "club_card": {
             "no_address": "Pa adresë"
+        },
+        "admin": {
+            "title": "Zona e Administratorit",
+            "description": "Menaxhoni aplikimet dhe përdoruesit në të gjithë portalin.",
+            "users_button": "Menaxhimi i Përdoruesve",
+            "audit_button": "Regjistri i Aktivitetit"
         }
     },
     "club": {

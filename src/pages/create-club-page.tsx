@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { api, ApiError } from "@/lib/api";
+import { api, getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -68,11 +68,7 @@ export function CreateClubPage() {
             navigate("/dashboard");
         } catch (err: unknown) {
             console.error(err);
-            if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
-            } else {
-                setError(t('create_club.errors.create_failed'));
-            }
+            setError(getErrorMessage(err, t));
         } finally {
             setLoading(false);
         }

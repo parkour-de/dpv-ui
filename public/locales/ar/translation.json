@@ -5,6 +5,9 @@
         "portal_name": "بوابة الأعضاء",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "خطأ في الشبكة"
+    },
     "layout": {
         "nav": {
             "dashboard": "لوحة التحكم",
@@ -32,6 +35,12 @@
         "loading": "جاري تحميل الأندية...",
         "club_card": {
             "no_address": "لا يوجد عنوان"
+        },
+        "admin": {
+            "title": "منطقة الإدارة",
+            "description": "إدارة الطلبات والمستخدمين عبر البوابة بأكملها.",
+            "users_button": "إدارة المستخدمين",
+            "audit_button": "سجل النشاط"
         }
     },
     "club": {

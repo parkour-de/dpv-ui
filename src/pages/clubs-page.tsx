@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api, ApiError } from "@/lib/api";
+import { api, getErrorMessage } from "@/lib/api";
 import { type Club, CLUB_STATUS_COLORS, type ClubStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -45,11 +45,7 @@ export function ClubsPage() {
                 }
             } catch (err: unknown) {
                 console.error("Failed to fetch clubs", err);
-                if (err instanceof ApiError && err.data?.message) {
-                    setError(err.data.message);
-                } else {
-                    setError(t('dashboard.errors.load_failed'));
-                }
+                setError(getErrorMessage(err, t));
             } finally {
                 setLoading(false);
             }

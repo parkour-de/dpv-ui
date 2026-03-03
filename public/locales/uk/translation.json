@@ -5,6 +5,9 @@
         "portal_name": "Портал учасників",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "Помилка мережі"
+    },
     "layout": {
         "nav": {
             "dashboard": "Панель",
@@ -32,6 +35,12 @@
         "loading": "Завантаження клубів...",
         "club_card": {
             "no_address": "Немає адреси"
+        },
+        "admin": {
+            "title": "Панель Адміністратора",
+            "description": "Керування заявками та користувачами на всьому порталі.",
+            "users_button": "Управління Користувачами",
+            "audit_button": "Журнал Активності"
         }
     },
     "club": {

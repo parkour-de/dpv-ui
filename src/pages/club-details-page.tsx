@@ -164,7 +164,7 @@ export function ClubDetailsPage() {
         if (!id || !token) return;
         setUploadError(null);
         try {
-            const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || '/dpv';
             const res = await fetch(`${API_BASE}/club/${id}/documents/${filename}`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
@@ -196,7 +196,7 @@ export function ClubDetailsPage() {
         if (!id || !token) return;
         setUploadError(null);
         try {
-            const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || '/dpv';
             const res = await fetch(`${API_BASE}/club/${id}/download-documents`, {
                 headers: { 'Authorization': `Basic ${token}` }
             });
@@ -846,7 +846,7 @@ export function ClubDetailsPage() {
                                 <CardDescription>{t('club.census.description')}</CardDescription>
                             </div>
                             <Button variant="outline" size="sm" onClick={() => {
-                                const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/dpv';
+                                const API_BASE = import.meta.env.VITE_API_BASE_URL || '/dpv';
                                 window.location.href = `${API_BASE}/census/sample`;
                             }}>
                                 <Download className="h-4 w-4 mr-2" /> {t('club.census.download_sample')}

@@ -28,6 +28,7 @@ export interface Membership {
     membership_number?: string;
     current_fee?: number;
     current_votes?: number;
+    type?: string;
 }
 
 export interface Club {

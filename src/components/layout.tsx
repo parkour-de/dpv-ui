@@ -12,6 +12,8 @@ export function Layout() {
     const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const isTestEnv = import.meta.env.VITE_TEST_ENVIRONMENT === 'true';
+
     const handleLogout = () => {
         logout();
         navigate("/");
@@ -35,9 +37,18 @@ export function Layout() {
                                 className="hidden dark:block h-[58px] sm:h-[62px] max-w-none absolute left-0 top-1/2 -translate-y-1/2 transition-transform duration-200 group-hover:scale-[1.02]"
                             />
                         </Link>
-                        <span className="hidden lg:inline-block font-medium text-primary self-center border-l border-border pl-4 h-6 flex items-center uppercase tracking-widest text-[10px]">
-                            {t('app.portal_name')}
-                        </span>
+                        {isTestEnv ? (
+                            <span
+                                className="hidden lg:inline-flex font-bold self-center border-l border-border pl-4 h-6 items-center uppercase tracking-widest text-[12px] animate-pulse"
+                                style={{ color: "color(display-p3 1 0 0)" }}
+                            >
+                                TESTSYSTEM
+                            </span>
+                        ) : (
+                            <span className="hidden lg:inline-flex font-medium text-primary self-center border-l border-border pl-4 h-6 items-center uppercase tracking-widest text-[10px]">
+                                {t('app.portal_name')}
+                            </span>
+                        )}
                     </div>
 
                     <nav className="hidden md:flex items-center gap-8">

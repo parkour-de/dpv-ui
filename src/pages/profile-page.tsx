@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api, ApiError } from "@/lib/api";
+import { api, getErrorMessage } from "@/lib/api";
 import { type User, type Club } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Check, Loader2 } from "lucide-react";
+import { MembershipStatus } from "@/components/membership-status";
 import { PaymentDetails } from "@/components/payment-details";
 
 export function ProfilePage() {
@@ -22,6 +24,12 @@ export function ProfilePage() {
     const [actionDate, setActionDate] = useState<string>(new Date().toISOString().split('T')[0]);
     const [actionError, setActionError] = useState<string | null>(null);
     const [actionLoading, setActionLoading] = useState(false);
+
+    const [searchParams] = useSearchParams();
+    const typeQuery = searchParams.get("type");
+    const [applyType, setApplyType] = useState<'active' | 'supporting'>(typeQuery === "supporting" ? "supporting" : "active");
+    const [applyFee, setApplyFee] = useState<number>(30);
+
     const [consents, setConsents] = useState({
         privacy: false,
         accuracy: false,
@@ -99,7 +107,9 @@ export function ProfilePage() {
                 consent_privacy: consents.privacy,
                 consent_accuracy: consents.accuracy,
                 consent_statutes: consents.statutes,
-                consent_finances: consents.finances
+                consent_finances: consents.finances,
+                type: applyType,
+                fee: applyType === 'supporting' ? applyFee : 10
             }
             : { end_date: unixSeconds };
 
@@ -111,11 +121,7 @@ export function ProfilePage() {
             setActionModal(null);
         } catch (err: unknown) {
             console.error(err);
-            if (err instanceof ApiError && err.data?.message) {
-                setActionError(err.data.message);
-            } else {
-                setActionError(t('profile.messages.error_save'));
-            }
+            setActionError(getErrorMessage(err, t));
         } finally {
             setActionLoading(false);
         }
@@ -161,11 +167,7 @@ export function ProfilePage() {
             setMessage(messages.join(" "));
             setError(null); // Clear any previous errors on success
         } catch (err: unknown) {
-            if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
-            } else {
-                setError(t('profile.messages.error_save'));
-            }
+            setError(getErrorMessage(err, t));
         } finally {
             setLoading(false);
         }
@@ -324,79 +326,32 @@ export function ProfilePage() {
                         </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-md bg-muted/20">
-                        <div className="space-y-1">
-                            <p className="font-medium">DPV Mitgliedschaft</p>
-                            <div className="flex flex-wrap items-center gap-2">
-                                {(() => {
-                                    const status = user.membership?.status || 'inactive';
-                                    const { begin_date, end_date } = user.membership || {};
-                                    const now = Math.floor(Date.now() / 1000);
+                    <div className="p-4 border rounded-md bg-muted/20">
+                        <MembershipStatus membership={user?.membership} />
+                    </div>
 
-                                    // Use standard badge colors for membership
-                                    const badgeColors: Record<string, string> = {
-                                        active: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-                                        inactive: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
-                                        requested: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-                                        denied: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-                                        cancelled: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
-                                    };
-
-                                    let badgeColor = badgeColors[status] || badgeColors.inactive;
-                                    let label: string = status;
-
-                                    if (status === 'active' && begin_date && begin_date > now) {
-                                        label = 'Anstehend';
-                                        badgeColor = badgeColors.requested;
-                                    } else if (status === 'cancelled' && end_date && end_date > now) {
-                                        label = 'Gekündigt';
-                                        badgeColor = badgeColors.cancelled;
+                    <div className="flex justify-end mt-4">
+                        {(user?.membership?.status === 'active' || user?.membership?.status === 'requested') ? (
+                            <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
+                                if (user?.membership?.status === 'requested') {
+                                    if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
+                                        handleMembershipAction('cancel');
                                     }
-
-                                    return (
-                                        <>
-                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${badgeColor}`}>
-                                                {label.charAt(0).toUpperCase() + label.slice(1)}
-                                            </span>
-                                            {begin_date ? (
-                                                <span className="text-xs text-muted-foreground mr-2 font-mono">
-                                                    seit {new Date(begin_date * 1000).toLocaleDateString()}
-                                                </span>
-                                            ) : null}
-                                            {end_date ? (
-                                                <span className="text-xs font-bold text-destructive font-mono">
-                                                    Gekündigt zum {new Date(end_date * 1000).toLocaleDateString()}
-                                                </span>
-                                            ) : null}
-                                        </>
-                                    );
-                                })()}
-                            </div>
-                        </div>
-
-                        <div className="mt-4 sm:mt-0">
-                            {(user.membership?.status === 'active' || user.membership?.status === 'requested') ? (
-                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
-                                    if (user.membership?.status === 'requested') {
-                                        if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
-                                            handleMembershipAction('cancel');
-                                        }
-                                    } else {
-                                        setActionModal('cancel');
-                                    }
-                                }} disabled={actionLoading}>
-                                    {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                    {user.membership?.status === 'active' ? 'Kündigen' : 'Antrag zurückziehen'}
-                                </Button>
-                            ) : (
-                                <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>
-                                    {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                    {(user.membership?.status === 'cancelled' || user.membership?.status === 'denied')
-                                        ? 'Erneut beantragen'
-                                        : 'Mitgliedschaft beantragen'}
-                                </Button>
-                            )}
-                        </div>
+                                } else {
+                                    setActionModal('cancel');
+                                }
+                            }} disabled={actionLoading}>
+                                {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                {user?.membership?.status === 'active' ? 'Kündigen' : 'Antrag zurückziehen'}
+                            </Button>
+                        ) : (
+                            <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>
+                                {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                {(user?.membership?.status === 'cancelled' || user?.membership?.status === 'denied')
+                                    ? 'Erneut beantragen'
+                                    : 'Mitgliedschaft beantragen'}
+                            </Button>
+                        )}
                     </div>
                 </CardContent>
             </Card>
@@ -411,7 +366,7 @@ export function ProfilePage() {
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
-                            <Input value={user.membership?.membership_number || ''} disabled />
+                            <Input value={user?.membership?.membership_number || ''} disabled />
                         </div>
                         <div className="space-y-2">
                             <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
@@ -423,78 +378,108 @@ export function ProfilePage() {
             </Card>
 
             {/* Action Modal equivalent inline */}
-            {actionModal && (
-                <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md shadow-lg border">
-                        <CardHeader>
-                            <CardTitle>
-                                {actionModal === 'apply' ? 'Mitgliedschaft beantragen' : 'Mitgliedschaft kündigen'}
-                            </CardTitle>
-                            <CardDescription>
-                                {actionModal === 'apply'
-                                    ? 'Bitte wähle aus, ab wann du aktiv werden möchtest.'
-                                    : 'Bitte wähle aus, zu wann du kündigen möchtest.'}
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {actionModal === 'cancel' ? (
-                                <div className="space-y-2">
-                                    <Label htmlFor="actionDate">Ende (Optional)</Label>
-                                    <Input
-                                        id="actionDate"
-                                        type="date"
-                                        value={actionDate}
-                                        onChange={(e) => setActionDate(e.target.value)}
-                                    />
-                                    <p className="text-xs text-muted-foreground pt-1">
-                                        Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam.
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="space-y-3 pt-2">
-                                    <div className="flex items-start space-x-2">
-                                        <input type="checkbox" id="consent-privacy" className="mt-1" checked={consents.privacy} onChange={(e) => setConsents(p => ({ ...p, privacy: e.target.checked }))} />
-                                        <Label htmlFor="consent-privacy" className="text-sm font-normal leading-snug">
-                                            {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
-                                        </Label>
+            {
+                actionModal && (
+                    <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+                        <Card className="w-full max-w-md shadow-lg border">
+                            <CardHeader>
+                                <CardTitle>
+                                    {actionModal === 'apply' ? 'Mitgliedschaft beantragen' : 'Mitgliedschaft kündigen'}
+                                </CardTitle>
+                                <CardDescription>
+                                    {actionModal === 'apply'
+                                        ? 'Bitte wähle aus, ab wann du aktiv werden möchtest.'
+                                        : 'Bitte wähle aus, zu wann du kündigen möchtest.'}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                {actionModal === 'cancel' ? (
+                                    <div className="space-y-2">
+                                        <Label htmlFor="actionDate">Ende (Optional)</Label>
+                                        <Input
+                                            id="actionDate"
+                                            type="date"
+                                            value={actionDate}
+                                            onChange={(e) => setActionDate(e.target.value)}
+                                        />
+                                        <p className="text-xs text-muted-foreground pt-1">
+                                            Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam.
+                                        </p>
                                     </div>
-                                    <div className="flex items-start space-x-2">
-                                        <input type="checkbox" id="consent-accuracy" className="mt-1" checked={consents.accuracy} onChange={(e) => setConsents(p => ({ ...p, accuracy: e.target.checked }))} />
-                                        <Label htmlFor="consent-accuracy" className="text-sm font-normal leading-snug">
-                                            {t('club.details.membership.consent_accuracy', { defaultValue: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' })}
-                                        </Label>
+                                ) : (
+                                    <div className="space-y-4 pt-2">
+                                        <div className="space-y-2 border-b pb-4">
+                                            <Label>Art der Mitgliedschaft</Label>
+                                            <div className="flex flex-col gap-2">
+                                                <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                                    <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
+                                                    Aktivmitgliedschaft (10 € / Jahr)
+                                                </Label>
+                                                <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                                    <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
+                                                    Fördernde Mitgliedschaft
+                                                </Label>
+                                            </div>
+                                        </div>
+                                        {applyType === 'supporting' && (
+                                            <div className="space-y-2 animate-in fade-in pb-2">
+                                                <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
+                                                <Input
+                                                    id="customFee"
+                                                    type="number"
+                                                    min="1"
+                                                    step="1"
+                                                    value={applyFee}
+                                                    onChange={(e) => setApplyFee(Number(e.target.value))}
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="space-y-3">
+                                            <div className="flex items-start space-x-2">
+                                                <input type="checkbox" id="consent-privacy" className="mt-1" checked={consents.privacy} onChange={(e) => setConsents(p => ({ ...p, privacy: e.target.checked }))} />
+                                                <Label htmlFor="consent-privacy" className="text-sm font-normal leading-snug">
+                                                    {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
+                                                </Label>
+                                            </div>
+                                            <div className="flex items-start space-x-2">
+                                                <input type="checkbox" id="consent-accuracy" className="mt-1" checked={consents.accuracy} onChange={(e) => setConsents(p => ({ ...p, accuracy: e.target.checked }))} />
+                                                <Label htmlFor="consent-accuracy" className="text-sm font-normal leading-snug">
+                                                    {t('club.details.membership.consent_accuracy', { defaultValue: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' })}
+                                                </Label>
+                                            </div>
+                                            <div className="flex items-start space-x-2">
+                                                <input type="checkbox" id="consent-statutes" className="mt-1" checked={consents.statutes} onChange={(e) => setConsents(p => ({ ...p, statutes: e.target.checked }))} />
+                                                <Label htmlFor="consent-statutes" className="text-sm font-normal leading-snug">
+                                                    Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Satzung</a> gelesen und erkenne sie an.
+                                                </Label>
+                                            </div>
+                                            <div className="flex items-start space-x-2">
+                                                <input type="checkbox" id="consent-finances" className="mt-1" checked={consents.finances} onChange={(e) => setConsents(p => ({ ...p, finances: e.target.checked }))} />
+                                                <Label htmlFor="consent-finances" className="text-sm font-normal leading-snug">
+                                                    Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Beitragsordnung</a> gelesen und erkenne sie an.
+                                                </Label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-start space-x-2">
-                                        <input type="checkbox" id="consent-statutes" className="mt-1" checked={consents.statutes} onChange={(e) => setConsents(p => ({ ...p, statutes: e.target.checked }))} />
-                                        <Label htmlFor="consent-statutes" className="text-sm font-normal leading-snug">
-                                            Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Satzung</a> gelesen und erkenne sie an.
-                                        </Label>
-                                    </div>
-                                    <div className="flex items-start space-x-2">
-                                        <input type="checkbox" id="consent-finances" className="mt-1" checked={consents.finances} onChange={(e) => setConsents(p => ({ ...p, finances: e.target.checked }))} />
-                                        <Label htmlFor="consent-finances" className="text-sm font-normal leading-snug">
-                                            Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Beitragsordnung</a> gelesen und erkenne sie an.
-                                        </Label>
-                                    </div>
-                                </div>
-                            )}
-                        </CardContent>
-                        <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
-                            <Button variant="ghost" onClick={() => setActionModal(null)} disabled={actionLoading}>
-                                {t('club.details.actions.cancel', { defaultValue: 'Abbrechen' })}
-                            </Button>
-                            <Button
-                                variant={actionModal === 'apply' ? 'default' : 'destructive'}
-                                onClick={() => handleMembershipAction(actionModal)}
-                                disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
-                            >
-                                {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) : t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' })}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                </div>
-            )}
-        </div>
+                                )}
+                            </CardContent>
+                            <CardFooter className="justify-end gap-2 bg-muted/20 py-4">
+                                <Button variant="ghost" onClick={() => setActionModal(null)} disabled={actionLoading}>
+                                    {t('club.details.actions.cancel', { defaultValue: 'Abbrechen' })}
+                                </Button>
+                                <Button
+                                    variant={actionModal === 'apply' ? 'default' : 'destructive'}
+                                    onClick={() => handleMembershipAction(actionModal)}
+                                    disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
+                                >
+                                    {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) : t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' })}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                )
+            }
+        </div >
     );
 }

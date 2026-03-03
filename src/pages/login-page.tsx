@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api, ApiError } from "@/lib/api";
+import { api, ApiError, getErrorMessage } from "@/lib/api";
 import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ export function LoginPage() {
             if (err instanceof ApiError && err.data?.message) {
                 setError(err.data.message);
             } else {
-                setError(t('auth.login.error_generic'));
+                setError(getErrorMessage(err, t));
             }
         } finally {
             setLoading(false);

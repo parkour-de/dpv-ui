@@ -5,6 +5,9 @@
         "portal_name": "Portal Membri",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "Eroare de rețea"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panou",
@@ -32,6 +35,12 @@
         "loading": "Se încarcă cluburile...",
         "club_card": {
             "no_address": "Fără adresă"
+        },
+        "admin": {
+            "title": "Zona de Administrare",
+            "description": "Gestionați cererile și utilizatorii în întregul portal.",
+            "users_button": "Managementul Utilizatorilor",
+            "audit_button": "Jurnal de Activitate"
         }
     },
     "club": {

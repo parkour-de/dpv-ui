@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { api, ApiError } from "@/lib/api";
+import { api, getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,11 +35,7 @@ export function RegisterPage() {
             setSuccess(true);
         } catch (err: unknown) {
             console.error(err);
-            if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
-            } else {
-                setError(t('auth.register.error_generic'));
-            }
+            setError(getErrorMessage(err, t));
         } finally {
             setLoading(false);
         }

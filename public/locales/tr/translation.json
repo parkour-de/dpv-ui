@@ -5,6 +5,9 @@
         "portal_name": "Üye Portalı",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "Ağ hatası"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panel",
@@ -32,6 +35,12 @@
         "loading": "Kulüpler yükleniyor...",
         "club_card": {
             "no_address": "Adres yok"
+        },
+        "admin": {
+            "title": "Yönetici Alanı",
+            "description": "Tüm portaldeki başvuruları ve kullanıcıları yönetin.",
+            "users_button": "Kullanıcı Yönetimi",
+            "audit_button": "Etkinlik Günlüğü"
         }
     },
     "club": {

@@ -5,6 +5,9 @@
         "portal_name": "Member Portal",
         "copyright": "Deutscher Parkour Verband e.V."
     },
+    "errors": {
+        "network": "Network error"
+    },
     "layout": {
         "nav": {
             "dashboard": "Dashboard",
@@ -32,6 +35,12 @@
         "loading": "Loading clubs...",
         "club_card": {
             "no_address": "No address"
+        },
+        "admin": {
+            "title": "Admin Area",
+            "description": "Manage applications and users across the entire portal.",
+            "users_button": "User Management",
+            "audit_button": "Activity Log"
         }
     },
     "club": {

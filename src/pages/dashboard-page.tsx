@@ -54,7 +54,7 @@ export function DashboardPage() {
                 </Card>
 
                 {/* Fördernde Mitgliedschaft */}
-                <Card className="bg-background/95 backdrop-blur shadow-md flex flex-col opacity-80 text-left">
+                <Card className="bg-background/95 backdrop-blur shadow-md flex flex-col text-left">
                     <CardHeader>
                         <CardTitle>{t('landing.supporting_membership.title')}</CardTitle>
                     </CardHeader>
@@ -62,8 +62,10 @@ export function DashboardPage() {
                         <CardDescription className="text-base text-foreground/80">
                             {t('landing.supporting_membership.description')}
                         </CardDescription>
-                        <Button disabled className="w-full select-none cursor-not-allowed" variant="secondary">
-                            {t('landing.supporting_membership.button')}
+                        <Button asChild className="w-full bg-[var(--accent)] hover:opacity-90 text-white font-semibold">
+                            <Link to="/profile?type=supporting">
+                                {t('landing.supporting_membership.button')}
+                            </Link>
                         </Button>
                     </CardContent>
                 </Card>
@@ -83,6 +85,51 @@ export function DashboardPage() {
                     </CardContent>
                 </Card>
             </div>
+
+            {user?.roles?.includes('admin') && (
+                <div className="mt-12 space-y-6">
+                    <div className="border-t pt-8">
+                        <h2 className="text-2xl font-bold tracking-tight">{t('dashboard.admin.title')}</h2>
+                        <p className="text-muted-foreground">
+                            {t('dashboard.admin.description')}
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <Card className="bg-muted/30 border-dashed hover:border-primary/50 transition-colors">
+                            <CardHeader>
+                                <CardTitle>{t('dashboard.admin.users_button')}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="flex flex-col gap-4">
+                                <CardDescription>
+                                    Verwalte Benutzerkonten, Rollen und Aktivmitgliedschaftsanträge.
+                                </CardDescription>
+                                <Button asChild variant="outline" className="w-full">
+                                    <Link to="/users">
+                                        Anzeigen
+                                    </Link>
+                                </Button>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="bg-muted/30 border-dashed hover:border-primary/50 transition-colors">
+                            <CardHeader>
+                                <CardTitle>{t('dashboard.admin.audit_button')}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="flex flex-col gap-4">
+                                <CardDescription>
+                                    Sieh dir die letzten Änderungen an der Datenbank an.
+                                </CardDescription>
+                                <Button asChild variant="outline" className="w-full">
+                                    <Link to="/audit">
+                                        Anzeigen
+                                    </Link>
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
