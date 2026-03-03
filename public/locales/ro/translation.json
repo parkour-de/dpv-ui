@@ -55,7 +55,8 @@
                 "contact_person": "Persoană de contact",
                 "state": "Județ",
                 "registerNumber": "Numărul de înregistrare",
-                "exemptionValidity": "Valabilitatea scutirii"
+                "exemptionValidity": "Valabilitatea scutirii",
+                "authorizedRepresentative": "Reprezentant autorizat (§26 BGB)"
             },
             "actions": {
                 "edit": "Editează",
@@ -136,7 +137,15 @@
             "delete_confirm": "Sigur doriți să ștergeți acest club?",
             "remove_owner_confirm": "Chiar doriți să eliminați acest utilizator ca administrator?",
             "loading": "Se încarcă detaliile...",
-            "loading_payment": "Se încarcă detaliile de plată..."
+            "loading_payment": "Se încarcă detaliile de plată...",
+            "needs_authorized_rep": "Cel puțin un membru al consiliului de administrație trebuie să fie autorizat să reprezinte clubul conform §26 BGB."
+        },
+        "verband": {
+            "title": "Datele asociației",
+            "description": "Completat de asociație",
+            "membership_number": "Număr de membru",
+            "fee": "Taxă curentă",
+            "votes": "Drepturi de vot"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Implicit browser"
+        },
+        "verband": {
+            "title": "Datele asociației",
+            "description": "Completat de asociație",
+            "membership_number": "Număr de membru",
+            "fee": "Taxă curentă"
         }
     },
     "auth": {

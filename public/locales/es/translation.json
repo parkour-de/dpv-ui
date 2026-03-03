@@ -55,7 +55,8 @@
                 "contact_person": "Persona de contacto",
                 "state": "Estado",
                 "registerNumber": "Número de registro del club",
-                "exemptionValidity": "Validez de la exención"
+                "exemptionValidity": "Validez de la exención",
+                "authorizedRepresentative": "Representante autorizado (§26 BGB)"
             },
             "actions": {
                 "edit": "Editar",
@@ -136,7 +137,15 @@
             "delete_confirm": "¿Estás seguro de que quieres eliminar este club?",
             "remove_owner_confirm": "¿Realmente quieres eliminar a este usuario como administrador?",
             "loading": "Cargando detalles...",
-            "loading_payment": "Cargando datos de pago..."
+            "loading_payment": "Cargando datos de pago...",
+            "needs_authorized_rep": "Al menos un miembro de la junta debe estar autorizado para representar al club según el §26 BGB."
+        },
+        "verband": {
+            "title": "Datos de la asociación",
+            "description": "Rellenado por la asociación",
+            "membership_number": "Número de miembro",
+            "fee": "Cuota actual",
+            "votes": "Derechos de voto"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Predeterminado del navegador"
+        },
+        "verband": {
+            "title": "Datos de la asociación",
+            "description": "Rellenado por la asociación",
+            "membership_number": "Número de miembro",
+            "fee": "Cuota actual"
         }
     },
     "auth": {

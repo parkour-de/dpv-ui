@@ -25,6 +25,9 @@ export interface Membership {
     sepa_mandate_number?: string;
     begin_date?: number; // unix seconds
     end_date?: number;   // unix seconds
+    membership_number?: string;
+    current_fee?: number;
+    current_votes?: number;
 }
 
 export interface Club {
@@ -77,5 +80,6 @@ export interface User {
     lastname: string;
     roles: string[];
     language?: string;
+    your_club?: string;
     membership?: Membership;
 }

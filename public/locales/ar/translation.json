@@ -55,7 +55,8 @@
                 "contact_person": "جهة الاتصال",
                 "state": "ولاية/مقاطعة",
                 "registerNumber": "رقم تسجيل النادي",
-                "exemptionValidity": "صلاحية الإعفاء"
+                "exemptionValidity": "صلاحية الإعفاء",
+                "authorizedRepresentative": "ممثل معتمد (§26 BGB)"
             },
             "actions": {
                 "edit": "تعديل",
@@ -136,7 +137,15 @@
             "delete_confirm": "هل أنت متأكد من حذف هذا النادي؟",
             "remove_owner_confirm": "هل تريد حذف هذا المستخدم كمدير؟",
             "loading": "جاري التحميل...",
-            "loading_payment": "جاري تحميل تفاصيل الدفع..."
+            "loading_payment": "جاري تحميل تفاصيل الدفع...",
+            "needs_authorized_rep": "يجب أن يكون عضو واحد على الأقل من أعضاء مجلس الإدارة مفوضاً لتمثيل النادي وفقاً للفقرة 26 من القانون المدني الألماني (BGB)."
+        },
+        "verband": {
+            "title": "بيانات الجمعية",
+            "description": "يتم ملؤها من قبل الجمعية",
+            "membership_number": "رقم العضوية",
+            "fee": "الرسوم الحالية",
+            "votes": "حقوق التصويت"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "الافتراضي للمتصفح"
+        },
+        "verband": {
+            "title": "بيانات الجمعية",
+            "description": "يتم ملؤها من قبل الجمعية",
+            "membership_number": "رقم العضوية",
+            "fee": "الرسوم الحالية"
         }
     },
     "auth": {

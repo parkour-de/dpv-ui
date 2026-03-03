@@ -136,7 +136,15 @@
             "delete_confirm": "Êtes-vous sûr de vouloir supprimer ce club ?",
             "remove_owner_confirm": "Voulez-vous vraiment retirer cet utilisateur comme gestionnaire ?",
             "loading": "Chargement des détails...",
-            "loading_payment": "Chargement des détails de paiement..."
+            "loading_payment": "Chargement des détails de paiement...",
+            "needs_authorized_rep": "Au moins un membre du conseil doit être autorisé à représenter le club selon le §26 BGB."
+        },
+        "verband": {
+            "title": "Données de l'association",
+            "description": "Rempli par l'association",
+            "membership_number": "Numéro d'adhérent",
+            "fee": "Cotisation actuelle",
+            "votes": "Droits de vote"
         }
     },
     "create_club": {
@@ -197,6 +205,12 @@
         },
         "language_options": {
             "browser_default": "Par défaut du navigateur"
+        },
+        "verband": {
+            "title": "Données de l'association",
+            "description": "Rempli par l'association",
+            "membership_number": "Numéro d'adhérent",
+            "fee": "Cotisation actuelle"
         }
     },
     "auth": {

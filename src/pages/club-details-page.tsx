@@ -65,6 +65,12 @@ export function ClubDetailsPage() {
     // Modal state for Apply/Cancel with dates
     const [actionModal, setActionModal] = useState<'apply' | 'cancel' | null>(null);
     const [actionDate, setActionDate] = useState<string>(new Date().toISOString().split('T')[0]);
+    const [consents, setConsents] = useState({
+        privacy: false,
+        accuracy: false,
+        statutes: false,
+        finances: false
+    });
 
     // Census State
     const [censusDetails, setCensusDetails] = useState<Record<number, Census>>({});
@@ -245,7 +251,12 @@ export function ClubDetailsPage() {
         const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
 
         if (actionModal === 'apply') {
-            handleAction('apply', { begin_date: unixSeconds });
+            handleAction('apply', {
+                consent_privacy: consents.privacy,
+                consent_accuracy: consents.accuracy,
+                consent_statutes: consents.statutes,
+                consent_finances: consents.finances
+            });
         } else if (actionModal === 'cancel') {
             handleAction('cancel', { end_date: unixSeconds });
         }
@@ -417,7 +428,7 @@ export function ClubDetailsPage() {
                                 </Button>
                             ) : (
                                 <Button size="sm" onClick={() => {
-                                    if (club.vorstand && club.vorstand.length > 0 && !club.vorstand.some(m => m.authorizedRepresentative)) {
+                                    if (!club.vorstand?.some(m => m.authorizedRepresentative)) {
                                         setActionError(t('club.messages.needs_authorized_rep', 'Mindestens ein Vorstandsmitglied muss nach §26 BGB vertretungsberechtigt sein.'));
                                         return;
                                     }
@@ -691,6 +702,31 @@ export function ClubDetailsPage() {
                         isReadOnly={true}
                         alwaysOpen={false}
                     />
+
+                    {/* Verbandsdaten (Read-Only) */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{t('club.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                            <CardDescription>{t('club.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>{t('club.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
+                                    <Input value={club.membership.membership_number || ''} disabled />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>{t('club.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
+                                    <Input value={club.membership.current_fee !== undefined ? `${club.membership.current_fee.toFixed(2)} €` : ''} disabled />
+                                    <p className="text-xs text-muted-foreground mt-1">Siehe <a href="#" className="underline">Satzung</a> und <a href="#" className="underline">Beitragsordnung</a></p>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>{t('club.verband.votes', { defaultValue: 'Stimmrechte' })}</Label>
+                                    <Input value={club.membership.current_votes?.toString() || ''} disabled />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
 
                     {/* Vorstand / Owners */}
                     <Card>
@@ -986,31 +1022,63 @@ export function ClubDetailsPage() {
                                 </CardTitle>
                                 <CardDescription>
                                     {actionModal === 'apply'
-                                        ? t('club.details.membership.apply_description', { defaultValue: "Specify when the membership should start (optional):" })
+                                        ? t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." })
                                         : t('club.details.membership.cancel_description', { defaultValue: "Specify when the membership should end (optional):" })}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="action-date">{t('club.details.membership.date_label', { defaultValue: "Date" })}</Label>
-                                    <Input
-                                        id="action-date"
-                                        type="date"
-                                        value={actionDate}
-                                        onChange={(e) => setActionDate(e.target.value)}
-                                    />
-                                    <p className="text-[10px] text-muted-foreground italic">
-                                        {t('club.details.membership.date_format_hint', { defaultValue: "Format: Day.Month.Year (default is today)" })}
-                                    </p>
-                                </div>
+                                {actionModal === 'cancel' ? (
+                                    <div className="space-y-2">
+                                        <Label htmlFor="action-date">{t('club.details.membership.date_label', { defaultValue: "Date" })}</Label>
+                                        <Input
+                                            id="action-date"
+                                            type="date"
+                                            value={actionDate}
+                                            onChange={(e) => setActionDate(e.target.value)}
+                                        />
+                                        <p className="text-[10px] text-muted-foreground italic">
+                                            {t('club.details.membership.date_format_hint', { defaultValue: "Format: Day.Month.Year (default is today)" })}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-3 pt-2">
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-privacy" className="mt-1" checked={consents.privacy} onChange={(e) => setConsents(p => ({ ...p, privacy: e.target.checked }))} />
+                                            <Label htmlFor="consent-privacy" className="text-sm font-normal leading-snug">
+                                                {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-accuracy" className="mt-1" checked={consents.accuracy} onChange={(e) => setConsents(p => ({ ...p, accuracy: e.target.checked }))} />
+                                            <Label htmlFor="consent-accuracy" className="text-sm font-normal leading-snug">
+                                                {t('club.details.membership.consent_accuracy', { defaultValue: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' })}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-statutes" className="mt-1" checked={consents.statutes} onChange={(e) => setConsents(p => ({ ...p, statutes: e.target.checked }))} />
+                                            <Label htmlFor="consent-statutes" className="text-sm font-normal leading-snug">
+                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Satzung</a> gelesen und erkenne sie an.
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-finances" className="mt-1" checked={consents.finances} onChange={(e) => setConsents(p => ({ ...p, finances: e.target.checked }))} />
+                                            <Label htmlFor="consent-finances" className="text-sm font-normal leading-snug">
+                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Beitragsordnung</a> gelesen und erkenne sie an.
+                                            </Label>
+                                        </div>
+                                    </div>
+                                )}
                             </CardContent>
                             <CardFooter className="justify-end gap-2">
                                 <Button variant="ghost" onClick={() => setActionModal(null)}>
                                     {t('club.details.actions.cancel')}
                                 </Button>
-                                <Button onClick={handleActionWithDate} disabled={formLoading}>
+                                <Button
+                                    onClick={handleActionWithDate}
+                                    disabled={formLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
+                                >
                                     {formLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                                    {t('club.details.membership.confirm', { defaultValue: "Confirm" })}
+                                    {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) : t('club.details.membership.confirm', { defaultValue: "Confirm" })}
                                 </Button>
                             </CardFooter>
                         </Card>

@@ -55,7 +55,8 @@
                 "contact_person": "Contact Person",
                 "state": "State",
                 "registerNumber": "Club Registration Number",
-                "exemptionValidity": "Exemption Validity"
+                "exemptionValidity": "Exemption Validity",
+                "authorizedRepresentative": "Authorized Representative (§26 BGB)"
             },
             "actions": {
                 "edit": "Edit",
@@ -136,7 +137,15 @@
             "delete_confirm": "Are you sure you want to delete this club?",
             "remove_owner_confirm": "Really remove this user as manager?",
             "loading": "Loading details...",
-            "loading_payment": "Loading payment details..."
+            "loading_payment": "Loading payment details...",
+            "needs_authorized_rep": "At least one board member must be authorized to represent the club according to §26 BGB."
+        },
+        "verband": {
+            "title": "Association Data",
+            "description": "Filled by the association",
+            "membership_number": "Membership Number",
+            "fee": "Current Fee",
+            "votes": "Voting Rights"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Browser Default"
+        },
+        "verband": {
+            "title": "Association Data",
+            "description": "Filled by the association",
+            "membership_number": "Membership Number",
+            "fee": "Current Fee"
         }
     },
     "auth": {

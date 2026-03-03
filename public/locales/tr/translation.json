@@ -55,7 +55,8 @@
                 "contact_person": "İletişim kişisi",
                 "state": "Eyalet",
                 "registerNumber": "Kulüp Kayıt Numarası",
-                "exemptionValidity": "Muafiyet Geçerliliği"
+                "exemptionValidity": "Muafiyet Geçerliliği",
+                "authorizedRepresentative": "Yetkili Temsilci (§26 BGB)"
             },
             "actions": {
                 "edit": "Düzenle",
@@ -137,6 +138,13 @@
             "remove_owner_confirm": "Bu kullanıcıyı yönetici olarak kaldırmak istiyor musunuz?",
             "loading": "Yükleniyor...",
             "loading_payment": "Ödeme bilgileri yükleniyor..."
+        },
+        "verband": {
+            "title": "Dernek Verileri",
+            "description": "Dernek tarafından doldurulur",
+            "membership_number": "Üyelik Numarası",
+            "fee": "Güncel Ücret",
+            "votes": "Oy Hakları"
         }
     },
     "create_club": {
@@ -197,6 +205,12 @@
         },
         "language_options": {
             "browser_default": "Tarayıcı Varsayılanı"
+        },
+        "verband": {
+            "title": "Dernek Verileri",
+            "description": "Dernek tarafından doldurulur",
+            "membership_number": "Üyelik Numarası",
+            "fee": "Güncel Ücret"
         }
     },
     "auth": {

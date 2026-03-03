@@ -55,7 +55,8 @@
                 "contact_person": "Osoba kontaktowa",
                 "state": "Województwo",
                 "registerNumber": "Numer KRS/rejestracji",
-                "exemptionValidity": "Ważność zwolnienia"
+                "exemptionValidity": "Ważność zwolnienia",
+                "authorizedRepresentative": "Upoważniony przedstawiciel (§26 BGB)"
             },
             "actions": {
                 "edit": "Edytuj",
@@ -136,7 +137,15 @@
             "delete_confirm": "Czy na pewno chcesz usunąć ten klub?",
             "remove_owner_confirm": "Czy na pewno chcesz usunąć tego użytkownika jako administratora?",
             "loading": "Ładowanie szczegółów...",
-            "loading_payment": "Ładowanie danych płatności..."
+            "loading_payment": "Ładowanie danych płatności...",
+            "needs_authorized_rep": "Co najmniej jeden członek zarządu musi być upoważniony do reprezentowania klubu zgodnie z §26 BGB."
+        },
+        "verband": {
+            "title": "Dane stowarzyszenia",
+            "description": "Wypełniane przez stowarzyszenie",
+            "membership_number": "Numer członkowski",
+            "fee": "Aktualna opłata",
+            "votes": "Prawa głosu"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Domyślny przeglądarki"
+        },
+        "verband": {
+            "title": "Dane stowarzyszenia",
+            "description": "Wypełniane przez stowarzyszenie",
+            "membership_number": "Numer członkowski",
+            "fee": "Aktualna opłata"
         }
     },
     "auth": {

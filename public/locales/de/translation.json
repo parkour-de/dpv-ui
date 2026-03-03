@@ -55,7 +55,8 @@
                 "contact_person": "Ansprechpartner",
                 "state": "Bundesland",
                 "registerNumber": "Vereinsregisternummer",
-                "exemptionValidity": "Gültigkeit Freistellungsbescheid"
+                "exemptionValidity": "Gültigkeit Freistellungsbescheid",
+                "authorizedRepresentative": "Vertretungsberechtigt nach §26 BGB"
             },
             "actions": {
                 "edit": "Bearbeiten",
@@ -136,7 +137,15 @@
             "delete_confirm": "Sind Sie sicher, dass Sie diesen Verein löschen möchten?",
             "remove_owner_confirm": "Diesen Nutzer wirklich als Verwalter entfernen?",
             "loading": "Lade Details...",
-            "loading_payment": "Lade Zahlungsdetails..."
+            "loading_payment": "Lade Zahlungsdetails...",
+            "needs_authorized_rep": "Mindestens ein Vorstandsmitglied muss nach §26 BGB vertretungsberechtigt sein."
+        },
+        "verband": {
+            "title": "Verbandsdaten",
+            "description": "Wird vom Verband ausgefüllt",
+            "membership_number": "Mitgliedsnummer",
+            "fee": "Aktueller Beitrag",
+            "votes": "Stimmrechte"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Browser Standard"
+        },
+        "verband": {
+            "title": "Verbandsdaten",
+            "description": "Wird vom Verband ausgefüllt",
+            "membership_number": "Mitgliedsnummer",
+            "fee": "Aktueller Beitrag"
         }
     },
     "auth": {

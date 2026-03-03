@@ -55,7 +55,8 @@
                 "contact_person": "Personi i kontaktit",
                 "state": "Shteti / Provinca",
                 "registerNumber": "Numri i regjistrimit",
-                "exemptionValidity": "Vlefshmëria e përjashtimit"
+                "exemptionValidity": "Vlefshmëria e përjashtimit",
+                "authorizedRepresentative": "Përfaqësues i autorizuar (§26 BGB)"
             },
             "actions": {
                 "edit": "Ndrysho",
@@ -135,8 +136,16 @@
             "save_error": "Dështoi ruajtja.",
             "delete_confirm": "Jeni të sigurt që doni të fshini këtë klub?",
             "remove_owner_confirm": "Të hiqet ky përdorues si administrator?",
-            "loading": "Duke ngarkuar...",
-            "loading_payment": "Duke ngarkuar detajet e pagesës..."
+            "loading": "Duke u ngarkuar...",
+            "loading_payment": "Duke ngarkuar detajet e pagesës...",
+            "needs_authorized_rep": "Të paktën një anëtar i bordit duhet të jetë i autorizuar për të përfaqësuar klubin sipas §26 BGB."
+        },
+        "verband": {
+            "title": "Të dhënat e shoqatës",
+            "description": "Plotësohet nga shoqata",
+            "membership_number": "Numri i anëtarësisë",
+            "fee": "Tarifa aktuale",
+            "votes": "Të drejtat e votës"
         }
     },
     "create_club": {
@@ -197,6 +206,12 @@
         },
         "language_options": {
             "browser_default": "Parazgjedhja e shfletuesit"
+        },
+        "verband": {
+            "title": "Të dhënat e shoqatës",
+            "description": "Plotësohet nga shoqata",
+            "membership_number": "Numri i anëtarësisë",
+            "fee": "Tarifa aktuale"
         }
     },
     "auth": {
