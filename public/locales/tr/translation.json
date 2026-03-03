@@ -198,7 +198,9 @@
             "success": "Profil güncellendi.",
             "email_sent": "Onay e-postası {{email}} adresine gönderildi.",
             "email_validation_required": "Değişiklik e-posta onayı gerektirir.",
-            "error_save": "Kaydetme hatası."
+            "error_save": "Kaydetme hatası.",
+            "your_club_is_member": "Kulübünüz {{name}} zaten DPV üyesidir. İsterseniz bireysel üyeliğinizi iptal edebilirsiniz.",
+            "your_club_required": "Lütfen kulübünüzü belirtin."
         },
         "actions": {
             "save": "Kaydet"

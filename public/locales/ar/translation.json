@@ -199,7 +199,9 @@
             "success": "تم تحديث الملف الشخصي.",
             "email_sent": "تم إرسال بريد التأكيد إلى {{email}}.",
             "email_validation_required": "التغيير يتطلب تأكيد البريد الإلكتروني.",
-            "error_save": "خطأ في الحفظ."
+            "error_save": "خطأ في الحفظ.",
+            "your_club_is_member": "ناديك {{name}} عضو بالفعل في DPV. يمكنك إلغاء عضويتك الفردية إذا كنت ترغب في ذلك.",
+            "your_club_required": "يرجى تحديد ناديك."
         },
         "actions": {
             "save": "حفظ"

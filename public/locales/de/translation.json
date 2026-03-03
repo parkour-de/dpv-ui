@@ -199,7 +199,9 @@
             "success": "Profil aktualisiert.",
             "email_sent": "Bestätigungs-E-Mail an {{email}} gesendet.",
             "email_validation_required": "Änderung erfordert Bestätigung per E-Mail.",
-            "error_save": "Fehler beim Speichern."
+            "error_save": "Fehler beim Speichern.",
+            "your_club_is_member": "Dein Verein {{name}} ist bereits Mitglied im DPV. Du kannst deine Einzelmitgliedschaft kündigen, falls du möchtest.",
+            "your_club_required": "Bitte gib deinen Verein an."
         },
         "actions": {
             "save": "Speichern"

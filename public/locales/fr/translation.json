@@ -198,7 +198,9 @@
             "success": "Profil mis à jour.",
             "email_sent": "E-mail de confirmation envoyé à {{email}}.",
             "email_validation_required": "Le changement nécessite une confirmation par e-mail.",
-            "error_save": "Erreur lors de l'enregistrement."
+            "error_save": "Erreur lors de l'enregistrement.",
+            "your_club_is_member": "Votre club {{name}} est déjà membre de la DPV. Vous pouvez annuler votre adhésion individuelle si vous le souhaitez.",
+            "your_club_required": "Veuillez préciser votre club."
         },
         "actions": {
             "save": "Enregistrer"

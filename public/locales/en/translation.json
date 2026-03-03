@@ -199,7 +199,9 @@
             "success": "Profile updated.",
             "email_sent": "Confirmation email sent to {{email}}.",
             "email_validation_required": "Change requires email confirmation.",
-            "error_save": "Error saving."
+            "error_save": "Error saving.",
+            "your_club_is_member": "Your club {{name}} is already a member of DPV. You can cancel your individual membership if you wish.",
+            "your_club_required": "Please specify your club."
         },
         "actions": {
             "save": "Save"

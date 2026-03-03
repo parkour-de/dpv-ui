@@ -199,7 +199,9 @@
             "success": "Profili u përditësua.",
             "email_sent": "Email konfirmimi u dërgua te {{email}}.",
             "email_validation_required": "Ndryshimi kërkon konfirmim me email.",
-            "error_save": "Gabim gjatë ruajtjes."
+            "error_save": "Gabim gjatë ruajtjes.",
+            "your_club_is_member": "Klubi juaj {{name}} është tashmë anëtar i DPV. Mund ta anuloni anëtarësimin tuaj individual nëse dëshironi.",
+            "your_club_required": "Ju lutem specifikoni klubin tuaj."
         },
         "actions": {
             "save": "Ruaj"

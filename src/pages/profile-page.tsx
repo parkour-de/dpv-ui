@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
-import { type User } from "@/types";
+import { type User, type Club } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,7 @@ export function ProfilePage() {
         statutes: false,
         finances: false
     });
+    const [clubMatch, setClubMatch] = useState<{ name: string; status: string } | null>(null);
 
     const [formData, setFormData] = useState<{
         firstname: string;
@@ -61,6 +62,28 @@ export function ProfilePage() {
             }));
         }
     }, [user]);
+
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (formData.your_club && formData.your_club.length >= 3 && token) {
+                try {
+                    const matches = await api.get<Club[]>(`/clubs/search?q=${encodeURIComponent(formData.your_club)}`, token);
+                    const exactMatch = matches.find(c => c.name.toLowerCase() === formData.your_club.toLowerCase());
+                    if (exactMatch && exactMatch.membership.status === 'active') {
+                        setClubMatch({ name: exactMatch.name, status: exactMatch.membership.status });
+                    } else {
+                        setClubMatch(null);
+                    }
+                } catch (e) {
+                    console.error("Club search failed", e);
+                    setClubMatch(null);
+                }
+            } else {
+                setClubMatch(null);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [formData.your_club, token]);
 
     const handleMembershipAction = async (action: 'apply' | 'cancel') => {
         if (!token) return;
@@ -105,10 +128,15 @@ export function ProfilePage() {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!token) return;
+        if (!token || !user) return;
         setLoading(true);
         setMessage(null);
         setError(null);
+        if (user.membership?.status === 'active' && !formData.your_club) {
+            setError(t('profile.messages.your_club_required', { defaultValue: 'Bitte gib deinen Verein an.' }));
+            setLoading(false);
+            return;
+        }
         try {
             const updated = await api.patch<User>('/users/me', formData, token);
             // Update context - login function usually updates user in context
@@ -224,6 +252,12 @@ export function ProfilePage() {
                                     onChange={handleChange}
                                     placeholder="Optional"
                                 />
+                                {clubMatch && user.membership?.status === 'active' && (
+                                    <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-start gap-1">
+                                        <AlertCircle className="h-3 w-3 mt-0.5 shrink-0" />
+                                        {t('profile.messages.your_club_is_member', { name: clubMatch.name })}
+                                    </p>
+                                )}
                             </div>
                         </div>
 

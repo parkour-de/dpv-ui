@@ -199,7 +199,9 @@
             "success": "Perfil actualizado.",
             "email_sent": "Correo de confirmación enviado a {{email}}.",
             "email_validation_required": "El cambio requiere confirmación por correo.",
-            "error_save": "Error al guardar."
+            "error_save": "Error al guardar.",
+            "your_club_is_member": "Tu club {{name}} ya es miembro de la DPV. Puedes cancelar tu membresía individual si lo deseas.",
+            "your_club_required": "Por favor, especifica tu club."
         },
         "actions": {
             "save": "Guardar"

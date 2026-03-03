@@ -199,7 +199,9 @@
             "success": "Profil zaktualizowany.",
             "email_sent": "E-mail potwierdzający wysłany na {{email}}.",
             "email_validation_required": "Zmiana wymaga potwierdzenia e-mailem.",
-            "error_save": "Błąd podczas zapisywania."
+            "error_save": "Błąd podczas zapisywania.",
+            "your_club_is_member": "Twój klub {{name}} jest już członkiem DPV. Możesz anulować swoje indywidualne członkostwo, jeśli chcesz.",
+            "your_club_required": "Proszę podać swój klub."
         },
         "actions": {
             "save": "Zapisz"

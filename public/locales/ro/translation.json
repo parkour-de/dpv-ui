@@ -199,7 +199,9 @@
             "success": "Profil actualizat.",
             "email_sent": "E-mail de confirmare trimis la {{email}}.",
             "email_validation_required": "Schimbarea necesită confirmare prin e-mail.",
-            "error_save": "Eroare la salvare."
+            "error_save": "Eroare la salvare.",
+            "your_club_is_member": "Clubul tău {{name}} este deja membru al DPV. Îți poți anula abonamentul individual dacă dorești.",
+            "your_club_required": "Vă rugăm să specificați clubul dvs."
         },
         "actions": {
             "save": "Salvează"
