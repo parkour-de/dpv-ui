@@ -52,7 +52,10 @@
                 "legal_form": "Forma Jurídica",
                 "email": "Correo electrónico",
                 "address": "Dirección",
-                "contact_person": "Persona de contacto"
+                "contact_person": "Persona de contacto",
+                "state": "Estado",
+                "registerNumber": "Número de registro del club",
+                "exemptionValidity": "Validez de la exención"
             },
             "actions": {
                 "edit": "Editar",
@@ -102,7 +105,10 @@
             "title": "Junta y Administradores",
             "description": "Personas que gestionan este club.",
             "empty": "No se encontraron miembros de la junta.",
-            "add_placeholder": "Añadir nuevo administrador por correo"
+            "add_placeholder": "Añadir nuevo administrador por correo",
+            "labels": {
+                "authorizedRepresentative": "Representante autorizado (§26 BGB)"
+            }
         },
         "census": {
             "title": "Informe de Censo",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Nombre",
                 "lastname": "Apellido",
-                "birthyear": "Año de Nacimiento",
-                "gender": "Género"
+                "gender": "Género",
+                "birthdate": "Fecha de nacimiento"
             },
             "empty": "No hay informes de censo disponibles.",
             "confirm_overwrite": "Ya existe un informe de censo para el año {{year}}. ¿Desea sobrescribirlo?"
@@ -177,7 +183,8 @@
             "firstname": "Nombre",
             "lastname": "Apellido",
             "email": "Correo electrónico",
-            "language": "Idioma"
+            "language": "Idioma",
+            "yourClub": "Tu Club"
         },
         "messages": {
             "success": "Perfil actualizado.",
@@ -316,6 +323,30 @@
             "title": "Aviso de exención de responsabilidad",
             "content1": "Como proveedor de servicios, somos responsables de nuestro propio contenido en estas páginas de acuerdo con las leyes generales según § 7 Par. 1 TMG. Según §§ 8 a 10 TMG, no estamos obligados a monitorear información de terceros transmitida o almacenada ni a investigar circunstancias que indiquen actividad ilegal.",
             "content2": "Las obligaciones de eliminar o bloquear el uso de información de acuerdo con las leyes generales no se ven afectadas. Sin embargo, la responsabilidad en este sentido solo es posible a partir del momento en que se tenga conocimiento de una infracción concreta. Al tener conocimiento de tales infracciones, eliminaremos este contenido de inmediato."
+        }
+    },
+    "landing": {
+        "welcome": "Bienvenido al portal de clubes de la Asociación Alemana de Parkour. Aquí puedes solicitar tu membresía personal, crear clubes o empresas y gestionar membresías.",
+        "what_do_you_want_to_do": "¿Qué deseas hacer?",
+        "active_membership": {
+            "title": "Membresía activa",
+            "description": "¿Quieres hacerte miembro como particular? Gestiona tu membresía en tu perfil personal.",
+            "button": "A la membresía activa"
+        },
+        "ordinary_membership": {
+            "title": "Membresía ordinaria",
+            "description": "Si representas a un club y deseas afiliarlo a la Asociación, gestiona las membresías en la administración del club.",
+            "button": "A la administración del club"
+        },
+        "supporting_membership": {
+            "title": "Membresía de apoyo",
+            "description": "¿Quieres apoyar económicamente a la asociación? Hazte miembro de apoyo y decide tu propia contribución.",
+            "button": "Próximamente"
+        },
+        "extraordinary_membership": {
+            "title": "Membresía extraordinaria",
+            "description": "Si representas a una empresa de parkour y deseas afiliarla, gestiona la membresía en la administración de empresas.",
+            "button": "Próximamente"
         }
     }
 }

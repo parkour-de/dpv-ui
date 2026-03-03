@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus } from "lucide-react";
+import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PaymentDetails } from "@/components/payment-details";
 
@@ -53,7 +53,14 @@ export function ClubDetailsPage() {
         iban?: string;
         account_holder?: string;
         sepa_mandate_number?: string;
+        state?: string;
+        registerNumber?: string;
+        exemptionValidity?: string;
     }>({});
+
+    // New Owner form
+    const [newOwnerAuthRep, setNewOwnerAuthRep] = useState(false);
+    const [editingOwner, setEditingOwner] = useState<Record<string, boolean>>({});
 
     // Modal state for Apply/Cancel with dates
     const [actionModal, setActionModal] = useState<'apply' | 'cancel' | null>(null);
@@ -82,6 +89,9 @@ export function ClubDetailsPage() {
                 email: data.email,
                 address: data.membership.address,
                 contact_person: data.contact_person,
+                state: data.state,
+                registerNumber: data.registerNumber,
+                exemptionValidity: data.exemptionValidity,
             }));
         } catch (err: unknown) {
             console.error("Failed to load club", err);
@@ -266,8 +276,9 @@ export function ClubDetailsPage() {
         setOwnerLoading(true);
         setOwnerError(null);
         try {
-            await api.post(`/club/${id}/owners`, { email: newOwnerEmail }, token);
+            await api.post(`/club/${id}/owners`, { email: newOwnerEmail, authorizedRepresentative: newOwnerAuthRep }, token);
             setNewOwnerEmail("");
+            setNewOwnerAuthRep(false);
             await fetchClub();
         } catch (err: unknown) {
             console.error(err);
@@ -405,7 +416,13 @@ export function ClubDetailsPage() {
                                     {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
                                 </Button>
                             ) : (
-                                <Button size="sm" onClick={() => setActionModal('apply')} disabled={formLoading}>
+                                <Button size="sm" onClick={() => {
+                                    if (club.vorstand && club.vorstand.length > 0 && !club.vorstand.some(m => m.authorizedRepresentative)) {
+                                        setActionError(t('club.messages.needs_authorized_rep', 'Mindestens ein Vorstandsmitglied muss nach §26 BGB vertretungsberechtigt sein.'));
+                                        return;
+                                    }
+                                    setActionModal('apply');
+                                }} disabled={formLoading}>
                                     {(club.membership.status === 'cancelled' || club.membership.status === 'denied')
                                         ? t('club.details.membership.reapply')
                                         : t('club.details.membership.apply')}
@@ -514,6 +531,34 @@ export function ClubDetailsPage() {
                                     disabled={!isEditing}
                                 />
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="state">{t('club.details.labels.state')}</Label>
+                                <Input
+                                    id="state"
+                                    value={formData.state || ''}
+                                    onChange={(e) => setFormData(p => ({ ...p, state: e.target.value }))}
+                                    disabled={!isEditing}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="registerNumber">{t('club.details.labels.registerNumber')}</Label>
+                                <Input
+                                    id="registerNumber"
+                                    value={formData.registerNumber || ''}
+                                    onChange={(e) => setFormData(p => ({ ...p, registerNumber: e.target.value }))}
+                                    disabled={!isEditing}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="exemptionValidity">{t('club.details.labels.exemptionValidity')}</Label>
+                                <Input
+                                    id="exemptionValidity"
+                                    value={formData.exemptionValidity || ''}
+                                    onChange={(e) => setFormData(p => ({ ...p, exemptionValidity: e.target.value }))}
+                                    disabled={!isEditing}
+                                    placeholder="e.g. 31.05.2027"
+                                />
+                            </div>
                         </div>
                     </CardContent>
 
@@ -543,6 +588,9 @@ export function ClubDetailsPage() {
                                 email: club.email,
                                 address: club.membership.address,
                                 contact_person: club.contact_person,
+                                state: club.state,
+                                registerNumber: club.registerNumber,
+                                exemptionValidity: club.exemptionValidity,
                                 iban: undefined,
                                 account_holder: undefined,
                                 sepa_mandate_number: undefined
@@ -663,24 +711,66 @@ export function ClubDetailsPage() {
                                         <li key={member._key} className="flex items-center justify-between p-2 rounded-md bg-muted/20">
                                             <div className="flex items-center gap-2">
                                                 <div className="bg-primary/10 p-1.5 rounded-full">
-                                                    <FileText className="h-4 w-4 text-primary" /> {/* User Icon better? */}
+                                                    {member.authorizedRepresentative ? <UserKey className="h-4 w-4 text-primary" /> : <User className="h-4 w-4 text-primary" />}
                                                 </div>
                                                 <div>
                                                     <p className="font-medium text-sm">{member.firstname} {member.lastname}</p>
-                                                    {/* Start: Removed ID display as it's not user friendly */}
+                                                    {member.email && (
+                                                        <p className="text-xs text-muted-foreground">{member.email}</p>
+                                                    )}
+                                                    {member.authorizedRepresentative && (
+                                                        <span className="text-xs text-muted-foreground">{t('club.owners.labels.authorizedRepresentative')}</span>
+                                                    )}
                                                 </div>
                                             </div>
-                                            {/* Actions for owner */}
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="text-muted-foreground hover:text-destructive"
-                                                onClick={() => handleRemoveOwner(member._key)}
-                                                disabled={ownerLoading}
-                                                title="Entfernen"
-                                            >
-                                                <UserMinus className="h-4 w-4" />
-                                            </Button>
+                                            <div className="flex items-center gap-2">
+                                                {(isAdmin || user?.roles?.includes('vorstand')) && member.email && editingOwner[member._key] && (
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className={cn("h-8 text-xs", member.authorizedRepresentative && "bg-primary/10")}
+                                                        onClick={async () => {
+                                                            setOwnerLoading(true);
+                                                            try {
+                                                                await api.post(`/club/${id}/owners`, { email: member.email, authorizedRepresentative: !member.authorizedRepresentative }, token!);
+                                                                await fetchClub();
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                                setOwnerError(t('club.messages.action_error'));
+                                                            } finally {
+                                                                setOwnerLoading(false);
+                                                            }
+                                                        }}
+                                                        disabled={ownerLoading}
+                                                        title="Toggle §26 BGB"
+                                                    >
+                                                        {t('club.owners.labels.authorizedRepresentative')}
+                                                    </Button>
+                                                )}
+
+                                                {(isAdmin || user?.roles?.includes('vorstand')) && member.email && (
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="text-muted-foreground hover:text-primary"
+                                                        onClick={() => setEditingOwner(prev => ({ ...prev, [member._key]: !prev[member._key] }))}
+                                                        title="Bearbeiten"
+                                                    >
+                                                        {editingOwner[member._key] ? <PenOff className="h-4 w-4" /> : <PenLine className="h-4 w-4" />}
+                                                    </Button>
+                                                )}
+
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-muted-foreground hover:text-destructive"
+                                                    onClick={() => handleRemoveOwner(member._key)}
+                                                    disabled={ownerLoading}
+                                                    title="Entfernen"
+                                                >
+                                                    <UserMinus className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -688,13 +778,23 @@ export function ClubDetailsPage() {
                                 <p className="text-sm text-muted-foreground">{t('club.owners.empty')}</p>
                             )}
 
-                            <div className="flex gap-2 pt-4 border-t">
+                            <div className="flex gap-2 pt-4 border-t flex-wrap items-center">
                                 <Input
                                     placeholder={t('club.owners.add_placeholder')}
+                                    className="max-w-xs"
                                     value={newOwnerEmail}
                                     onChange={(e) => setNewOwnerEmail(e.target.value)}
                                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}
                                 />
+                                <label className="flex items-center gap-2 text-sm cursor-pointer ml-2">
+                                    <input
+                                        type="checkbox"
+                                        className="rounded border-gray-300"
+                                        checked={newOwnerAuthRep}
+                                        onChange={(e) => setNewOwnerAuthRep(e.target.checked)}
+                                    />
+                                    {t('club.owners.labels.authorizedRepresentative')}
+                                </label>
                                 <Button onClick={handleAddOwner} disabled={!newOwnerEmail || ownerLoading}>
                                     {ownerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                                 </Button>
@@ -839,7 +939,7 @@ export function ClubDetailsPage() {
                                                                 <tr className="border-b text-left">
                                                                     <th className="py-2 px-1">{t('club.census.header.firstname')}</th>
                                                                     <th className="py-2 px-1">{t('club.census.header.lastname')}</th>
-                                                                    <th className="py-2 px-1">{t('club.census.header.birthyear')}</th>
+                                                                    <th className="py-2 px-1">{t('club.census.header.birthdate')}</th>
                                                                     <th className="py-2 px-1">{t('club.census.header.gender')}</th>
                                                                 </tr>
                                                             </thead>
@@ -848,7 +948,7 @@ export function ClubDetailsPage() {
                                                                     <tr key={idx} className="border-b last:border-0 hover:bg-muted/10">
                                                                         <td className="py-1 px-1">{m.firstname}</td>
                                                                         <td className="py-1 px-1">{m.lastname}</td>
-                                                                        <td className="py-1 px-1">{m.birthYear}</td>
+                                                                        <td className="py-1 px-1">{m.birthDate}</td>
                                                                         <td className="py-1 px-1">{m.gender}</td>
                                                                     </tr>
                                                                 ))}

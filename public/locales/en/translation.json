@@ -52,7 +52,10 @@
                 "legal_form": "Legal Form",
                 "email": "Email",
                 "address": "Address",
-                "contact_person": "Contact Person"
+                "contact_person": "Contact Person",
+                "state": "State",
+                "registerNumber": "Club Registration Number",
+                "exemptionValidity": "Exemption Validity"
             },
             "actions": {
                 "edit": "Edit",
@@ -102,7 +105,10 @@
             "title": "Board & Managers",
             "description": "People who manage this club.",
             "empty": "No board members found.",
-            "add_placeholder": "Add new manager by email"
+            "add_placeholder": "Add new manager by email",
+            "labels": {
+                "authorizedRepresentative": "Authorized Representative (§26 BGB)"
+            }
         },
         "census": {
             "title": "Census Report",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "First Name",
                 "lastname": "Last Name",
-                "birthyear": "Birth Year",
-                "gender": "Gender"
+                "gender": "Gender",
+                "birthdate": "Birth Date"
             },
             "empty": "No census reports available.",
             "confirm_overwrite": "A census report for the year {{year}} already exists. Do you want to overwrite it?"
@@ -177,7 +183,8 @@
             "firstname": "First Name",
             "lastname": "Last Name",
             "email": "Email",
-            "language": "Language"
+            "language": "Language",
+            "yourClub": "Your Club"
         },
         "messages": {
             "success": "Profile updated.",
@@ -316,6 +323,30 @@
             "title": "Disclaimer",
             "content1": "As a service provider, we are responsible for our own content on these pages in accordance with general laws pursuant to § 7 Para. 1 TMG. According to §§ 8 to 10 TMG, we are not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity.",
             "content2": "Obligations to remove or block the use of information in accordance with general laws remain unaffected. However, liability in this regard is only possible from the time of knowledge of a concrete infringement. Upon becoming aware of such infringements, we will remove this content immediately."
+        }
+    },
+    "landing": {
+        "welcome": "Welcome to the club portal of the German Parkour Association. Here you can apply for your personal membership in the association, create clubs and companies and manage their memberships.",
+        "what_do_you_want_to_do": "What do you want to do?",
+        "active_membership": {
+            "title": "Active Membership",
+            "description": "Do you want to become a member of the Parkour Association as a private person? Then manage your membership in your personal profile.",
+            "button": "To Active Membership"
+        },
+        "ordinary_membership": {
+            "title": "Ordinary Membership",
+            "description": "If you represent a club as a board member and want to become a member of the German Parkour Association or Regional Parkour Association with it, then manage your memberships via the club administration.",
+            "button": "To Club Administration"
+        },
+        "supporting_membership": {
+            "title": "Supporting Membership",
+            "description": "Do you want to support the association financially? Then become a supporting member and decide for yourself how much contribution you want to pay.",
+            "button": "Coming soon"
+        },
+        "extraordinary_membership": {
+            "title": "Extraordinary Membership",
+            "description": "If you represent a company operating in the field of parkour and want to become a member of the German Parkour Association with it, then manage your membership via the company administration.",
+            "button": "Coming soon"
         }
     }
 }

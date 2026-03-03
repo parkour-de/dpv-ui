@@ -52,7 +52,10 @@
                 "legal_form": "Forma Ligjore",
                 "email": "Email",
                 "address": "Adresa",
-                "contact_person": "Personi i kontaktit"
+                "contact_person": "Personi i kontaktit",
+                "state": "Shteti / Provinca",
+                "registerNumber": "Numri i regjistrimit",
+                "exemptionValidity": "Vlefshmëria e përjashtimit"
             },
             "actions": {
                 "edit": "Ndrysho",
@@ -102,7 +105,10 @@
             "title": "Bordi dhe Administratorët",
             "description": "Personat që menaxhojnë këtë klub.",
             "empty": "Nuk u gjetën anëtarë të bordit.",
-            "add_placeholder": "Shto administrator të ri me email"
+            "add_placeholder": "Shto administrator të ri me email",
+            "labels": {
+                "authorizedRepresentative": "Përfaqësuesi i autorizuar (§26 BGB)"
+            }
         },
         "census": {
             "title": "Raporti i Regjistrimit",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Emri",
                 "lastname": "Mbiemri",
-                "birthyear": "Viti i Lindjes",
-                "gender": "Gjinia"
+                "gender": "Gjinia",
+                "birthdate": "Data e lindjes"
             },
             "empty": "Nuk ka raporte regjistrimi të disponueshme.",
             "confirm_overwrite": "Ekziston tashmë një raport regjistrimi për vitin {{year}}. Dëshironi ta mbishkruani?"
@@ -177,7 +183,8 @@
             "firstname": "Emri",
             "lastname": "Mbiemri",
             "email": "Email",
-            "language": "Gjuha"
+            "language": "Gjuha",
+            "yourClub": "Klubi yt"
         },
         "messages": {
             "success": "Profili u përditësua.",
@@ -316,6 +323,30 @@
             "title": "Mohim përgjegjësie",
             "content1": "Si ofrues shërbimesh, ne jemi përgjegjës për përmbajtjen tonë në këto faqe sipas ligjeve të përgjithshme në përputhje me § 7 para. 1 TMG. Sipas §§ 8 deri në 10 TMG, ne nuk jemi të detyruar të monitorojmë informacionin e huaj të transmetuar ose të ruajtur apo të hetojmë rrethana që tregojnë një aktivitet të paligjshëm.",
             "content2": "Detyrimet për të hequr ose bllokuar përdorimin e informacionit sipas ligjeve të përgjithshme mbeten të paprekura. Megjithatë, përgjegjësia në këtë drejtim është e mundur vetëm nga momenti i njohjes së një shkeljeje konkrete të ligjit. Me marrjen e njohurive për shkelje të tilla të ligjit, ne do t'i heqim këto përmbajtje menjëherë."
+        }
+    },
+    "landing": {
+        "welcome": "Mirë se vini në portalin e klubeve të Shoqatës Gjermane të Parkourit. Këtu mund të aplikoni për anëtarësimin personal, si dhe të krijoni klube.",
+        "what_do_you_want_to_do": "Çfarë dëshironi të bëni?",
+        "active_membership": {
+            "title": "Anëtarësimi aktiv",
+            "description": "A dëshironi të bëheni anëtar si individ? Menaxhoni atë nga profili juaj personal.",
+            "button": "Te Anëtarësimi Aktiv"
+        },
+        "ordinary_membership": {
+            "title": "Anëtarësimi i Zakonshëm",
+            "description": "Nëse jeni anëtar bordi i një klubi, menaxhojeni atë nga paneli i klubeve.",
+            "button": "Te Administrata e Klubit"
+        },
+        "supporting_membership": {
+            "title": "Anëtarësimi Mbështetës",
+            "description": "Dëshironi të mbështesni shoqatën financiarisht? Bëhuni anëtar mbështetës me shumë tuaj.",
+            "button": "Së shpejti"
+        },
+        "extraordinary_membership": {
+            "title": "Anëtarësimi i Jashtëzakonshëm",
+            "description": "Për kompanitë që merren me parkour që dëshirojnë t'i bashkohen shoqatës.",
+            "button": "Së shpejti"
         }
     }
 }

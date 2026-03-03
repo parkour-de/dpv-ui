@@ -52,7 +52,10 @@
                 "legal_form": "Rechtsform",
                 "email": "E-Mail",
                 "address": "Adresse",
-                "contact_person": "Ansprechpartner"
+                "contact_person": "Ansprechpartner",
+                "state": "Bundesland",
+                "registerNumber": "Vereinsregisternummer",
+                "exemptionValidity": "Gültigkeit Freistellungsbescheid"
             },
             "actions": {
                 "edit": "Bearbeiten",
@@ -102,7 +105,10 @@
             "title": "Vorstand & Verwalter",
             "description": "Personen, die diesen Verein verwalten.",
             "empty": "Keine Vorstandsmitglieder gefunden.",
-            "add_placeholder": "Neuen Verwalter per E-Mail hinzufügen"
+            "add_placeholder": "Neuen Verwalter per E-Mail hinzufügen",
+            "labels": {
+                "authorizedRepresentative": "Vertretungsberechtigt nach §26 BGB"
+            }
         },
         "census": {
             "title": "Bestandsmeldung",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Vorname",
                 "lastname": "Nachname",
-                "birthyear": "Geburtsjahr",
-                "gender": "Geschlecht"
+                "gender": "Geschlecht",
+                "birthdate": "Geburtsdatum"
             },
             "empty": "Keine Bestandsmeldungen vorhanden.",
             "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchten Sie diese überschreiben?"
@@ -177,7 +183,8 @@
             "firstname": "Vorname",
             "lastname": "Nachname",
             "email": "E-Mail",
-            "language": "Sprache"
+            "language": "Sprache",
+            "yourClub": "Dein Verein"
         },
         "messages": {
             "success": "Profil aktualisiert.",
@@ -316,6 +323,30 @@
             "title": "Haftungsausschluss",
             "content1": "Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
             "content2": "Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden entsprechender Rechtsverletzungen werden wir diese Inhalte umgehend entfernen."
+        }
+    },
+    "landing": {
+        "welcome": "Herzlich willkommen auf dem Vereinsportal des Deutschen Parkourverbands. Hier kannst du deine persönliche Mitgliedschaft im Verband beantragen, sowie Vereine und Unternehmen anlegen und deren Mitgliedschaften verwalten.",
+        "what_do_you_want_to_do": "Was möchtest du tun?",
+        "active_membership": {
+            "title": "Aktivmitgliedschaft",
+            "description": "Du möchtest als Privatperson Mitglied im Parkourverband werden? Dann verwalte deine Mitgliedschaft in deinem persönlichen Profil.",
+            "button": "Zur Aktivmitgliedschaft"
+        },
+        "ordinary_membership": {
+            "title": "Ordentliche Mitgliedschaft",
+            "description": "Wenn du als Vorstand einen Verein vertrittst und mit diesem Mitglied im Deutschen Parkourveband oder Parkour Landesverband werden möchtest, dann verwalte deine Mitgliedschaften über die Vereinsverwaltung.",
+            "button": "Zur Vereinsverwaltung"
+        },
+        "supporting_membership": {
+            "title": "Fördernde Mitgliedschaft",
+            "description": "Du möchtest den Verband finanziell unterstützen? Dann werde förderndes Mitglied und lege selbst fest, wie viel Beitrag du zahlen möchtest.",
+            "button": "Coming soon"
+        },
+        "extraordinary_membership": {
+            "title": "Außerordentliche Mitgliedschaft",
+            "description": "Wenn du ein Unternehmen vertrittst, das im Bereich Parkour agiert und mit diesem Mitglied im Deutschen Parkourverband werden möchtest, dann verwalte deine Mitgliedschaft über die Unternehmensverwaltung.",
+            "button": "Coming soon"
         }
     }
 }

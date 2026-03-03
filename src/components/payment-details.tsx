@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader2, Glasses } from "lucide-react";
 import { api } from "@/lib/api";
 import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -126,7 +126,7 @@ export function PaymentDetails({
             <CardContent>
                 {!show ? (
                     <Button type="button" variant="outline" onClick={handleShowToggle} disabled={loading}>
-                        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Glasses className="mr-2 h-4 w-4" />}
                         {t('club.payment.show', 'Zahlungsdaten anzeigen')}
                     </Button>
                 ) : (

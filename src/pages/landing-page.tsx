@@ -1,50 +1,14 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { api, ApiError } from "@/lib/api";
-import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
 import logoBlack from "@/assets/logo-black.svg";
 import logoWhite from "@/assets/logo-white.svg";
 import loginBg from "@/assets/login.webp";
 
 export function LandingPage() {
     const { t } = useTranslation();
-    const { login } = useAuth();
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setLoading(true);
-
-        try {
-            // Basic Auth Header
-            const token = btoa(`${email}:${password}`);
-            const user = await api.get<User>('/users/me', token);
-
-            login(token, user);
-            navigate("/dashboard");
-        } catch (err: unknown) {
-            console.error(err);
-            if (err instanceof ApiError && err.data?.message) {
-                setError(err.data.message);
-            } else {
-                setError(t('auth.login.error_generic'));
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { user } = useAuth();
 
     return (
         <div
@@ -55,74 +19,37 @@ export function LandingPage() {
                 backgroundPosition: "center"
             }}
         >
-            <div className="w-full max-w-md space-y-8 text-center">
+            <div className="w-full max-w-4xl space-y-8 text-center p-4">
                 <div className="flex justify-center mb-8">
                     <img src={logoBlack} alt="Deutscher Parkourverband" className="dark:hidden h-20 w-auto" />
                     <img src={logoWhite} alt="Deutscher Parkourverband" className="hidden dark:block h-20 w-auto" />
                 </div>
 
-                <div className="space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tight">{t('app.portal_name')}</h1>
-                    <p className="text-muted-foreground">{t('app.subtitle')}</p>
-                </div>
+                <div className="space-y-6 max-w-2xl mx-auto rounded-xl p-8 bg-background/80 backdrop-blur-sm shadow-sm">
+                    <h1 className="text-3xl font-bold tracking-tight">{t('landing.welcome')}</h1>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>{t('auth.login.title')}</CardTitle>
-                        <CardDescription>{t('auth.login.description')}</CardDescription>
-                    </CardHeader>
-                    <form onSubmit={handleSubmit}>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="email">{t('auth.fields.email')}</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="name@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <Label htmlFor="password">{t('auth.fields.password')}</Label>
-                                    <Link to="/reset-password" className="text-xs text-primary hover:underline">
-                                        {t('auth.fields.forgot_password')}
-                                    </Link>
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                            {error && (
-                                <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
-                                    <AlertCircle className="h-4 w-4" />
-                                    <p>{error}</p>
-                                </div>
-                            )}
-                        </CardContent>
-                        <CardFooter className="flex flex-col gap-4">
-                            <Button type="submit" className="w-full" disabled={loading}>
-                                {loading ? t('auth.login.submit_loading') : t('auth.login.submit')}
-                            </Button>
-                            <div className="text-center text-sm text-muted-foreground">
-                                {t('auth.register.question')}{" "}
-                                <Link to="/register" className="text-primary hover:underline font-medium">
-                                    {t('auth.register.action')}
+                    <div className="flex justify-center pt-4">
+                        {user ? (
+                            <Button asChild size="lg" className="bg-[var(--accent)] hover:opacity-90 text-white font-semibold">
+                                <Link to="/dashboard">
+                                    {t('layout.nav.dashboard')}
                                 </Link>
+                            </Button>
+                        ) : (
+                            <div className="flex gap-4">
+                                <Button asChild size="lg" className="bg-[var(--accent)] hover:opacity-90 text-white font-semibold">
+                                    <Link to="/login">
+                                        {t('auth.login.submit')}
+                                    </Link>
+                                </Button>
+                                <Button asChild variant="outline" size="lg">
+                                    <Link to="/register">
+                                        {t('auth.register.submit')}
+                                    </Link>
+                                </Button>
                             </div>
-                        </CardFooter>
-                    </form>
-                </Card>
-
-                <div className="text-center text-xs text-muted-foreground">
-                    <Link to="/imprint" className="hover:underline mr-4">{t('footer.imprint')}</Link>
-                    <Link to="/help" className="hover:underline">{t('footer.help')}</Link>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -36,6 +36,9 @@ export interface Club {
     votes: number;
     contact_person?: string;
     email?: string;
+    state?: string;
+    registerNumber?: string;
+    exemptionValidity?: string;
     website_ok: boolean;
     owner_key: string;
     vorstand?: VorstandUser[]; // Board members
@@ -51,7 +54,7 @@ export interface CensusMember {
     firstname: string;
     lastname: string;
     gender: string;
-    birthYear: number;
+    birthDate: string;
 }
 
 export interface Census {
@@ -64,6 +67,7 @@ export interface VorstandUser {
     firstname: string;
     lastname: string;
     email?: string;
+    authorizedRepresentative?: boolean;
 }
 
 export interface User {

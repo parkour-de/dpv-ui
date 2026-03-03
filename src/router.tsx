@@ -2,7 +2,9 @@ import { createHashRouter } from "react-router-dom";
 import { AuthProvider } from "@/context/auth-context";
 import { Layout } from "@/components/layout";
 import { LandingPage } from "@/pages/landing-page";
+import { LoginPage } from "@/pages/login-page";
 import { DashboardPage } from "@/pages/dashboard-page";
+import { ClubsPage } from "@/pages/clubs-page";
 import { ClubDetailsPage } from "@/pages/club-details-page";
 import { CreateClubPage } from "@/pages/create-club-page";
 import { RegisterPage } from "@/pages/register-page";
@@ -19,6 +21,11 @@ export const router = createHashRouter([
     {
         path: "/",
         element: <LandingPage />,
+        errorElement: <ErrorPage />,
+    },
+    {
+        path: "/login",
+        element: <LoginPage />,
         errorElement: <ErrorPage />,
     },
     {
@@ -54,6 +61,10 @@ export const router = createHashRouter([
             {
                 path: "/dashboard",
                 element: <DashboardPage />,
+            },
+            {
+                path: "/clubs",
+                element: <ClubsPage />,
             },
             {
                 path: "/clubs/new",

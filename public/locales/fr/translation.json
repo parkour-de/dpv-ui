@@ -52,7 +52,10 @@
                 "legal_form": "Forme Juridique",
                 "email": "E-mail",
                 "address": "Adresse",
-                "contact_person": "Personne de contact"
+                "contact_person": "Personne de contact",
+                "state": "État",
+                "registerNumber": "Numéro d'enregistrement",
+                "exemptionValidity": "Validité de l'exemption"
             },
             "actions": {
                 "edit": "Modifier",
@@ -102,7 +105,10 @@
             "title": "Conseil et Gestionnaires",
             "description": "Personnes qui gèrent ce club.",
             "empty": "Aucun membre du conseil trouvé.",
-            "add_placeholder": "Ajouter un nouveau gestionnaire par e-mail"
+            "add_placeholder": "Ajouter un nouveau gestionnaire par e-mail",
+            "labels": {
+                "authorizedRepresentative": "Représentant autorisé (§26 BGB)"
+            }
         },
         "census": {
             "title": "Rapport de Recensement",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Prénom",
                 "lastname": "Nom",
-                "birthyear": "Année de Naissance",
-                "gender": "Genre"
+                "gender": "Genre",
+                "birthdate": "Date de naissance"
             },
             "empty": "Aucun rapport de recensement disponible.",
             "confirm_overwrite": "Un rapport de recensement pour l'année {{year}} existe déjà. Voulez-vous le remplacer ?"
@@ -177,7 +183,8 @@
             "firstname": "Prénom",
             "lastname": "Nom",
             "email": "E-mail",
-            "language": "Langue"
+            "language": "Langue",
+            "yourClub": "Ton Club"
         },
         "messages": {
             "success": "Profil mis à jour.",
@@ -316,6 +323,30 @@
             "title": "Avis de non-responsabilité",
             "content1": "En tant que fournisseur de services, nous sommes responsables de notre propre contenu sur ces pages conformément aux lois générales selon § 7 Par. 1 TMG. Selon §§ 8 à 10 TMG, nous ne sommes pas tenus de surveiller les informations de tiers transmises ou stockées ni d'enquêter sur les circonstances indiquant une activité illégale.",
             "content2": "Les obligations de supprimer ou de bloquer l'utilisation d'informations conformément aux lois générales ne sont pas affectées. Cependant, la responsabilité à cet égard n'est possible qu'à partir du moment où l'on a connaissance d'une infraction concrète. Dès que nous aurons connaissance de telles infractions, nous supprimerons ce contenu immédiatement."
+        }
+    },
+    "landing": {
+        "welcome": "Bienvenue sur le portail des clubs de l'Association Allemande de Parkour. Vous pouvez ici demander votre adhésion personnelle, inscrire des clubs ou des entreprises.",
+        "what_do_you_want_to_do": "Que souhaitez-vous faire ?",
+        "active_membership": {
+            "title": "Adhésion active",
+            "description": "Vous souhaitez devenir membre à titre individuel ? Gérez votre adhésion dans votre profil.",
+            "button": "Vers l'adhésion active"
+        },
+        "ordinary_membership": {
+            "title": "Adhésion ordinaire",
+            "description": "Si vous représentez un club et souhaitez vous affilier, gérez cela dans l'administration du club.",
+            "button": "Vers l'administration du club"
+        },
+        "supporting_membership": {
+            "title": "Adhésion de soutien",
+            "description": "Vous souhaitez soutenir financièrement l'association ? Devenez membre de soutien et choisissez votre cotisation.",
+            "button": "Bientôt disponible"
+        },
+        "extraordinary_membership": {
+            "title": "Adhésion extraordinaire",
+            "description": "Si vous représentez une entreprise de parkour qui souhaite adhérer, gérez cela depuis l'administration de l'entreprise.",
+            "button": "Bientôt disponible"
         }
     }
 }

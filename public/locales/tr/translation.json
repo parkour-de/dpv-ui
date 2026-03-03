@@ -52,7 +52,10 @@
                 "legal_form": "Hukuki Şekil",
                 "email": "E-posta",
                 "address": "Adres",
-                "contact_person": "İletişim kişisi"
+                "contact_person": "İletişim kişisi",
+                "state": "Eyalet",
+                "registerNumber": "Kulüp Kayıt Numarası",
+                "exemptionValidity": "Muafiyet Geçerliliği"
             },
             "actions": {
                 "edit": "Düzenle",
@@ -102,7 +105,10 @@
             "title": "Yönetim ve Yöneticiler",
             "description": "Bu kulübü yöneten kişiler.",
             "empty": "Yönetim kurulu üyesi bulunamadı.",
-            "add_placeholder": "E-posta ile yeni yönetici ekle"
+            "add_placeholder": "E-posta ile yeni yönetici ekle",
+            "labels": {
+                "authorizedRepresentative": "Yetkili Temsilci (§26 BGB)"
+            }
         },
         "census": {
             "title": "Nüfus Sayımı Raporu",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Ad",
                 "lastname": "Soyad",
-                "birthyear": "Doğum Yılı",
-                "gender": "Cinsiyet"
+                "gender": "Cinsiyet",
+                "birthdate": "Doğum Tarihi"
             },
             "empty": "Nüfus sayımı raporu bulunmuyor.",
             "confirm_overwrite": "{{year}} yılı için zaten bir nüfus sayımı raporu var. Üzerine yazmak istiyor musunuz?"
@@ -177,7 +183,8 @@
             "firstname": "Ad",
             "lastname": "Soyad",
             "email": "E-posta",
-            "language": "Dil"
+            "language": "Dil",
+            "yourClub": "Kulübünüz"
         },
         "messages": {
             "success": "Profil güncellendi.",
@@ -316,6 +323,30 @@
             "title": "Sorumluluk Reddi",
             "content1": "Hizmet sağlayıcı olarak, bu sayfalardaki kendi içeriklerimizden TMG'nin 7. maddesinin 1. fıkrası uyarınca genel yasalar çerçevesinde sorumluyuz. TMG'nin 8. ila 10. maddeleri uyarınca hizmet sağlayıcı olarak iletilen veya saklanan yabancı bilgileri denetlemek veya hukuka aykırı bir faaliyete işaret eden durumları araştırmakla yükümlü değiliz.",
             "content2": "Genel yasalar uyarınca bilgilerin kullanımının kaldırılması veya engellenmesi konusundaki yükümlülükler saklı kalmaktadır. Ancak buna ilişkin bir sorumluluk, ancak somut bir ihlal hakkında bilgi sahibi olunduğu andan itibaren mümkündür. İlgili yasal ihlallerden haberdar olduğumuzda, bu tür içerikleri derhal kaldıracağız."
+        }
+    },
+    "landing": {
+        "welcome": "Alman Parkour Federasyonu kulüp portalına hoş geldiniz. Buradan bireysel veya kulüp üyelik başvurusunda bulunabilirsiniz.",
+        "what_do_you_want_to_do": "Ne yapmak istersiniz?",
+        "active_membership": {
+            "title": "Aktif Üyelik",
+            "description": "Özel kişi olarak üye olmak ister misiniz? Üyeliğinizi kişisel profilinizden yönetin.",
+            "button": "Aktif Üyeliğe Git"
+        },
+        "ordinary_membership": {
+            "title": "Normal Üyelik",
+            "description": "Kulüp temsilcisiYSeniz, kulüp üyelik işlemlerinizi yönetim panelinden yapın.",
+            "button": "Kulüp Yönetimine Git"
+        },
+        "supporting_membership": {
+            "title": "Destekleyici Üyelik",
+            "description": "Federasyonu finansal olarak desteklemek ister misiniz? Kendi bağışınızı belirleyin.",
+            "button": "Yakında"
+        },
+        "extraordinary_membership": {
+            "title": "Olağanüstü Üyelik",
+            "description": "Parkour alanında faaliyet gösteren bir şirketi temsil ediyorsanız, şirket yönetimi kısmından işlem yapın.",
+            "button": "Yakında"
         }
     }
 }

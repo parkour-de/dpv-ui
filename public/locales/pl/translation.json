@@ -52,7 +52,10 @@
                 "legal_form": "Forma Prawna",
                 "email": "E-mail",
                 "address": "Adres",
-                "contact_person": "Osoba kontaktowa"
+                "contact_person": "Osoba kontaktowa",
+                "state": "Województwo",
+                "registerNumber": "Numer KRS/rejestracji",
+                "exemptionValidity": "Ważność zwolnienia"
             },
             "actions": {
                 "edit": "Edytuj",
@@ -102,7 +105,10 @@
             "title": "Zarząd i Administratorzy",
             "description": "Osoby zarządzające tym klubem.",
             "empty": "Nie znaleziono członków zarządu.",
-            "add_placeholder": "Dodaj nowego administratora przez e-mail"
+            "add_placeholder": "Dodaj nowego administratora przez e-mail",
+            "labels": {
+                "authorizedRepresentative": "Upoważniony przedstawiciel (§26 BGB)"
+            }
         },
         "census": {
             "title": "Raport Spisowy",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Imię",
                 "lastname": "Nazwisko",
-                "birthyear": "Rok Urodzenia",
-                "gender": "Płeć"
+                "gender": "Płeć",
+                "birthdate": "Data urodzenia"
             },
             "empty": "Brak dostępnych raportów spisowych.",
             "confirm_overwrite": "Raport spisowy dla roku {{year}} już istnieje. Czy chcesz go nadpisać?"
@@ -177,7 +183,8 @@
             "firstname": "Imię",
             "lastname": "Nazwisko",
             "email": "E-mail",
-            "language": "Język"
+            "language": "Język",
+            "yourClub": "Twój Klub"
         },
         "messages": {
             "success": "Profil zaktualizowany.",
@@ -316,6 +323,30 @@
             "title": "Wyłączenie odpowiedzialności",
             "content1": "Jako dostawca usług odpowiadamy za własne treści na tych stronach zgodnie z ogólnymi przepisami prawa, na podstawie § 7 ust. 1 TMG. Zgodnie z §§ 8 do 10 TMG nie jesteśmy jednak zobowiązani do monitorowania przekazywanych lub przechowywanych informacji obcych ani do badania okoliczności wskazujących na działalność niezgodną z prawem.",
             "content2": "Zobowiązania do usunięcia lub zablokowania korzystania z informacji zgodnie z ogólnymi przepisami prawa pozostają nienaruszone. Odpowiedzialność w tym zakresie jest jednak możliwa dopiero od momentu powzięcia wiadomości o konkretnym naruszeniu prawa. W przypadku powzięcia wiadomości o odpowiednich naruszeniach prawa niezwłocznie usuniemy te treści."
+        }
+    },
+    "landing": {
+        "welcome": "Witamy na portalu klubowym Niemieckiego Stowarzyszenia Parkour. Możesz tutaj złożyć wniosek o osobiste członkostwo, rejestrować kluby i zarządzać nimi.",
+        "what_do_you_want_to_do": "Co chcesz zrobić?",
+        "active_membership": {
+            "title": "Aktywne członkostwo",
+            "description": "Chcesz zostać członkiem prywatnie? Zarządzaj swoim członkostwem w swoim profilu.",
+            "button": "Przejdź do aktywnego członkostwa"
+        },
+        "ordinary_membership": {
+            "title": "Członkostwo zwyczajne",
+            "description": "Jeśli reprezentujesz klub jako członek zarządu, możesz zarządzać swoim członkostwem poprzez administrację klubu.",
+            "button": "Przejdź do administracji klubu"
+        },
+        "supporting_membership": {
+            "title": "Członkostwo wspierające",
+            "description": "Chcesz finansowo wesprzeć stowarzyszenie? Zostań członkiem wspierającym i sam zdecyduj o wpłacie.",
+            "button": "Wkrótce"
+        },
+        "extraordinary_membership": {
+            "title": "Członkostwo nadzwyczajne",
+            "description": "Jeśli reprezentujesz firmę związaną z parkourem, zarządzaj członkostwem za pośrednictwem panelu firmy.",
+            "button": "Wkrótce"
         }
     }
 }

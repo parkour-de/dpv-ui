@@ -52,7 +52,10 @@
                 "legal_form": "Formă Juridică",
                 "email": "E-mail",
                 "address": "Adresă",
-                "contact_person": "Persoană de contact"
+                "contact_person": "Persoană de contact",
+                "state": "Județ",
+                "registerNumber": "Numărul de înregistrare",
+                "exemptionValidity": "Valabilitatea scutirii"
             },
             "actions": {
                 "edit": "Editează",
@@ -102,7 +105,10 @@
             "title": "Consiliu și Administratori",
             "description": "Persoane care gestionează acest club.",
             "empty": "Nu s-au găsit membri ai consiliului.",
-            "add_placeholder": "Adaugă administrator nou prin e-mail"
+            "add_placeholder": "Adaugă administrator nou prin e-mail",
+            "labels": {
+                "authorizedRepresentative": "Reprezentant autorizat (§26 BGB)"
+            }
         },
         "census": {
             "title": "Raport de Recensământ",
@@ -114,8 +120,8 @@
             "header": {
                 "firstname": "Prenume",
                 "lastname": "Nume",
-                "birthyear": "Anul Nașterii",
-                "gender": "Gen"
+                "gender": "Gen",
+                "birthdate": "Data nașterii"
             },
             "empty": "Nu sunt disponibile rapoarte de recensământ.",
             "confirm_overwrite": "Există deja un raport de recensământ pentru anul {{year}}. Doriți să îl suprascrieți?"
@@ -177,7 +183,8 @@
             "firstname": "Prenume",
             "lastname": "Nume",
             "email": "E-mail",
-            "language": "Limbă"
+            "language": "Limbă",
+            "yourClub": "Clubul tău"
         },
         "messages": {
             "success": "Profil actualizat.",
@@ -316,6 +323,30 @@
             "title": "Declinare de responsabilitate",
             "content1": "În calitate de furnizor de servicii, suntem responsabili pentru propriul conținut pe aceste pagini în conformitate cu legile generale, conform § 7 alin. 1 din TMG. Conform §§ 8 până la 10 din TMG, nu suntem însă obligați să monitorizăm informațiile străine transmise sau stocate sau să cercetăm circumstanțele care indică o activitate ilegală.",
             "content2": "Obligațiile de a elimina sau de a bloca utilizarea informațiilor în conformitate cu legile generale rămân neafectate. Cu toate acestea, răspunderea în acest sens este posibilă numai din momentul luării la cunoștință a unei încălcări concrete a legii. În cazul în care luăm la cunoștință astfel de încălcări ale legii, vom elimina imediat acest conținut."
+        }
+    },
+    "landing": {
+        "welcome": "Bine ați venit pe portalul cluburilor Asociației Germane de Parkour. Aici puteți aplica pentru abonamente personale sau înregistra cluburi.",
+        "what_do_you_want_to_do": "Ce dorești să faci?",
+        "active_membership": {
+            "title": "Abonament Activ",
+            "description": "Vrei să devii membru ca persoană privată? Poți gestiona abonamentul din profilul tău.",
+            "button": "Către Abonamentul Activ"
+        },
+        "ordinary_membership": {
+            "title": "Abonament Ordinar",
+            "description": "Dacă reprezinți un club ca membru de bord, gestionează-ți abonamentele de la panoul clubului.",
+            "button": "Către Administrația Clubului"
+        },
+        "supporting_membership": {
+            "title": "Membru de Sprijin",
+            "description": "Vrei să susții financiar asociația? Devino membru de sprijin și decide singur contribuția.",
+            "button": "În curând"
+        },
+        "extraordinary_membership": {
+            "title": "Abonament Extraordinar",
+            "description": "Dacă reprezinți o companie de parkour, gestionează abonamentul la secțiunea companiei.",
+            "button": "În curând"
         }
     }
 }
