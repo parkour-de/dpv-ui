@@ -41,7 +41,7 @@ export function AuditPage() {
         if (user?.roles?.includes('admin')) {
             fetchLogs();
         }
-    }, [token, user]);
+    }, [token, user, t]);
 
     if (!user?.roles?.includes('admin')) {
         return (

@@ -373,6 +373,14 @@ export function ProfilePage() {
                             <Input value={user.membership?.current_fee !== undefined ? `${user.membership.current_fee.toFixed(2)} €` : ''} disabled />
                             <p className="text-xs text-muted-foreground mt-1">Siehe <a href="#" target="_blank" className="underline">Satzung</a> und <a href="#" target="_blank" className="underline">Beitragsordnung</a></p>
                         </div>
+                        <div className="space-y-2">
+                            <Label>Art der Mitgliedschaft</Label>
+                            <Input value={user?.membership?.type === 'active' ? 'Aktivmitgliedschaft' : user?.membership?.type === 'supporting' ? 'Fördernde Mitgliedschaft' : user?.membership?.type === 'ordinary' ? 'Ordentliche Mitgliedschaft' : (user?.membership?.type || '')} disabled />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Stimmenanzahl</Label>
+                            <Input value={user?.membership?.current_votes !== undefined ? user.membership.current_votes.toString() : '0'} disabled />
+                        </div>
                     </div>
                 </CardContent>
             </Card>

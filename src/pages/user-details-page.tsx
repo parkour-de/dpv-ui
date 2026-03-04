@@ -51,7 +51,7 @@ export function UserDetailsPage() {
             setLoading(false);
             setError("Sie haben keine Berechtigung, diese Seite anzuzeigen.");
         }
-    }, [id, token, currentUser]);
+    }, [id, token, currentUser, t]);
 
     const handleMembershipAction = async (action: 'approve' | 'deny' | 'cancel') => {
         if (!token || !targetUser) return;
@@ -156,13 +156,63 @@ export function UserDetailsPage() {
                             </div>
                         )}
                         <div className="space-y-1">
-                            <Label className="text-muted-foreground text-xs">Rollen</Label>
-                            <div className="flex flex-wrap gap-2 mt-1">
-                                {targetUser.roles?.map(role => (
-                                    <span key={role} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold">
-                                        {role}
-                                    </span>
-                                ))}
+                            <div className="flex items-center justify-between">
+                                <Label className="text-muted-foreground text-xs">Rollen</Label>
+                            </div>
+                            <div className="flex flex-col gap-2 mt-2">
+                                <div className="flex flex-wrap gap-2">
+                                    {targetUser.roles?.map(role => (
+                                        <span key={role} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold">
+                                            {role}
+                                        </span>
+                                    ))}
+                                </div>
+                                <div className="flex flex-col gap-2 mt-2 pt-2 border-t">
+                                    <Label className="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={targetUser.roles?.includes('admin') || false}
+                                            onChange={async (e) => {
+                                                const checked = e.target.checked;
+                                                const currentRoles = targetUser.roles || [];
+                                                const newRoles = checked
+                                                    ? [...currentRoles, 'admin']
+                                                    : currentRoles.filter(r => r !== 'admin');
+
+                                                try {
+                                                    await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
+                                                    setTargetUser({ ...targetUser, roles: newRoles });
+                                                } catch (err: unknown) {
+                                                    setError(getErrorMessage(err, t));
+                                                }
+                                            }}
+                                            disabled={actionLoading}
+                                        />
+                                        <span>Systemadministrator (admin)</span>
+                                    </Label>
+                                    <Label className="flex items-center gap-2 cursor-pointer text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={targetUser.roles?.includes('aktivadmin') || false}
+                                            onChange={async (e) => {
+                                                const checked = e.target.checked;
+                                                const currentRoles = targetUser.roles || [];
+                                                const newRoles = checked
+                                                    ? [...currentRoles, 'aktivadmin']
+                                                    : currentRoles.filter(r => r !== 'aktivadmin');
+
+                                                try {
+                                                    await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
+                                                    setTargetUser({ ...targetUser, roles: newRoles });
+                                                } catch (err: unknown) {
+                                                    setError(getErrorMessage(err, t));
+                                                }
+                                            }}
+                                            disabled={actionLoading}
+                                        />
+                                        <span>Aktivenbetreuer (aktivadmin)</span>
+                                    </Label>
+                                </div>
                             </div>
                         </div>
                     </CardContent>
@@ -206,6 +256,33 @@ export function UserDetailsPage() {
                         isReadOnly={true}
                         alwaysOpen={false}
                     />
+
+                    {/* Verbandsdaten (Read-Only) */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
+                                    <Input value={targetUser.membership?.membership_number || ''} disabled />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
+                                    <Input value={targetUser.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Art der Mitgliedschaft</Label>
+                                    <Input value={targetUser.membership?.type === 'active' ? 'Aktivmitgliedschaft' : targetUser.membership?.type === 'supporting' ? 'Fördernde Mitgliedschaft' : targetUser.membership?.type === 'ordinary' ? 'Ordentliche Mitgliedschaft' : (targetUser.membership?.type || '')} disabled />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Stimmenanzahl</Label>
+                                    <Input value={targetUser.membership?.current_votes !== undefined ? targetUser.membership.current_votes.toString() : '0'} disabled />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 
