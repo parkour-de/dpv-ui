@@ -55,7 +55,7 @@ export function RegisterPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardFooter className="flex justify-center">
-                        <Link to="/">
+                        <Link to="/login">
                             <Button>{t('auth.register.success.action')}</Button>
                         </Link>
                     </CardFooter>
@@ -107,7 +107,7 @@ export function RegisterPage() {
                         </Button>
                         <div className="text-center text-sm text-muted-foreground">
                             {t('auth.register.login_question')}{" "}
-                            <Link to="/" className="text-primary hover:underline font-medium">
+                            <Link to="/login" className="text-primary hover:underline font-medium">
                                 {t('auth.register.login_action')}
                             </Link>
                         </div>

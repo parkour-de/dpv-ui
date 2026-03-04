@@ -22,7 +22,10 @@ export function Layout() {
     return (
         <div className="min-h-screen bg-background flex flex-col font-sans">
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="absolute top-0 left-0 w-full h-[3px] bg-primary"></div>
+                <div
+                    className={`absolute top-0 left-0 w-full h-[3px] ${!isTestEnv ? 'bg-primary' : ''}`}
+                    style={isTestEnv ? { backgroundColor: "color(display-p3 1 0 0)" } : undefined}
+                ></div>
                 <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">
                     <div className="flex items-center gap-4">
                         <Link to="/" className="relative flex items-center h-14 w-[280px] sm:w-[310px] group">
@@ -39,7 +42,7 @@ export function Layout() {
                         </Link>
                         {isTestEnv ? (
                             <span
-                                className="hidden lg:inline-flex font-bold self-center border-l border-border pl-4 h-6 items-center uppercase tracking-widest text-[12px] animate-pulse"
+                                className="hidden lg:inline-flex font-bold self-center border-l border-border pl-4 h-6 items-center uppercase tracking-widest text-[12px]"
                                 style={{ color: "color(display-p3 1 0 0)" }}
                             >
                                 TESTSYSTEM
