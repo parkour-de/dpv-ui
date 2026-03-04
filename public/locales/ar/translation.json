@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "نادٍ جديد",
             "create_club": "إنشاء نادٍ",
-            "load_more": "تحميل المزيد"
+            "load_more": "تحميل المزيد",
+            "back_to_overview": "العودة إلى النظرة العامة"
         },
         "filter": {
             "label": "تصفية:",
@@ -40,7 +41,15 @@
             "title": "منطقة الإدارة",
             "description": "إدارة الطلبات والمستخدمين عبر البوابة بأكملها.",
             "users_button": "إدارة المستخدمين",
-            "audit_button": "سجل النشاط"
+            "audit_button": "سجل النشاط",
+            "user_not_found": "المستخدم غير موجود",
+            "approve_membership": "الموافقة على العضوية",
+            "approve_membership_desc": "تأكيد تاريخ الدخول. إذا قدم الشخص تفاصيل الدفع، يرجى مراجعتها مسبقًا.",
+            "deny_membership": "رفض العضوية",
+            "deny_membership_desc": "هل تريد حقًا رفض هذا الطلب؟",
+            "cancel_membership": "إلغاء العضوية",
+            "cancel_membership_desc": "يرجى تحديد تاريخ الإلغاء (نهاية الفترة النشطة).",
+            "export_error": "خطأ في تصدير البيانات"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "يرجى تحديد ناديك."
         },
         "actions": {
-            "save": "حفظ"
+            "save": "حفظ",
+            "cancel_membership": "إلغاء العضوية",
+            "withdraw_application": "سحب الطلب",
+            "reapply": "إعادة التقديم",
+            "apply_membership": "تقدم بطلب العضوية"
         },
         "language_options": {
             "browser_default": "الافتراضي للمتصفح"

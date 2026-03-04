@@ -342,14 +342,14 @@ export function ProfilePage() {
                                 }
                             }} disabled={actionLoading}>
                                 {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                {user?.membership?.status === 'active' ? 'Kündigen' : 'Antrag zurückziehen'}
+                                {user?.membership?.status === 'active' ? t('profile.actions.cancel_membership') : t('profile.actions.withdraw_application')}
                             </Button>
                         ) : (
                             <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>
                                 {actionLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                                 {(user?.membership?.status === 'cancelled' || user?.membership?.status === 'denied')
-                                    ? 'Erneut beantragen'
-                                    : 'Mitgliedschaft beantragen'}
+                                    ? t('profile.actions.reapply')
+                                    : t('profile.actions.apply_membership')}
                             </Button>
                         )}
                     </div>
@@ -384,7 +384,7 @@ export function ProfilePage() {
                         <Card className="w-full max-w-md shadow-lg border">
                             <CardHeader>
                                 <CardTitle>
-                                    {actionModal === 'apply' ? 'Mitgliedschaft beantragen' : 'Mitgliedschaft kündigen'}
+                                    {actionModal === 'apply' ? t('profile.actions.apply_membership') : t('profile.actions.cancel_membership')}
                                 </CardTitle>
                                 <CardDescription>
                                     {actionModal === 'apply'

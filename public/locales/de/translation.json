@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Neuer Verein",
             "create_club": "Einen Verein gründen",
-            "load_more": "Mehr laden"
+            "load_more": "Mehr laden",
+            "back_to_overview": "Zurück zur Übersicht"
         },
         "filter": {
             "label": "Filter:",
@@ -40,7 +41,15 @@
             "title": "Admin-Bereich",
             "description": "Verwalte Anträge und Benutzer im gesamten Portal.",
             "users_button": "Benutzerverwaltung",
-            "audit_button": "Aktivitätsprotokoll"
+            "audit_button": "Aktivitätsprotokoll",
+            "user_not_found": "Benutzer nicht gefunden",
+            "approve_membership": "Mitgliedschaft genehmigen",
+            "approve_membership_desc": "Bestätige das Eintrittsdatum. Falls die Person Zahlungsdetails hinterlegt hat, überprüfe diese bitte zuvor.",
+            "deny_membership": "Mitgliedschaft ablehnen",
+            "deny_membership_desc": "Möchtest du diesen Antrag wirklich ablehnen?",
+            "cancel_membership": "Mitgliedschaft kündigen",
+            "cancel_membership_desc": "Bitte wähle das Kündigungsdatum (Ende der aktiven Zeit).",
+            "export_error": "Fehler beim Exportieren der Daten"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "Bitte gib deinen Verein an."
         },
         "actions": {
-            "save": "Speichern"
+            "save": "Speichern",
+            "cancel_membership": "Mitgliedschaft kündigen",
+            "withdraw_application": "Antrag zurückziehen",
+            "reapply": "Erneut beantragen",
+            "apply_membership": "Mitgliedschaft beantragen"
         },
         "language_options": {
             "browser_default": "Browser Standard"

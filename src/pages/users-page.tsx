@@ -104,7 +104,7 @@ export function UsersPage() {
             document.body.removeChild(a);
         } catch (err) {
             console.error("Failed to export", err);
-            setError("Fehler beim Exportieren der Daten");
+            setError(t('dashboard.admin.export_error'));
         }
     };
 

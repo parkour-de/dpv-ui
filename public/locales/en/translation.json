@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "New Club",
             "create_club": "Found a Club",
-            "load_more": "Load More"
+            "load_more": "Load More",
+            "back_to_overview": "Back to Overview"
         },
         "filter": {
             "label": "Filter:",
@@ -40,7 +41,15 @@
             "title": "Admin Area",
             "description": "Manage applications and users across the entire portal.",
             "users_button": "User Management",
-            "audit_button": "Activity Log"
+            "audit_button": "Activity Log",
+            "user_not_found": "User not found",
+            "approve_membership": "Approve membership",
+            "approve_membership_desc": "Confirm the entry date. If the person has provided payment details, please review them beforehand.",
+            "deny_membership": "Deny membership",
+            "deny_membership_desc": "Do you really want to deny this request?",
+            "cancel_membership": "Cancel membership",
+            "cancel_membership_desc": "Please select the cancellation date (end of active period).",
+            "export_error": "Error exporting data"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "Please specify your club."
         },
         "actions": {
-            "save": "Save"
+            "save": "Save",
+            "cancel_membership": "Cancel membership",
+            "withdraw_application": "Withdraw application",
+            "reapply": "Reapply",
+            "apply_membership": "Apply for membership"
         },
         "language_options": {
             "browser_default": "Browser Default"

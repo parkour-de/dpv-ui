@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Yeni Kulüp",
             "create_club": "Kulüp Oluştur",
-            "load_more": "Daha fazla yükle"
+            "load_more": "Daha fazla yükle",
+            "back_to_overview": "Genel bakışa dön"
         },
         "filter": {
             "label": "Filtre:",
@@ -40,7 +41,15 @@
             "title": "Yönetici Alanı",
             "description": "Tüm portaldeki başvuruları ve kullanıcıları yönetin.",
             "users_button": "Kullanıcı Yönetimi",
-            "audit_button": "Etkinlik Günlüğü"
+            "audit_button": "Etkinlik Günlüğü",
+            "user_not_found": "Kullanıcı bulunamadı",
+            "approve_membership": "Üyeliği onayla",
+            "approve_membership_desc": "Giriş tarihini onaylayın. Kişi ödeme ayrıntıları sağladıysa, lütfen bunları önceden inceleyin.",
+            "deny_membership": "Üyeliği reddet",
+            "deny_membership_desc": "Bu talebi gerçekten reddetmek istiyor musunuz?",
+            "cancel_membership": "Üyeliği iptal et",
+            "cancel_membership_desc": "Lütfen iptal tarihini seçin (aktif dönemin sonu).",
+            "export_error": "Verileri dışa aktarırken hata"
         }
     },
     "club": {
@@ -146,7 +155,8 @@
             "delete_confirm": "Bu kulübü silmek istediğinizden emin misiniz?",
             "remove_owner_confirm": "Bu kullanıcıyı yönetici olarak kaldırmak istiyor musunuz?",
             "loading": "Yükleniyor...",
-            "loading_payment": "Ödeme bilgileri yükleniyor..."
+            "loading_payment": "Ödeme bilgileri yükleniyor...",
+            "needs_authorized_rep": "Mindestens ein Vorstandsmitglied muss nach §26 BGB vertretungsberechtigt sein."
         },
         "verband": {
             "title": "Dernek Verileri",
@@ -212,7 +222,11 @@
             "your_club_required": "Lütfen kulübünüzü belirtin."
         },
         "actions": {
-            "save": "Kaydet"
+            "save": "Kaydet",
+            "cancel_membership": "Üyeliği iptal et",
+            "withdraw_application": "Başvuruyu geri çek",
+            "reapply": "Yeniden başvur",
+            "apply_membership": "Üyelik için başvur"
         },
         "language_options": {
             "browser_default": "Tarayıcı Varsayılanı"

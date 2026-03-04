@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Nouveau Club",
             "create_club": "Fonder un Club",
-            "load_more": "Charger plus"
+            "load_more": "Charger plus",
+            "back_to_overview": "Retour à l'aperçu"
         },
         "filter": {
             "label": "Filtre :",
@@ -40,7 +41,15 @@
             "title": "Espace Admin",
             "description": "Gérer les demandes et les utilisateurs sur l'ensemble du portail.",
             "users_button": "Gestion des Utilisateurs",
-            "audit_button": "Journal d'Activité"
+            "audit_button": "Journal d'Activité",
+            "user_not_found": "Utilisateur non trouvé",
+            "approve_membership": "Approuver l'adhésion",
+            "approve_membership_desc": "Confirmer la date d'entrée. Si la personne a fourni des informations de paiement, veuillez les vérifier au préalable.",
+            "deny_membership": "Refuser l'adhésion",
+            "deny_membership_desc": "Voulez-vous vraiment refuser cette demande ?",
+            "cancel_membership": "Annuler l'adhésion",
+            "cancel_membership_desc": "Veuillez sélectionner la date d'annulation (fin de la période active).",
+            "export_error": "Erreur lors de l'exportation des données"
         }
     },
     "club": {
@@ -64,7 +73,8 @@
                 "contact_person": "Personne de contact",
                 "state": "État",
                 "registerNumber": "Numéro d'enregistrement",
-                "exemptionValidity": "Validité de l'exemption"
+                "exemptionValidity": "Validité de l'exemption",
+                "authorizedRepresentative": "Vertretungsberechtigt nach §26 BGB"
             },
             "actions": {
                 "edit": "Modifier",
@@ -212,7 +222,11 @@
             "your_club_required": "Veuillez préciser votre club."
         },
         "actions": {
-            "save": "Enregistrer"
+            "save": "Enregistrer",
+            "cancel_membership": "Annuler l'adhésion",
+            "withdraw_application": "Retirer la demande",
+            "reapply": "Postuler à nouveau",
+            "apply_membership": "Demander l'adhésion"
         },
         "language_options": {
             "browser_default": "Par défaut du navigateur"

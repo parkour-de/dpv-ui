@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Klub i Ri",
             "create_club": "Krijo një Klub",
-            "load_more": "Ngarko më shumë"
+            "load_more": "Ngarko më shumë",
+            "back_to_overview": "Kthehu te pamja e përgjithshme"
         },
         "filter": {
             "label": "Filtri:",
@@ -40,7 +41,15 @@
             "title": "Zona e Administratorit",
             "description": "Menaxhoni aplikimet dhe përdoruesit në të gjithë portalin.",
             "users_button": "Menaxhimi i Përdoruesve",
-            "audit_button": "Regjistri i Aktivitetit"
+            "audit_button": "Regjistri i Aktivitetit",
+            "user_not_found": "Përdoruesi nuk u gjet",
+            "approve_membership": "Mirato anëtarësimin",
+            "approve_membership_desc": "Konfirmo datën e hyrjes. Nëse personi ka dhënë detajet e pagesës, ju lutemi t'i rishikoni paraprakisht.",
+            "deny_membership": "Refuzo anëtarësimin",
+            "deny_membership_desc": "Vërtet dëshironi ta refuzoni këtë kërkesë?",
+            "cancel_membership": "Anulo anëtarësimin",
+            "cancel_membership_desc": "Ju lutemi zgjidhni datën e anulimit (fundi i periudhës aktive).",
+            "export_error": "Gabim gjatë eksportimit të të dhënave"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "Ju lutem specifikoni klubin tuaj."
         },
         "actions": {
-            "save": "Ruaj"
+            "save": "Ruaj",
+            "cancel_membership": "Anulo anëtarësimin",
+            "withdraw_application": "Tërhiq aplikimin",
+            "reapply": "Apliko përsëri",
+            "apply_membership": "Apliko për anëtarësim"
         },
         "language_options": {
             "browser_default": "Parazgjedhja e shfletuesit"

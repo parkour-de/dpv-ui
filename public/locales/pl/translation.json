@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Nowy Klub",
             "create_club": "Załóż Klub",
-            "load_more": "Załaduj więcej"
+            "load_more": "Załaduj więcej",
+            "back_to_overview": "Powrót do przeglądu"
         },
         "filter": {
             "label": "Filtr:",
@@ -40,7 +41,15 @@
             "title": "Panel Administratora",
             "description": "Zarządzaj wnioskami i użytkownikami w całym portalu.",
             "users_button": "Zarządzanie Użytkownikami",
-            "audit_button": "Dziennik Aktywności"
+            "audit_button": "Dziennik Aktywności",
+            "user_not_found": "Nie znaleziono użytkownika",
+            "approve_membership": "Zatwierdź członkostwo",
+            "approve_membership_desc": "Potwierdź datę przystąpienia. Jeśli osoba podała dane do płatności, sprawdź je wcześniej.",
+            "deny_membership": "Odrzuć członkostwo",
+            "deny_membership_desc": "Czy na pewno chcesz odrzucić ten wniosek?",
+            "cancel_membership": "Anuluj członkostwo",
+            "cancel_membership_desc": "Wybierz datę anulowania (koniec aktywnego okresu).",
+            "export_error": "Błąd podczas eksportowania danych"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "Proszę podać swój klub."
         },
         "actions": {
-            "save": "Zapisz"
+            "save": "Zapisz",
+            "cancel_membership": "Anuluj członkostwo",
+            "withdraw_application": "Wycofaj wniosek",
+            "reapply": "Złóż wniosek ponownie",
+            "apply_membership": "Złóż wniosek o członkostwo"
         },
         "language_options": {
             "browser_default": "Domyślny przeglądarki"

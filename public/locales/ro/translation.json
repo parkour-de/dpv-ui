@@ -22,7 +22,8 @@
         "actions": {
             "new_club": "Club Nou",
             "create_club": "Înființează un Club",
-            "load_more": "Încarcă mai mult"
+            "load_more": "Încarcă mai mult",
+            "back_to_overview": "Înapoi la prezentare generală"
         },
         "filter": {
             "label": "Filtru:",
@@ -40,7 +41,15 @@
             "title": "Zona de Administrare",
             "description": "Gestionați cererile și utilizatorii în întregul portal.",
             "users_button": "Managementul Utilizatorilor",
-            "audit_button": "Jurnal de Activitate"
+            "audit_button": "Jurnal de Activitate",
+            "user_not_found": "Utilizator negăsit",
+            "approve_membership": "Aprobați apartenența",
+            "approve_membership_desc": "Confirmați data intrării. Dacă persoana a furnizat detalii de plată, vă rugăm să le revizuiți în prealabil.",
+            "deny_membership": "Refuzați apartenența",
+            "deny_membership_desc": "Sunteți sigur că doriți să refuzați această solicitare?",
+            "cancel_membership": "Anulați apartenența",
+            "cancel_membership_desc": "Vă rugăm să selectați data anulării (sfârșitul perioadei active).",
+            "export_error": "Eroare la exportul datelor"
         }
     },
     "club": {
@@ -213,7 +222,11 @@
             "your_club_required": "Vă rugăm să specificați clubul dvs."
         },
         "actions": {
-            "save": "Salvează"
+            "save": "Salvează",
+            "cancel_membership": "Anulați apartenența",
+            "withdraw_application": "Retrageți cererea",
+            "reapply": "Aplicați din nou",
+            "apply_membership": "Aplicați pentru apartenență"
         },
         "language_options": {
             "browser_default": "Implicit browser"

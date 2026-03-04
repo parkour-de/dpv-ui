@@ -96,11 +96,11 @@ export function UserDetailsPage() {
             <div className="space-y-6 max-w-2xl mx-auto">
                 <Button variant="ghost" className="mb-4" onClick={() => navigate('/users')}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Zurück zur Übersicht
+                    {t('dashboard.actions.back_to_overview')}
                 </Button>
                 <div className="bg-destructive/10 text-destructive p-4 rounded-md flex items-center gap-2">
                     <AlertCircle className="h-5 w-5" />
-                    <p>{error || "Benutzer nicht gefunden"}</p>
+                    <p>{error || t('dashboard.admin.user_not_found')}</p>
                 </div>
             </div>
         );
@@ -215,14 +215,14 @@ export function UserDetailsPage() {
                     <Card className="w-full max-w-md shadow-lg border">
                         <CardHeader>
                             <CardTitle>
-                                {actionModal === 'approve' && 'Mitgliedschaft genehmigen'}
-                                {actionModal === 'deny' && 'Mitgliedschaft ablehnen'}
-                                {actionModal === 'cancel' && 'Mitgliedschaft kündigen'}
+                                {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
+                                {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
+                                {actionModal === 'cancel' && t('dashboard.admin.cancel_membership')}
                             </CardTitle>
                             <CardDescription>
-                                {actionModal === 'approve' && 'Bestätige das Eintrittsdatum. Falls die Person Zahlungsdetails hinterlegt hat, überprüfe diese bitte zuvor.'}
-                                {actionModal === 'deny' && 'Möchtest du diesen Antrag wirklich ablehnen?'}
-                                {actionModal === 'cancel' && 'Bitte wähle das Kündigungsdatum (Ende der aktiven Zeit).'}
+                                {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
+                                {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
+                                {actionModal === 'cancel' && t('dashboard.admin.cancel_membership_desc')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
