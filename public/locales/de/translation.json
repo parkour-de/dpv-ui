@@ -50,6 +50,22 @@
             "cancel_membership": "Mitgliedschaft kündigen",
             "cancel_membership_desc": "Bitte wähle das Kündigungsdatum (Ende der aktiven Zeit).",
             "export_error": "Fehler beim Exportieren der Daten"
+        },
+        "audit_page": {
+            "title": "Aktivitätsprotokoll",
+            "description": "Letzte administrative Änderungen im System",
+            "filter": "Filter",
+            "author": "Autor...",
+            "target": "Ziel/ID...",
+            "all_actions": "Alle Aktionen",
+            "create": "Erstellen",
+            "update": "Bearbeiten",
+            "delete": "Löschen",
+            "loading": "Lade Protokoll...",
+            "no_entries": "Keine Einträge gefunden",
+            "no_actions": "Es wurden noch keine Aktionen protokolliert.",
+            "author_label": "Autor:",
+            "unauthorized": "Sie haben keine Berechtigung, diese Seite anzuzeigen."
         }
     },
     "club": {

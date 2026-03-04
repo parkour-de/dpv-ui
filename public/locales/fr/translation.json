@@ -50,6 +50,22 @@
             "cancel_membership": "Annuler l'adhésion",
             "cancel_membership_desc": "Veuillez sélectionner la date d'annulation (fin de la période active).",
             "export_error": "Erreur lors de l'exportation des données"
+        },
+        "audit_page": {
+            "title": "Journal d'activité",
+            "description": "Dernières modifications administratives du système",
+            "filter": "Filtre",
+            "author": "Auteur...",
+            "target": "Cible/ID...",
+            "all_actions": "Toutes les actions",
+            "create": "Créer",
+            "update": "Mettre à jour",
+            "delete": "Supprimer",
+            "loading": "Chargement du journal...",
+            "no_entries": "Aucune entrée trouvée",
+            "no_actions": "Aucune action n'a encore été enregistrée.",
+            "author_label": "Auteur:",
+            "unauthorized": "Vous n'êtes pas autorisé à afficher cette page."
         }
     },
     "club": {

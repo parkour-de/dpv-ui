@@ -50,6 +50,22 @@
             "cancel_membership": "Anulați apartenența",
             "cancel_membership_desc": "Vă rugăm să selectați data anulării (sfârșitul perioadei active).",
             "export_error": "Eroare la exportul datelor"
+        },
+        "audit_page": {
+            "title": "Jurnal de activitate",
+            "description": "Ultimele modificări administrative din sistem",
+            "filter": "Filtru",
+            "author": "Autor...",
+            "target": "Țintă/ID...",
+            "all_actions": "Toate acțiunile",
+            "create": "Creare",
+            "update": "Actualizare",
+            "delete": "Ștergere",
+            "loading": "Încărcare jurnal...",
+            "no_entries": "Nu s-au găsit intrări",
+            "no_actions": "Nu a fost înregistrată încă nicio acțiune.",
+            "author_label": "Autor:",
+            "unauthorized": "Nu aveți permisiunea de a vizualiza această pagină."
         }
     },
     "club": {

@@ -50,6 +50,22 @@
             "cancel_membership": "Cancel membership",
             "cancel_membership_desc": "Please select the cancellation date (end of active period).",
             "export_error": "Error exporting data"
+        },
+        "audit_page": {
+            "title": "Activity Log",
+            "description": "Recent administrative changes in the system",
+            "filter": "Filter",
+            "author": "Author...",
+            "target": "Target/ID...",
+            "all_actions": "All actions",
+            "create": "Create",
+            "update": "Update",
+            "delete": "Delete",
+            "loading": "Loading log...",
+            "no_entries": "No entries found",
+            "no_actions": "No actions have been logged yet.",
+            "author_label": "Author:",
+            "unauthorized": "You do not have permission to view this page."
         }
     },
     "club": {

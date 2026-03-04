@@ -50,6 +50,22 @@
             "cancel_membership": "Cancelar membresía",
             "cancel_membership_desc": "Selecciona la fecha de cancelación (fin del período activo).",
             "export_error": "Error al exportar datos"
+        },
+        "audit_page": {
+            "title": "Registro de actividades",
+            "description": "Últimos cambios administrativos en el sistema",
+            "filter": "Filtro",
+            "author": "Autor...",
+            "target": "Objetivo/ID...",
+            "all_actions": "Todas las acciones",
+            "create": "Crear",
+            "update": "Actualizar",
+            "delete": "Eliminar",
+            "loading": "Cargando registro...",
+            "no_entries": "No se encontraron entradas",
+            "no_actions": "Aún no se han registrado acciones.",
+            "author_label": "Autor:",
+            "unauthorized": "No tiene permiso para ver esta página."
         }
     },
     "club": {

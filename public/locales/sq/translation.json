@@ -50,6 +50,22 @@
             "cancel_membership": "Anulo anëtarësimin",
             "cancel_membership_desc": "Ju lutemi zgjidhni datën e anulimit (fundi i periudhës aktive).",
             "export_error": "Gabim gjatë eksportimit të të dhënave"
+        },
+        "audit_page": {
+            "title": "Regjistri i aktiviteteve",
+            "description": "Ndryshimet e fundit administrative në sistem",
+            "filter": "Filtri",
+            "author": "Autori...",
+            "target": "Objektivi/ID...",
+            "all_actions": "Të gjitha veprimet",
+            "create": "Krijo",
+            "update": "Përditëso",
+            "delete": "Fshi",
+            "loading": "Duke ngarkuar regjistrin...",
+            "no_entries": "Nuk u gjet asnjë hyrje",
+            "no_actions": "Nuk është regjistruar ende asnjë veprim.",
+            "author_label": "Autori:",
+            "unauthorized": "Nuk keni leje për të parë këtë faqe."
         }
     },
     "club": {

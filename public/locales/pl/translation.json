@@ -50,6 +50,22 @@
             "cancel_membership": "Anuluj członkostwo",
             "cancel_membership_desc": "Wybierz datę anulowania (koniec aktywnego okresu).",
             "export_error": "Błąd podczas eksportowania danych"
+        },
+        "audit_page": {
+            "title": "Dziennik aktywności",
+            "description": "Ostatnie zmiany administracyjne w systemie",
+            "filter": "Filtr",
+            "author": "Autor...",
+            "target": "Cel/ID...",
+            "all_actions": "Wszystkie akcje",
+            "create": "Utwórz",
+            "update": "Aktualizuj",
+            "delete": "Usuń",
+            "loading": "Ładowanie dziennika...",
+            "no_entries": "Nie znaleziono wpisów",
+            "no_actions": "Nie zarejestrowano jeszcze żadnych akcji.",
+            "author_label": "Autor:",
+            "unauthorized": "Nie masz uprawnień do przeglądania tej strony."
         }
     },
     "club": {

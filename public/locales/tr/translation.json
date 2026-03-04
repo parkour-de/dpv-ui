@@ -50,6 +50,22 @@
             "cancel_membership": "Üyeliği iptal et",
             "cancel_membership_desc": "Lütfen iptal tarihini seçin (aktif dönemin sonu).",
             "export_error": "Verileri dışa aktarırken hata"
+        },
+        "audit_page": {
+            "title": "Aktivite günlüğü",
+            "description": "Sistemdeki son idari değişiklikler",
+            "filter": "Filtre",
+            "author": "Yazar...",
+            "target": "Hedef/Kimlik...",
+            "all_actions": "Tüm eylemler",
+            "create": "Oluştur",
+            "update": "Güncelle",
+            "delete": "Sil",
+            "loading": "Günlük yükleniyor...",
+            "no_entries": "Giriş bulunamadı",
+            "no_actions": "Henüz hiçbir eylem kaydedilmedi.",
+            "author_label": "Yazar:",
+            "unauthorized": "Bu sayfayı görüntüleme izniniz yok."
         }
     },
     "club": {
