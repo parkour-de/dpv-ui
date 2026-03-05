@@ -14,7 +14,8 @@ export function RegisterPage() {
         email: "",
         password: "",
         firstname: "",
-        lastname: ""
+        lastname: "",
+        dateOfBirth: ""
     });
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -82,6 +83,10 @@ export function RegisterPage() {
                                 <Label htmlFor="lastname">{t('auth.fields.lastname')}</Label>
                                 <Input id="lastname" value={formData.lastname} onChange={handleChange} required />
                             </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="dateOfBirth">Geburtsdatum</Label>
+                            <Input id="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} required />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">{t('auth.fields.email')}</Label>

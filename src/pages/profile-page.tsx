@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, getErrorMessage } from "@/lib/api";
-import { type User, type Club } from "@/types";
+import { type User } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle, Check, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { MembershipStatus } from "@/components/membership-status";
-import { PaymentDetails } from "@/components/payment-details";
+import { UserProfileForm } from "@/components/user-profile-form";
 
 export function ProfilePage() {
     const { t } = useTranslation();
     const { user, token, apiUpdateUser, login } = useAuth();
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
+
 
     // Membership Actions Modal State
     const [actionModal, setActionModal] = useState<'apply' | 'cancel' | null>(null);
@@ -36,63 +34,6 @@ export function ProfilePage() {
         statutes: false,
         finances: false
     });
-    const [clubMatch, setClubMatch] = useState<{ name: string; status: string } | null>(null);
-
-    const [formData, setFormData] = useState<{
-        firstname: string;
-        lastname: string;
-        email: string;
-        language: string;
-        your_club: string;
-        address: string;
-        iban?: string;
-        account_holder?: string;
-        sepa_mandate_number?: string;
-    }>({
-        firstname: '',
-        lastname: '',
-        email: '',
-        language: '',
-        your_club: '',
-        address: ''
-    });
-
-    useEffect(() => {
-        if (user) {
-            setFormData(prev => ({
-                ...prev,
-                firstname: user.firstname || '',
-                lastname: user.lastname || '',
-                email: user.email || '',
-                language: user.language || 'default',
-                your_club: user.your_club || '',
-                address: user.membership?.address || ''
-            }));
-        }
-    }, [user]);
-
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            if (formData.your_club && formData.your_club.length >= 3 && token) {
-                try {
-                    const matches = await api.get<Club[]>(`/clubs/search?q=${encodeURIComponent(formData.your_club)}`, token);
-                    const exactMatch = matches.find(c => c.name.toLowerCase() === formData.your_club.toLowerCase());
-                    if (exactMatch && exactMatch.membership.status === 'active') {
-                        setClubMatch({ name: exactMatch.name, status: exactMatch.membership.status });
-                    } else {
-                        setClubMatch(null);
-                    }
-                } catch (e) {
-                    console.error("Club search failed", e);
-                    setClubMatch(null);
-                }
-            } else {
-                setClubMatch(null);
-            }
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [formData.your_club, token]);
-
     const handleMembershipAction = async (action: 'apply' | 'cancel') => {
         if (!token) return;
         setActionLoading(true);
@@ -127,67 +68,15 @@ export function ProfilePage() {
         }
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleSave = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!token || !user) return;
-        setLoading(true);
-        setMessage(null);
-        setError(null);
-        if (user.membership?.status === 'active' && !formData.your_club) {
-            setError(t('profile.messages.your_club_required', { defaultValue: 'Bitte gib deinen Verein an.' }));
-            setLoading(false);
-            return;
+    const handleSaveSuccess = (updatedUser: User) => {
+        if (apiUpdateUser) {
+            apiUpdateUser(updatedUser);
+        } else if (login && token) {
+            login(token, updatedUser);
         }
-        try {
-            const updated = await api.patch<User>('/users/me', formData, token);
-            // Update context - login function usually updates user in context
-            // If check useAuth implementation (I don't have it open, but usage suggests login/apiUpdateUser)
-            // The file initially used apiUpdateUser.
-            if (apiUpdateUser) {
-                apiUpdateUser(updated);
-            } else if (login) {
-                login(token, updated);
-            }
-
-            const messages = [t('profile.messages.success')];
-
-            // Request Email Validation if changed
-            if (formData.email !== user?.email) {
-                await api.post('/users/request-email-validation', {
-                    email: formData.email
-                }, token);
-                messages.push(t('profile.messages.email_sent', { email: formData.email }));
-            }
-
-            setMessage(messages.join(" "));
-            setError(null); // Clear any previous errors on success
-        } catch (err: unknown) {
-            setError(getErrorMessage(err, t));
-        } finally {
-            setLoading(false);
-        }
+        // Notification is handled inside UserProfileForm already,
+        // but we could lift state up if we needed app-wide toast.
     };
-
-    // Language options - use "default" as tombstone to clear backend language preference
-    const languages = [
-        { code: "default", label: t('profile.language_options.browser_default') },
-        { code: "de", label: "🇩🇪 Deutsch" },
-        { code: "en", label: "🇬🇧 English" },
-        { code: "es", label: "🇪🇸 Español" },
-        { code: "fr", label: "🇫🇷 Français" },
-        { code: "pl", label: "🇵🇱 Polski" },
-        { code: "ro", label: "🇷🇴 Română" },
-        { code: "sq", label: "🇦🇱 Shqip" },
-        { code: "tr", label: "🇹🇷 Türkçe" },
-        { code: "ru", label: "🇷🇺 Русский" },
-        { code: "uk", label: "🇺🇦 Українська" },
-        { code: "ar", label: "🇸🇦 العربية" },
-    ];
 
     if (!user) return null;
 
@@ -195,124 +84,11 @@ export function ProfilePage() {
         <div className="max-w-2xl mx-auto space-y-6 pb-12">
             <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
 
-            <form onSubmit={handleSave}>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>{t('profile.personal_data.title')}</CardTitle>
-                        <CardDescription>{t('profile.personal_data.description')}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {message && (
-                            <div className="bg-green-100 text-green-700 p-3 rounded-md flex items-center gap-2">
-                                <Check className="h-4 w-4" /> {message}
-                            </div>
-                        )}
-                        {error && (
-                            <div className="bg-destructive/10 text-destructive p-3 rounded-md flex items-center gap-2">
-                                <AlertCircle className="h-4 w-4" /> {error}
-                            </div>
-                        )}
-
-                        <div className="grid md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="firstname">{t('profile.labels.firstname')}</Label>
-                                <Input
-                                    id="firstname"
-                                    name="firstname"
-                                    value={formData.firstname}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="lastname">{t('profile.labels.lastname')}</Label>
-                                <Input
-                                    id="lastname"
-                                    name="lastname"
-                                    value={formData.lastname}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-4 mb-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="address">Adresse</Label>
-                                <Input
-                                    id="address"
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleChange}
-                                    placeholder="Straße, PLZ, Ort"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="your_club">{t('profile.labels.yourClub', { defaultValue: 'Dein Verein' })}</Label>
-                                <Input
-                                    id="your_club"
-                                    name="your_club"
-                                    value={formData.your_club}
-                                    onChange={handleChange}
-                                    placeholder="Optional"
-                                />
-                                {clubMatch && user.membership?.status === 'active' && (
-                                    <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 flex items-start gap-1">
-                                        <AlertCircle className="h-3 w-3 mt-0.5 shrink-0" />
-                                        {t('profile.messages.your_club_is_member', { name: clubMatch.name })}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        <PaymentDetails
-                            token={token!}
-                            fetchUrl="/users/me/payment-details"
-                            isAdmin={user?.roles?.includes('admin') || user?.roles?.includes('owner')}
-                            formData={formData}
-                            onChange={(field, val) => setFormData(p => ({ ...p, [field]: val }))}
-                            isReadOnly={false}
-                            alwaysOpen={false}
-                        />
-
-                        <div className="space-y-2 mt-4">
-                            <Label htmlFor="email">{t('profile.labels.email')}</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                            {formData.email !== user?.email && (
-                                <p className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                                    <AlertCircle className="h-3 w-3" />
-                                    {t('profile.messages.email_validation_required')}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="language">{t('profile.labels.language')}</Label>
-                            <select
-                                id="language"
-                                name="language"
-                                value={formData.language}
-                                onChange={handleChange}
-                                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                {languages.map(l => (
-                                    <option key={l.code} value={l.code}>{l.label}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                    </CardContent>
-                    <CardFooter>
-                        <Button type="submit" disabled={loading}>
-                            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {t('profile.actions.save')}
-                        </Button>
-                    </CardFooter>
-                </Card>
-            </form>
+            <UserProfileForm
+                user={user}
+                token={token!}
+                onSaveSuccess={handleSaveSuccess}
+            />
 
             <Card>
                 <CardHeader>

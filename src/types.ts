@@ -82,5 +82,22 @@ export interface User {
     roles: string[];
     language?: string;
     your_club?: string;
+    dateOfBirth?: string;
     membership?: Membership;
+}
+
+export interface ActiveMemberMatch {
+    user?: User;
+    source: string;
+    census_name?: string;
+    census_dob?: string;
+    portal_name?: string;
+    portal_dob?: string;
+    portal_your_club?: string;
+    match_type: string;
+}
+
+export interface ActiveMembersResponse {
+    exact_matches: ActiveMemberMatch[];
+    partial_matches: ActiveMemberMatch[];
 }

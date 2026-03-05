@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,6 +76,11 @@ export function ClubDetailsPage() {
     const [censusDetails, setCensusDetails] = useState<Record<number, Census>>({});
     const [censusFetchErrors, setCensusFetchErrors] = useState<Record<number, string>>({});
 
+    // Active Members State
+    const [activeMembers, setActiveMembers] = useState<ActiveMembersResponse | null>(null);
+    const [activeMembersLoading, setActiveMembersLoading] = useState(false);
+    const [activeMembersError, setActiveMembersError] = useState<string | null>(null);
+
     useEffect(() => {
         if (user?.roles?.includes('admin') || user?.roles?.includes('global_admin')) {
             setIsAdmin(true);
@@ -125,6 +130,26 @@ export function ClubDetailsPage() {
         fetchClub();
         fetchDocuments();
     }, [id, token, fetchClub]);
+
+    const fetchActiveMembers = async () => {
+        if (!id || !token) return;
+        setActiveMembersLoading(true);
+        setActiveMembersError(null);
+        try {
+            const data = await api.get<ActiveMembersResponse>(`/club/${id}/active-members`, token);
+            setActiveMembers(data);
+        } catch (err: unknown) {
+            console.error("Failed to load active members", err);
+            if (err instanceof ApiError && err.data?.message) {
+                setActiveMembersError(err.data.message);
+            } else {
+                setActiveMembersError(t('club.messages.load_error'));
+            }
+        } finally {
+            setActiveMembersLoading(false);
+        }
+    };
+
     // Toggle view handler
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1007,6 +1032,121 @@ export function ClubDetailsPage() {
                             )}
                         </CardContent>
                     </Card>
+
+                    {/* Active Members Review Section */}
+                    {isAdmin && (
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <div>
+                                    <CardTitle>{t('club.active_members.title', { defaultValue: 'Aktive Mitglieder Abgleich' })}</CardTitle>
+                                    <CardDescription>{t('club.active_members.description', { defaultValue: 'Abgleich von Vereinsmitgliedern aus Portal und Bestandserhebung.' })}</CardDescription>
+                                </div>
+                                <Button variant="outline" size="sm" onClick={fetchActiveMembers} disabled={activeMembersLoading}>
+                                    {activeMembersLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Loader2 className="h-4 w-4 mr-2 hidden" />}
+                                    {t('club.active_members.refresh', { defaultValue: 'Aktualisieren' })}
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                {activeMembersError && (
+                                    <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <p>{activeMembersError}</p>
+                                    </div>
+                                )}
+                                {!activeMembers && !activeMembersLoading && !activeMembersError && (
+                                    <div className="text-sm text-muted-foreground text-center py-4">
+                                        {t('club.active_members.click_to_load', { defaultValue: 'Klicken Sie auf Aktualisieren, um den Abgleich zu starten.' })}
+                                    </div>
+                                )}
+                                {activeMembers && (
+                                    <div className="space-y-6">
+                                        {/* Exact Matches */}
+                                        <div className="space-y-2">
+                                            <h3 className="font-semibold text-sm flex items-center justify-between">
+                                                <span>{t('club.active_members.exact_matches', { defaultValue: 'Exakte Treffer (Name + Geburtsdatum)' })}</span>
+                                                <span className="bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full">{activeMembers.exact_matches.length}</span>
+                                            </h3>
+                                            {activeMembers.exact_matches.length > 0 ? (
+                                                <div className="rounded-md border divide-y">
+                                                    {activeMembers.exact_matches.map((match: ActiveMemberMatch, idx: number) => (
+                                                        <div key={idx} className="p-3 flex items-center justify-between hover:bg-muted/10">
+                                                            <div>
+                                                                <div className="font-medium">{match.user?.firstname} {match.user?.lastname}</div>
+                                                                <div className="text-xs text-muted-foreground flex gap-2">
+                                                                    <span>{match.user?.email}</span>
+                                                                    <span>•</span>
+                                                                    <span>{match.user?.dateOfBirth && new Date(match.user.dateOfBirth).toLocaleDateString()}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <Link to={`/user/${match.user?._key}`}>
+                                                                    <Button variant="outline" size="sm" title="Profil anzeigen">
+                                                                        <User className="h-4 w-4" />
+                                                                    </Button>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="text-sm text-muted-foreground pl-2">{t('club.active_members.none', { defaultValue: 'Keine Treffer' })}</p>
+                                            )}
+                                        </div>
+
+                                        {/* Partial Matches */}
+                                        <div className="space-y-2">
+                                            <h3 className="font-semibold text-sm flex items-center justify-between">
+                                                <span>{t('club.active_members.partial_matches', { defaultValue: 'Mögliche Treffer / Nur Portalangabe' })}</span>
+                                                <span className="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">{activeMembers.partial_matches.length}</span>
+                                            </h3>
+                                            {activeMembers.partial_matches.length > 0 ? (
+                                                <div className="rounded-md border divide-y">
+                                                    {activeMembers.partial_matches.map((match: ActiveMemberMatch, idx: number) => (
+                                                        <div key={idx} className="p-3 flex items-center justify-between hover:bg-muted/10">
+                                                            <div className="space-y-1">
+                                                                <div className="font-medium text-sm flex items-center gap-2">
+                                                                    {match.user?.firstname} {match.user?.lastname}
+                                                                    <span className="bg-muted px-1.5 py-0.5 rounded text-[10px] uppercase font-mono">{match.match_type}</span>
+                                                                </div>
+                                                                <div className="text-xs text-muted-foreground flex gap-2">
+                                                                    <span>{match.user?.email}</span>
+                                                                    {match.user?.dateOfBirth && (
+                                                                        <>
+                                                                            <span>•</span>
+                                                                            <span>Portal DOB: {new Date(match.user.dateOfBirth).toLocaleDateString()}</span>
+                                                                        </>
+                                                                    )}
+                                                                </div>
+                                                                {match.census_name && (
+                                                                    <div className="text-xs text-amber-600/80">
+                                                                        Bestandserhebung: {match.census_name} {match.census_dob && `(${match.census_dob})`}
+                                                                    </div>
+                                                                )}
+                                                                {match.portal_your_club && !match.census_name && (
+                                                                    <div className="text-xs text-muted-foreground">
+                                                                        Angegeben in Dein Verein: "{match.portal_your_club}"
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <Link to={`/user/${match.user?._key}`}>
+                                                                    <Button variant="outline" size="sm" title="Profil anzeigen">
+                                                                        <User className="h-4 w-4" />
+                                                                    </Button>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="text-sm text-muted-foreground pl-2">{t('club.active_members.none', { defaultValue: 'Keine Treffer' })}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
                 </>
             )
             }

@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, ArrowLeft, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
-import { PaymentDetails } from "@/components/payment-details";
+import { UserProfileForm } from "@/components/user-profile-form";
 
 export function UserDetailsPage() {
     const { id } = useParams<{ id: string }>();
@@ -45,7 +45,7 @@ export function UserDetailsPage() {
             }
         };
 
-        if (currentUser?.roles?.includes('admin')) {
+        if (currentUser?.roles?.includes('admin') || currentUser?.roles?.includes('aktivadmin')) {
             fetchUser();
         } else {
             setLoading(false);
@@ -126,97 +126,83 @@ export function UserDetailsPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Persönliche Daten</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <Label className="text-muted-foreground text-xs">Vorname</Label>
-                                <p className="font-medium">{targetUser.firstname}</p>
-                            </div>
-                            <div className="space-y-1">
-                                <Label className="text-muted-foreground text-xs">Nachname</Label>
-                                <p className="font-medium">{targetUser.lastname}</p>
-                            </div>
-                        </div>
-                        <div className="space-y-1">
-                            <Label className="text-muted-foreground text-xs">E-Mail</Label>
-                            <p className="font-medium">{targetUser.email}</p>
-                        </div>
-                        <div className="space-y-1">
-                            <Label className="text-muted-foreground text-xs">Bevorzugte Sprache</Label>
-                            <p className="font-medium">{targetUser.language?.toUpperCase() || 'DE'}</p>
-                        </div>
-                        {targetUser.your_club && (
-                            <div className="space-y-1">
-                                <Label className="text-muted-foreground text-xs">Verein (Dein Verein)</Label>
-                                <p className="font-medium">{targetUser.your_club}</p>
-                            </div>
-                        )}
-                        <div className="space-y-1">
-                            <div className="flex items-center justify-between">
-                                <Label className="text-muted-foreground text-xs">Rollen</Label>
-                            </div>
-                            <div className="flex flex-col gap-2 mt-2">
-                                <div className="flex flex-wrap gap-2">
-                                    {targetUser.roles?.map(role => (
-                                        <span key={role} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold">
-                                            {role}
-                                        </span>
-                                    ))}
-                                </div>
-                                <div className="flex flex-col gap-2 mt-2 pt-2 border-t">
-                                    <Label className="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input
-                                            type="checkbox"
-                                            checked={targetUser.roles?.includes('admin') || false}
-                                            onChange={async (e) => {
-                                                const checked = e.target.checked;
-                                                const currentRoles = targetUser.roles || [];
-                                                const newRoles = checked
-                                                    ? [...currentRoles, 'admin']
-                                                    : currentRoles.filter(r => r !== 'admin');
+                <div className="space-y-6">
+                    <UserProfileForm
+                        user={targetUser}
+                        token={token!}
+                        isAdminView={true}
+                        endpointOverride={`/user/${targetUser._key}`}
+                        onSaveSuccess={(updated) => setTargetUser(updated)}
+                    />
 
-                                                try {
-                                                    await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
-                                                    setTargetUser({ ...targetUser, roles: newRoles });
-                                                } catch (err: unknown) {
-                                                    setError(getErrorMessage(err, t));
-                                                }
-                                            }}
-                                            disabled={actionLoading}
-                                        />
-                                        <span>Systemadministrator (admin)</span>
-                                    </Label>
-                                    <Label className="flex items-center gap-2 cursor-pointer text-sm">
-                                        <input
-                                            type="checkbox"
-                                            checked={targetUser.roles?.includes('aktivadmin') || false}
-                                            onChange={async (e) => {
-                                                const checked = e.target.checked;
-                                                const currentRoles = targetUser.roles || [];
-                                                const newRoles = checked
-                                                    ? [...currentRoles, 'aktivadmin']
-                                                    : currentRoles.filter(r => r !== 'aktivadmin');
+                    {currentUser?.roles?.includes('admin') && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Rollenverwaltung</CardTitle>
+                                <CardDescription>Systemberechtigungen für diesen Benutzer zuweisen</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                        {targetUser.roles?.map(role => (
+                                            <span key={role} className="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold">
+                                                {role}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <div className="flex flex-col gap-3 pt-2 border-t">
+                                        <Label className="flex items-center gap-2 cursor-pointer text-sm font-normal">
+                                            <input
+                                                type="checkbox"
+                                                checked={targetUser.roles?.includes('admin') || false}
+                                                onChange={async (e) => {
+                                                    const checked = e.target.checked;
+                                                    const currentRoles = targetUser.roles || [];
+                                                    const newRoles = checked
+                                                        ? [...currentRoles, 'admin']
+                                                        : currentRoles.filter(r => r !== 'admin');
 
-                                                try {
-                                                    await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
-                                                    setTargetUser({ ...targetUser, roles: newRoles });
-                                                } catch (err: unknown) {
-                                                    setError(getErrorMessage(err, t));
-                                                }
-                                            }}
-                                            disabled={actionLoading}
-                                        />
-                                        <span>Aktivenbetreuer (aktivadmin)</span>
-                                    </Label>
+                                                    try {
+                                                        await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
+                                                        setTargetUser({ ...targetUser, roles: newRoles });
+                                                    } catch (err: unknown) {
+                                                        setError(getErrorMessage(err, t));
+                                                    }
+                                                }}
+                                                disabled={actionLoading}
+                                                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                            />
+                                            <span>Systemadministrator (admin)</span>
+                                        </Label>
+                                        <Label className="flex items-center gap-2 cursor-pointer text-sm font-normal">
+                                            <input
+                                                type="checkbox"
+                                                checked={targetUser.roles?.includes('aktivadmin') || false}
+                                                onChange={async (e) => {
+                                                    const checked = e.target.checked;
+                                                    const currentRoles = targetUser.roles || [];
+                                                    const newRoles = checked
+                                                        ? [...currentRoles, 'aktivadmin']
+                                                        : currentRoles.filter(r => r !== 'aktivadmin');
+
+                                                    try {
+                                                        await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
+                                                        setTargetUser({ ...targetUser, roles: newRoles });
+                                                    } catch (err: unknown) {
+                                                        setError(getErrorMessage(err, t));
+                                                    }
+                                                }}
+                                                disabled={actionLoading}
+                                                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                            />
+                                            <span>Aktivenbetreuer (aktivadmin)</span>
+                                        </Label>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
 
                 <div className="space-y-6">
                     <Card>
@@ -247,15 +233,7 @@ export function UserDetailsPage() {
                         )}
                     </Card>
 
-                    <PaymentDetails
-                        token={token!}
-                        fetchUrl={`/user/${targetUser._key}/payment-details`}
-                        isAdmin={true}
-                        formData={{}} // Wir benötigen das bearbeitbare Formular hier nicht, readOnly reicht
-                        onChange={() => { }}
-                        isReadOnly={true}
-                        alwaysOpen={false}
-                    />
+
 
                     {/* Verbandsdaten (Read-Only) */}
                     <Card>
