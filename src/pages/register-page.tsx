@@ -15,14 +15,16 @@ export function RegisterPage() {
         password: "",
         firstname: "",
         lastname: "",
-        dateOfBirth: ""
+        dateOfBirth: "",
+        consentPrivacy: false
     });
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+        setFormData(prev => ({ ...prev, [e.target.id]: value }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +33,14 @@ export function RegisterPage() {
         setLoading(true);
 
         try {
-            await api.post('/users', formData);
+            await api.post('/users', {
+                email: formData.email,
+                password: formData.password,
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                dateOfBirth: formData.dateOfBirth,
+                consent_privacy: formData.consentPrivacy
+            });
             setError(null); // Clear any previous errors on success
             setSuccess(true);
         } catch (err: unknown) {
@@ -98,6 +107,19 @@ export function RegisterPage() {
                             <p className="text-[0.8rem] text-muted-foreground">
                                 {t('auth.register.password_hint')}
                             </p>
+                        </div>
+                        <div className="flex items-start space-x-2 mt-4 pt-2">
+                            <input
+                                type="checkbox"
+                                id="consentPrivacy"
+                                checked={formData.consentPrivacy}
+                                onChange={handleChange}
+                                required
+                                className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                            />
+                            <Label htmlFor="consentPrivacy" className="text-sm font-normal leading-tight text-muted-foreground">
+                                {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
+                            </Label>
                         </div>
                         {error && (
                             <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
