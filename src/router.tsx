@@ -11,7 +11,6 @@ import { RegisterPage } from "@/pages/register-page";
 import { ResetPasswordPage } from "@/pages/reset-password-page";
 import { ImprintPage } from "@/pages/imprint-page";
 import { HelpPage } from "@/pages/help-page";
-import { ProfilePage } from "@/pages/profile-page";
 import { UsersPage } from "@/pages/users-page";
 import { UserDetailsPage } from "@/pages/user-details-page";
 import { AuditPage } from "@/pages/audit-page";
@@ -79,14 +78,14 @@ export const router = createHashRouter([
             },
             {
                 path: "/profile",
-                element: <ProfilePage />,
+                element: <UserDetailsPage />,
             },
             {
                 path: "/users",
                 element: <UsersPage />,
             },
             {
-                path: "/users/:id",
+                path: "/user/:id",
                 element: <UserDetailsPage />,
             },
             {

@@ -24,7 +24,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
     const [error, setError] = useState<string | null>(null);
     const [clubMatch, setClubMatch] = useState<{ name: string; status: string } | null>(null);
 
-    const endpoint = endpointOverride || "/users/me";
+    const endpoint = endpointOverride || `/user/${user._key}`;
 
     const [formData, setFormData] = useState<{
         firstname: string;
@@ -246,7 +246,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
 
                     <PaymentDetails
                         token={token}
-                        fetchUrl={isAdminView ? `/user/${user._key}/payment-details` : "/users/me/payment-details"}
+                        fetchUrl={`/user/${user._key}/payment-details`}
                         isAdmin={isAdminView}
                         formData={formData}
                         onChange={(field, val) => setFormData(p => ({ ...p, [field]: val }))}

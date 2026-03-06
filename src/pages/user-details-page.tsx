@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, getErrorMessage } from "@/lib/api";
@@ -17,7 +17,11 @@ export function UserDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { user: currentUser, token } = useAuth();
+    const { user: currentUser, token, apiUpdateUser, login } = useAuth();
+
+    // Determine if we are looking at our own profile via /profile or /user/:my_id
+    const isSelfView = !id || id === currentUser?._key;
+    const targetUserId = id || currentUser?._key;
 
     const [targetUser, setTargetUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -25,66 +29,120 @@ export function UserDetailsPage() {
     const [error, setError] = useState<string | null>(null);
 
     // Membership action state
-    const [actionModal, setActionModal] = useState<'approve' | 'deny' | 'cancel' | null>(null);
-    const [actionDate, setActionDate] = useState<string>("");
+    const [actionModal, setActionModal] = useState<'approve' | 'deny' | 'cancel' | 'apply' | null>(null);
+    const [actionDate, setActionDate] = useState<string>(isSelfView ? new Date().toISOString().split('T')[0] : "");
+
+    // Self-apply specific states
+    const [searchParams] = useSearchParams();
+    const typeQuery = searchParams.get("type");
+    const [applyType, setApplyType] = useState<'active' | 'supporting'>(typeQuery === "supporting" ? "supporting" : "active");
+    const [applyFee, setApplyFee] = useState<number>(30);
+    const [consents, setConsents] = useState({
+        privacy: false,
+        accuracy: false,
+        statutes: false,
+        finances: false
+    });
 
     useEffect(() => {
         const fetchUser = async () => {
+            if (!token || !targetUserId) return;
             setLoading(true);
             setError(null);
+
             try {
-                if (token && id) {
-                    const data = await api.get<User>(`/user/${id}`, token);
+                // Determine if we should just use currentUser directly or fetch
+                if (isSelfView && currentUser) {
+                    setTargetUser(currentUser);
+                    setLoading(false);
+                } else if (currentUser?.roles?.includes('admin') || currentUser?.roles?.includes('aktivadmin')) {
+                    const data = await api.get<User>(`/user/${targetUserId}`, token);
                     setTargetUser(data);
+                    setLoading(false);
+                } else {
+                    setLoading(false);
+                    setError("Sie haben keine Berechtigung, diese Seite anzuzeigen.");
                 }
             } catch (err: unknown) {
                 console.error("Failed to fetch user", err);
                 setError(getErrorMessage(err, t));
-            } finally {
                 setLoading(false);
             }
         };
 
-        if (currentUser?.roles?.includes('admin') || currentUser?.roles?.includes('aktivadmin')) {
-            fetchUser();
-        } else {
-            setLoading(false);
-            setError("Sie haben keine Berechtigung, diese Seite anzuzeigen.");
-        }
-    }, [id, token, currentUser, t]);
+        fetchUser();
+    }, [isSelfView, targetUserId, token, currentUser, t]);
 
-    const handleMembershipAction = async (action: 'approve' | 'deny' | 'cancel') => {
+    const handleMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
         if (!token || !targetUser) return;
         setActionLoading(true);
         setError(null);
+
         try {
-            let body = {};
-            if ((action === 'approve' || action === 'cancel') && actionDate) {
-                const parts = actionDate.split('-');
-                if (parts.length === 3) {
-                    const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
-                    const timestamp = Math.floor(date.getTime() / 1000);
-                    if (action === 'approve') {
-                        body = { begin_date: timestamp };
-                    } else {
-                        body = { end_date: timestamp };
+            let body: Record<string, unknown> = {};
+
+            if (isSelfView) {
+                // Self actions
+                const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
+
+                if (action === 'apply') {
+                    body = {
+                        consent_privacy: consents.privacy,
+                        consent_accuracy: consents.accuracy,
+                        consent_statutes: consents.statutes,
+                        consent_finances: consents.finances,
+                        type: applyType,
+                        fee: applyType === 'supporting' ? applyFee : 10
+                    };
+                } else if (action === 'cancel') {
+                    body = { end_date: unixSeconds };
+                }
+
+                await api.post(`/users/me/${action}`, body, token);
+
+                const updatedUser = await api.get<User>('/users/me', token);
+                if (apiUpdateUser) apiUpdateUser(updatedUser);
+                setTargetUser(updatedUser);
+            } else {
+                // Admin actions
+                if ((action === 'approve' || action === 'cancel') && actionDate) {
+                    const parts = actionDate.split('-');
+                    if (parts.length === 3) {
+                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+                        const timestamp = Math.floor(date.getTime() / 1000);
+                        if (action === 'approve') {
+                            body = { begin_date: timestamp };
+                        } else {
+                            body = { end_date: timestamp };
+                        }
                     }
                 }
+
+                await api.post(`/user/${targetUser._key}/${action}`, body, token);
+
+                const data = await api.get<User>(`/user/${targetUserId}`, token);
+                setTargetUser(data);
             }
 
-            await api.post(`/user/${targetUser._key}/${action}`, body, token);
-
-            // Refetch
-            const data = await api.get<User>(`/user/${id}`, token);
-            setTargetUser(data);
             setActionModal(null);
-            setActionDate("");
+            setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
         } catch (err: unknown) {
             console.error(`Failed to ${action} membership`, err);
             setError(getErrorMessage(err, t));
         } finally {
             setActionLoading(false);
         }
+    };
+
+    const handleSaveSuccess = (updatedUser: User) => {
+        if (isSelfView) {
+            if (apiUpdateUser) {
+                apiUpdateUser(updatedUser);
+            } else if (login && token) {
+                login(token, updatedUser);
+            }
+        }
+        setTargetUser(updatedUser);
     };
 
     if (loading) {
@@ -94,10 +152,12 @@ export function UserDetailsPage() {
     if (error || !targetUser) {
         return (
             <div className="space-y-6 max-w-2xl mx-auto">
-                <Button variant="ghost" className="mb-4" onClick={() => navigate('/users')}>
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {t('dashboard.actions.back_to_overview')}
-                </Button>
+                {!isSelfView && (
+                    <Button variant="ghost" className="mb-4" onClick={() => navigate('/users')}>
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {t('dashboard.actions.back_to_overview')}
+                    </Button>
+                )}
                 <div className="bg-destructive/10 text-destructive p-4 rounded-md flex items-center gap-2">
                     <AlertCircle className="h-5 w-5" />
                     <p>{error || t('dashboard.admin.user_not_found')}</p>
@@ -107,35 +167,41 @@ export function UserDetailsPage() {
     }
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto">
-            <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Zurück zur Benutzerverwaltung
-            </Button>
+        <div className="space-y-6 max-w-4xl mx-auto pb-12">
+            {!isSelfView ? (
+                <>
+                    <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Zurück zur Benutzerverwaltung
+                    </Button>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">
-                        {targetUser.firstname} {targetUser.lastname}
-                    </h1>
-                    <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser._key}</p>
-                </div>
-                {targetUser.membership?.status && (
-                    <StatusBadge membership={targetUser.membership} />
-                )}
-            </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 className="text-3xl font-bold tracking-tight">
+                                {targetUser.firstname} {targetUser.lastname}
+                            </h1>
+                            <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser._key}</p>
+                        </div>
+                        {targetUser.membership?.status && (
+                            <StatusBadge membership={targetUser.membership} />
+                        )}
+                    </div>
+                </>
+            ) : (
+                <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
+            )}
 
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-6">
                     <UserProfileForm
                         user={targetUser}
                         token={token!}
-                        isAdminView={true}
+                        isAdminView={!isSelfView}
                         endpointOverride={`/user/${targetUser._key}`}
-                        onSaveSuccess={(updated) => setTargetUser(updated)}
+                        onSaveSuccess={handleSaveSuccess}
                     />
 
-                    {currentUser?.roles?.includes('admin') && (
+                    {!isSelfView && currentUser?.roles?.includes('admin') && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Rollenverwaltung</CardTitle>
@@ -207,12 +273,46 @@ export function UserDetailsPage() {
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Mitgliedschaftsstatus</CardTitle>
+                            <CardTitle>Mitgliedschafts{isSelfView ? '' : 'status'}</CardTitle>
+                            {isSelfView && <CardDescription>Verwalte deine Mitgliedschaft im DPV</CardDescription>}
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <MembershipStatus membership={targetUser.membership} />
+                            {isSelfView ? (
+                                <div className="p-4 border rounded-md bg-muted/20">
+                                    <MembershipStatus membership={targetUser.membership} />
+                                </div>
+                            ) : (
+                                <MembershipStatus membership={targetUser.membership} />
+                            )}
+
+                            {isSelfView && (
+                                <div className="flex justify-end mt-4">
+                                    {(targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'requested') ? (
+                                        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
+                                            if (targetUser?.membership?.status === 'requested') {
+                                                if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
+                                                    handleMembershipAction('cancel');
+                                                }
+                                            } else {
+                                                setActionModal('cancel');
+                                            }
+                                        }} disabled={actionLoading}>
+                                            {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                            {targetUser?.membership?.status === 'active' ? t('profile.actions.cancel_membership') : t('profile.actions.withdraw_application')}
+                                        </Button>
+                                    ) : (
+                                        <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>
+                                            {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                            {(targetUser?.membership?.status === 'cancelled' || targetUser?.membership?.status === 'denied')
+                                                ? t('profile.actions.reapply')
+                                                : t('profile.actions.apply_membership')}
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
                         </CardContent>
-                        {targetUser.membership?.status === 'requested' && (
+
+                        {!isSelfView && targetUser.membership?.status === 'requested' && (
                             <CardFooter className="flex flex-col sm:flex-row gap-2 border-t pt-4">
                                 <Button className="w-full bg-green-600 hover:bg-green-700" onClick={() => setActionModal('approve')} disabled={actionLoading}>
                                     <CheckCircle className="mr-2 h-4 w-4" />
@@ -224,7 +324,7 @@ export function UserDetailsPage() {
                                 </Button>
                             </CardFooter>
                         )}
-                        {targetUser.membership?.status === 'active' && (
+                        {!isSelfView && targetUser.membership?.status === 'active' && (
                             <CardFooter className="border-t pt-4">
                                 <Button variant="outline" className="w-full text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
                                     Kündigen (Admin)
@@ -233,12 +333,11 @@ export function UserDetailsPage() {
                         )}
                     </Card>
 
-
-
                     {/* Verbandsdaten (Read-Only) */}
                     <Card>
                         <CardHeader>
                             <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                            {isSelfView && <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>}
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="grid md:grid-cols-2 gap-4">
@@ -249,6 +348,7 @@ export function UserDetailsPage() {
                                 <div className="space-y-2">
                                     <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
                                     <Input value={targetUser.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
+                                    {isSelfView && <p className="text-xs text-muted-foreground mt-1">Siehe <a href="#" target="_blank" className="underline">Satzung</a> und <a href="#" target="_blank" className="underline">Beitragsordnung</a></p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Art der Mitgliedschaft</Label>
@@ -264,7 +364,7 @@ export function UserDetailsPage() {
                 </div>
             </div>
 
-            {/* Admin Action Modal */}
+            {/* Action Modal */}
             {actionModal && (
                 <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
                     <Card className="w-full max-w-md shadow-lg border">
@@ -272,18 +372,77 @@ export function UserDetailsPage() {
                             <CardTitle>
                                 {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
                                 {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
-                                {actionModal === 'cancel' && t('dashboard.admin.cancel_membership')}
+                                {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
+                                {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
+                                {actionModal === 'apply' && t('profile.actions.apply_membership')}
                             </CardTitle>
                             <CardDescription>
                                 {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
                                 {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
-                                {actionModal === 'cancel' && t('dashboard.admin.cancel_membership_desc')}
+                                {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
+                                {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
+                                {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {(actionModal === 'approve' || actionModal === 'cancel') && (
+                            {actionModal === 'apply' ? (
+                                <div className="space-y-4 pt-2">
+                                    <div className="space-y-2 border-b pb-4">
+                                        <Label>Art der Mitgliedschaft</Label>
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                                <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
+                                                Aktivmitgliedschaft (10 € / Jahr)
+                                            </Label>
+                                            <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                                <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
+                                                Fördernde Mitgliedschaft
+                                            </Label>
+                                        </div>
+                                    </div>
+                                    {applyType === 'supporting' && (
+                                        <div className="space-y-2 animate-in fade-in pb-2">
+                                            <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
+                                            <Input
+                                                id="customFee"
+                                                type="number"
+                                                min="1"
+                                                step="1"
+                                                value={applyFee}
+                                                onChange={(e) => setApplyFee(Number(e.target.value))}
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="space-y-3">
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-privacy" className="mt-1" checked={consents.privacy} onChange={(e) => setConsents(p => ({ ...p, privacy: e.target.checked }))} />
+                                            <Label htmlFor="consent-privacy" className="text-sm font-normal leading-snug">
+                                                {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-accuracy" className="mt-1" checked={consents.accuracy} onChange={(e) => setConsents(p => ({ ...p, accuracy: e.target.checked }))} />
+                                            <Label htmlFor="consent-accuracy" className="text-sm font-normal leading-snug">
+                                                {t('club.details.membership.consent_accuracy', { defaultValue: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' })}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-statutes" className="mt-1" checked={consents.statutes} onChange={(e) => setConsents(p => ({ ...p, statutes: e.target.checked }))} />
+                                            <Label htmlFor="consent-statutes" className="text-sm font-normal leading-snug">
+                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Satzung</a> gelesen und erkenne sie an.
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-start space-x-2">
+                                            <input type="checkbox" id="consent-finances" className="mt-1" checked={consents.finances} onChange={(e) => setConsents(p => ({ ...p, finances: e.target.checked }))} />
+                                            <Label htmlFor="consent-finances" className="text-sm font-normal leading-snug">
+                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Beitragsordnung</a> gelesen und erkenne sie an.
+                                            </Label>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (actionModal === 'approve' || actionModal === 'cancel') ? (
                                 <div className="space-y-2">
-                                    <Label htmlFor="actionDate">Datum (Optional)</Label>
+                                    <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
                                     <Input
                                         id="actionDate"
                                         type="date"
@@ -291,28 +450,29 @@ export function UserDetailsPage() {
                                         onChange={(e) => setActionDate(e.target.value)}
                                     />
                                     <p className="text-xs text-muted-foreground pt-1">
-                                        Falls leer, wird das Datum
-                                        {actionModal === 'approve' && targetUser?.membership?.begin_date
-                                            ? ` aus dem Antrag übernommen (${new Date(targetUser.membership.begin_date * 1000).toLocaleDateString()})`
-                                            : " von heute verwendet"}.
+                                        {isSelfView
+                                            ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
+                                            : `Falls leer, wird das Datum ${actionModal === 'approve' && targetUser?.membership?.begin_date ? ` aus dem Antrag übernommen (${new Date(targetUser.membership.begin_date * 1000).toLocaleDateString()})` : " von heute verwendet"} .`}
                                     </p>
                                 </div>
-                            )}
+                            ) : null}
                         </CardContent>
-                        <CardFooter className="flex justify-end gap-2">
-                            <Button variant="outline" onClick={() => {
+                        <CardFooter className="flex justify-end gap-2 bg-muted/20 py-4">
+                            <Button variant="ghost" onClick={() => {
                                 setActionModal(null);
-                                setActionDate("");
+                                setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
                             }} disabled={actionLoading}>
-                                Abbrechen
+                                {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
                             </Button>
                             <Button
                                 variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
                                 onClick={() => handleMembershipAction(actionModal)}
-                                disabled={actionLoading}
+                                disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
                             >
                                 {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                Bestätigen
+                                {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) :
+                                    actionModal === 'cancel' && isSelfView ? t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' }) :
+                                        'Bestätigen'}
                             </Button>
                         </CardFooter>
                     </Card>
@@ -321,3 +481,4 @@ export function UserDetailsPage() {
         </div>
     );
 }
+
