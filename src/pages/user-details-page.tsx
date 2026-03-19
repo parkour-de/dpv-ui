@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, getErrorMessage } from "@/lib/api";
 import { type User } from "@/types";
@@ -416,7 +417,17 @@ export function UserDetailsPage() {
     );
 }
 
-function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, setConsents, t }: any) {
+interface ApplyFormProps {
+    applyType: 'active' | 'supporting';
+    setApplyType: (val: 'active' | 'supporting') => void;
+    applyFee: number;
+    setApplyFee: (val: number) => void;
+    consents: { privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean };
+    setConsents: React.Dispatch<React.SetStateAction<{ privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean }>>;
+    t: TFunction; 
+}
+
+function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, setConsents, t }: ApplyFormProps) {
     return (
         <div className="space-y-4 pt-2">
             <div className="space-y-2 border-b pb-4">
@@ -458,7 +469,7 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
                             id={`consent-${item.id}`}
                             className="mt-1"
                             checked={consents[item.id as keyof typeof consents]}
-                            onChange={(e) => setConsents((p: any) => ({ ...p, [item.id]: e.target.checked }))}
+                            onChange={(e) => setConsents(p => ({ ...p, [item.id]: e.target.checked }))}
                         />
                         <Label htmlFor={`consent-${item.id}`} className="text-sm font-normal leading-snug">
                             {item.key ? t(item.key, { defaultValue: item.def }) : (
@@ -480,6 +491,24 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
     );
 }
 
+interface ActionModalProps {
+    actionModal: MembershipAction | null;
+    setActionModal: (val: MembershipAction | null) => void;
+    isSelfView: boolean;
+    targetUser: User | null;
+    actionDate: string;
+    setActionDate: (val: string) => void;
+    handleMembershipAction: (action: MembershipAction) => Promise<void>;
+    consents: { privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean };
+    setConsents: React.Dispatch<React.SetStateAction<{ privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean }>>;
+    applyType: 'active' | 'supporting';
+    setApplyType: (val: 'active' | 'supporting') => void;
+    applyFee: number;
+    setApplyFee: (val: number) => void;
+    t: TFunction;
+    actionLoading: boolean;
+}
+
 function ActionModal({
     actionModal,
     setActionModal,
@@ -487,7 +516,7 @@ function ActionModal({
     targetUser,
     actionDate,
     setActionDate,
-    handleMembershipAction, // Use the combined handler
+    handleMembershipAction,
     consents,
     setConsents,
     applyType,
@@ -495,8 +524,8 @@ function ActionModal({
     applyFee,
     setApplyFee,
     t,
-    actionLoading // Receive actionLoading
-}: any) {
+    actionLoading
+}: ActionModalProps) {
     if (!actionModal) return null;
     const isApproveOrCancel = actionModal === 'approve' || actionModal === 'cancel';
 

@@ -1116,7 +1116,7 @@ export function ClubDetailsPage() {
                                     <Label htmlFor={field.id}>{t(field.label)}</Label>
                                     <Input
                                         id={field.id}
-                                        value={(formData as any)[field.id as keyof typeof formData] || ''}
+                                        value={formData[field.id as keyof typeof formData] || ''}
                                         onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
                                         disabled={!isEditing}
                                         placeholder={field.placeholder}
