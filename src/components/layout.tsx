@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import logoBlack from "@/assets/logo-black.svg";
 import logoWhite from "@/assets/logo-white.svg";
 
@@ -23,7 +24,7 @@ export function Layout() {
         <div className="min-h-screen bg-background flex flex-col font-sans">
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div
-                    className={`absolute top-0 left-0 w-full h-[3px] ${!isTestEnv ? 'bg-primary' : ''}`}
+                    className={cn("absolute top-0 left-0 w-full h-[3px]", !isTestEnv && "bg-primary")}
                     style={isTestEnv ? { backgroundColor: "color(display-p3 1 0 0)" } : undefined}
                 ></div>
                 <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">

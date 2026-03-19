@@ -135,47 +135,49 @@ export function AuditPage() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {logs.map((entry, idx) => (
-                        <Card key={idx} className="overflow-hidden border-l-4 border-l-primary/50">
-                            <CardContent className="p-4 sm:p-6">
-                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${entry.action === 'create' ? 'bg-green-100 text-green-800' :
-                                                entry.action === 'update' ? 'bg-blue-100 text-blue-800' :
-                                                    'bg-red-100 text-red-800'
-                                                }`}>
-                                                {entry.action}
-                                            </span>
-                                            <span className="text-sm font-semibold flex items-center gap-1">
-                                                <Tag className="h-3 w-3" />
-                                                {entry.type}
-                                            </span>
-                                            <span className="text-xs font-mono bg-muted px-1.5 py-0.5 rounded">
-                                                ID: {entry.key}
-                                            </span>
+                    {logs.map((entry, idx) => {
+                        const statusColor = entry.action === 'create' ? 'bg-green-100 text-green-800' :
+                            entry.action === 'update' ? 'bg-blue-100 text-blue-800' :
+                                'bg-red-100 text-red-800';
+                        return (
+                            <Card key={`${entry.date}-${entry.key}-${idx}`} className="overflow-hidden border-l-4 border-l-primary/50">
+                                <CardContent className="p-4 sm:p-6">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-center gap-2 flex-wrap">
+                                                <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${statusColor}`}>
+                                                    {entry.action}
+                                                </span>
+                                                <span className="text-sm font-semibold flex items-center gap-1">
+                                                    <Tag className="h-3 w-3" />
+                                                    {entry.type}
+                                                </span>
+                                                <span className="text-xs font-mono bg-muted px-1.5 py-0.5 rounded">
+                                                    ID: {entry.key}
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-muted-foreground mt-1 flex items-center gap-4">
+                                                <span className="flex items-center gap-1">
+                                                    <Clock className="h-3 w-3" />
+                                                    {new Date(entry.date).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'medium' })}
+                                                </span>
+                                                <span className="flex items-center gap-1">
+                                                    <User className="h-3 w-3" />
+                                                    {t('dashboard.audit_page.author_label')} {entry.author}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="text-xs text-muted-foreground mt-1 flex items-center gap-4">
-                                            <span className="flex items-center gap-1">
-                                                <Clock className="h-3 w-3" />
-                                                {new Date(entry.date).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'medium' })}
-                                            </span>
-                                            <span className="flex items-center gap-1">
-                                                <User className="h-3 w-3" />
-                                                {t('dashboard.audit_page.author_label')} {entry.author}
-                                            </span>
-                                        </div>
-                                    </div>
 
-                                    {!!entry.node && (
-                                        <div className="text-xs bg-muted/50 p-2 rounded border font-mono max-h-24 overflow-auto max-w-full sm:max-w-xs">
-                                            <pre>{JSON.stringify(entry.node, null, 2)}</pre>
-                                        </div>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                                        {!!entry.node && (
+                                            <div className="text-xs bg-muted/50 p-2 rounded border font-mono max-h-24 overflow-auto max-w-full sm:max-w-xs">
+                                                <pre>{JSON.stringify(entry.node, null, 2)}</pre>
+                                            </div>
+                                        )}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
                 </div>
             )}
         </div>

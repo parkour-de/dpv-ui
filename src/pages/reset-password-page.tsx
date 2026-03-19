@@ -152,13 +152,11 @@ export function ResetPasswordPage() {
                     </CardContent>
                     <CardFooter>
                         <Button type="submit" className="w-full" disabled={loading}>
-                            {loading
-                                ? t('auth.reset_password.actions.wait')
-                                : (isResetMode
-                                    ? t('auth.reset_password.confirm.submit')
-                                    : t('auth.reset_password.request.submit')
-                                )
-                            }
+                            {(() => {
+                                if (loading) return t('auth.reset_password.actions.wait');
+                                if (isResetMode) return t('auth.reset_password.confirm.submit');
+                                return t('auth.reset_password.request.submit');
+                            })()}
                         </Button>
                     </CardFooter>
                 </form>

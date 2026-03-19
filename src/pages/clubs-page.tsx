@@ -108,92 +108,96 @@ export function ClubsPage() {
 
             {loading ? (
                 <div className="text-center py-12 text-muted-foreground">{t('dashboard.loading')}</div>
-            ) : clubs.length === 0 ? (
-                <div className="text-center py-12 border border-dashed rounded-lg">
-                    <h3 className="text-lg font-medium">{t('dashboard.empty.title')}</h3>
-                    <p className="text-muted-foreground mb-4">{t('dashboard.empty.description')}</p>
-                    <Link to="/clubs/new">
-                        <Button variant="accent">{t('dashboard.actions.create_club')}</Button>
-                    </Link>
-                </div>
             ) : (
-                <div className="space-y-8">
-                    {isAdmin ? (
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {clubs.map(club => (
-                                <Link key={club._key} to={`/clubs/${club._key}`}>
-                                    <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
-                                        <CardHeader className="pb-2">
-                                            <div className="flex items-center justify-between space-x-4">
-                                                <div className="flex items-center space-x-4">
-                                                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                                        <span className="font-semibold text-primary">{club.name.substring(0, 2).toUpperCase()}</span>
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="font-semibold">{club.name}</h3>
-                                                        <p className="text-sm text-muted-foreground">{club.legal_form}</p>
-                                                    </div>
-                                                </div>
-                                                <StatusBadge membership={club.membership} />
-                                            </div>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="text-sm text-muted-foreground">
-                                                {club.membership.address || t('dashboard.club_card.no_address')}
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            ))}
+                <>
+                    {clubs.length === 0 ? (
+                        <div className="text-center py-12 border border-dashed rounded-lg">
+                            <h3 className="text-lg font-medium">{t('dashboard.empty.title')}</h3>
+                            <p className="text-muted-foreground mb-4">{t('dashboard.empty.description')}</p>
+                            <Link to="/clubs/new">
+                                <Button variant="accent">{t('dashboard.actions.create_club')}</Button>
+                            </Link>
                         </div>
                     ) : (
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {Object.entries(clubsByStatus).map(([status, groupClubs]) => (
-                                <div key={status} className="space-y-4">
-                                    <h2 className="text-xl font-semibold flex items-center gap-2">
-                                        <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[status as ClubStatus])}>
-                                            {t(`club.status.${status}`)}
-                                        </span>
-                                        <span>({groupClubs.length})</span>
-                                    </h2>
-                                    <div className="grid gap-4">
-                                        {groupClubs.map((club) => (
-                                            <Link key={club._key} to={`/clubs/${club._key}`}>
-                                                <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
-                                                    <CardHeader className="pb-2">
-                                                        <div className="flex items-center justify-between space-x-4">
-                                                            <div className="flex items-center space-x-4">
-                                                                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                                                    <span className="font-semibold text-primary">{club.name.substring(0, 2).toUpperCase()}</span>
-                                                                </div>
-                                                                <div>
-                                                                    <h3 className="font-semibold">{club.name}</h3>
-                                                                    <p className="text-sm text-muted-foreground">{club.legal_form}</p>
-                                                                </div>
+                        <div className="space-y-8">
+                            {isAdmin ? (
+                                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                    {clubs.map(club => (
+                                        <Link key={club._key} to={`/clubs/${club._key}`}>
+                                            <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
+                                                <CardHeader className="pb-2">
+                                                    <div className="flex items-center justify-between space-x-4">
+                                                        <div className="flex items-center space-x-4">
+                                                            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                                                <span className="font-semibold text-primary">{club.name.substring(0, 2).toUpperCase()}</span>
                                                             </div>
-                                                            <StatusBadge membership={club.membership} />
+                                                            <div>
+                                                                <h3 className="font-semibold">{club.name}</h3>
+                                                                <p className="text-sm text-muted-foreground">{club.legal_form}</p>
+                                                            </div>
                                                         </div>
-                                                    </CardHeader>
-                                                    <CardContent>
-                                                        <div className="text-sm text-muted-foreground">
-                                                            {club.membership.address || t('dashboard.club_card.no_address')}
-                                                        </div>
-                                                    </CardContent>
-                                                </Card>
-                                            </Link>
-                                        ))}
-                                    </div>
+                                                        <StatusBadge membership={club.membership} />
+                                                    </div>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    <div className="text-sm text-muted-foreground">
+                                                        {club.membership.address || t('dashboard.club_card.no_address')}
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        </Link>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    )}
+                            ) : (
+                                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                    {Object.entries(clubsByStatus).map(([status, groupClubs]) => (
+                                        <div key={status} className="space-y-4">
+                                            <h2 className="text-xl font-semibold flex items-center gap-2">
+                                                <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium", CLUB_STATUS_COLORS[status as ClubStatus])}>
+                                                    {t(`club.status.${status}`)}
+                                                </span>
+                                                <span>({groupClubs.length})</span>
+                                            </h2>
+                                            <div className="grid gap-4">
+                                                {groupClubs.map((club) => (
+                                                    <Link key={club._key} to={`/clubs/${club._key}`}>
+                                                        <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
+                                                            <CardHeader className="pb-2">
+                                                                <div className="flex items-center justify-between space-x-4">
+                                                                    <div className="flex items-center space-x-4">
+                                                                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                                                            <span className="font-semibold text-primary">{club.name.substring(0, 2).toUpperCase()}</span>
+                                                                        </div>
+                                                                        <div>
+                                                                            <h3 className="font-semibold">{club.name}</h3>
+                                                                            <p className="text-sm text-muted-foreground">{club.legal_form}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <StatusBadge membership={club.membership} />
+                                                                </div>
+                                                            </CardHeader>
+                                                            <CardContent>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    {club.membership.address || t('dashboard.club_card.no_address')}
+                                                                </div>
+                                                            </CardContent>
+                                                        </Card>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
-                    {isAdmin && clubs.length >= LIMIT && (
-                        <div className="flex justify-center pt-4">
-                            <Button variant="outline" onClick={() => setPage(p => p + 1)}>{t('dashboard.actions.load_more')}</Button>
+                            {isAdmin && clubs.length >= LIMIT && (
+                                <div className="flex justify-center pt-4">
+                                    <Button variant="outline" onClick={() => setPage(p => p + 1)}>{t('dashboard.actions.load_more')}</Button>
+                                </div>
+                            )}
                         </div>
                     )}
-                </div>
+                </>
             )}
         </div>
     );

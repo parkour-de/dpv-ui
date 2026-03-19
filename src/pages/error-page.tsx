@@ -27,10 +27,10 @@ export function ErrorPage() {
         <div className="min-h-screen bg-background flex flex-col font-sans">
             <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">
-                    <div className="flex items-center gap-2 font-bold text-xl tracking-tight cursor-pointer" onClick={() => navigate("/")}>
+                    <Link to="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
                         <span className="text-primary">{t('app.title')}</span>
                         <span className="hidden sm:inline-block font-medium text-foreground/80">{t('app.portal_name')}</span>
-                    </div>
+                    </Link>
 
                     <nav className="hidden md:flex items-center gap-6">
                         <Link to="/" className="text-sm font-medium transition-colors hover:text-primary">

@@ -13,6 +13,8 @@ import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
 import { UserProfileForm } from "@/components/user-profile-form";
 
+type MembershipAction = 'approve' | 'deny' | 'cancel' | 'apply';
+
 export function UserDetailsPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -73,7 +75,7 @@ export function UserDetailsPage() {
         fetchUser();
     }, [isSelfView, targetUserId, token, currentUser, t]);
 
-    const handleSelfMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
+    const handleSelfMembershipAction = async (action: MembershipAction) => {
         if (!token || !targetUser) return;
         const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
         let body: Record<string, unknown> = {};
@@ -97,7 +99,7 @@ export function UserDetailsPage() {
         setTargetUser(updatedUser);
     };
 
-    const handleAdminMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
+    const handleAdminMembershipAction = async (action: MembershipAction) => {
         if (!token || !targetUser) return;
         let body: Record<string, unknown> = {};
 
@@ -223,140 +225,22 @@ export function UserDetailsPage() {
                     </div>
                     <div className="space-y-2">
                         <Label>Art der Mitgliedschaft</Label>
-                        <Input value={targetUser.membership?.type === 'active' ? 'Aktivmitgliedschaft' : targetUser.membership?.type === 'supporting' ? 'Fördernde Mitgliedschaft' : targetUser.membership?.type === 'ordinary' ? 'Ordentliche Mitgliedschaft' : (targetUser.membership?.type || '')} disabled />
+                        <Input value={(() => {
+                            const mType = targetUser.membership?.type;
+                            if (mType === 'active') return 'Aktivmitgliedschaft';
+                            if (mType === 'supporting') return 'Fördernde Mitgliedschaft';
+                            if (mType === 'ordinary') return 'Ordentliche Mitgliedschaft';
+                            return mType || '';
+                        })()} disabled />
                     </div>
                     <div className="space-y-2">
                         <Label>Stimmenanzahl</Label>
-                        <Input value={targetUser.membership?.current_votes !== undefined ? targetUser.membership.current_votes.toString() : '0'} disabled />
+                        <Input value={targetUser.membership?.current_votes?.toString() ?? '0'} disabled />
                     </div>
                 </div>
             </CardContent>
         </Card>
     );
-
-    const renderActionModal = () => {
-        if (!actionModal) return null;
-
-        const isApproveOrCancel = actionModal === 'approve' || actionModal === 'cancel';
-
-        return (
-            <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-                <Card className="w-full max-w-md shadow-lg border">
-                    <CardHeader>
-                        <CardTitle>
-                            {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
-                            {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
-                            {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
-                            {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
-                            {actionModal === 'apply' && t('profile.actions.apply_membership')}
-                        </CardTitle>
-                        <CardDescription>
-                            {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
-                            {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
-                            {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
-                            {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
-                            {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {actionModal === 'apply' && (
-                            <div className="space-y-4 pt-2">
-                                <div className="space-y-2 border-b pb-4">
-                                    <Label>Art der Mitgliedschaft</Label>
-                                    <div className="flex flex-col gap-2">
-                                        <Label className="flex items-center gap-2 cursor-pointer font-normal">
-                                            <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
-                                            Aktivmitgliedschaft (10 € / Jahr)
-                                        </Label>
-                                        <Label className="flex items-center gap-2 cursor-pointer font-normal">
-                                            <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
-                                            Fördernde Mitgliedschaft
-                                        </Label>
-                                    </div>
-                                </div>
-                                {applyType === 'supporting' && (
-                                    <div className="space-y-2 animate-in fade-in pb-2">
-                                        <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
-                                        <Input
-                                            id="customFee"
-                                            type="number"
-                                            min="1"
-                                            step="1"
-                                            value={applyFee}
-                                            onChange={(e) => setApplyFee(Number(e.target.value))}
-                                        />
-                                    </div>
-                                )}
-                                <div className="space-y-3">
-                                    {[
-                                        { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der Datenschutzerklärung zu.' },
-                                        { id: 'accuracy', key: 'club.details.membership.consent_accuracy', def: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' },
-                                        { id: 'statutes', href: '/satzung', label: 'Ich habe die Satzung gelesen und erkenne sie an.' },
-                                        { id: 'finances', href: '/beitragsordnung', label: 'Ich habe die Beitragsordnung gelesen und erkenne sie an.' }
-                                    ].map(item => (
-                                        <div key={item.id} className="flex items-start space-x-2">
-                                            <input
-                                                type="checkbox"
-                                                id={`consent-${item.id}`}
-                                                className="mt-1"
-                                                checked={consents[item.id as keyof typeof consents]}
-                                                onChange={(e) => setConsents(p => ({ ...p, [item.id]: e.target.checked }))}
-                                            />
-                                            <Label htmlFor={`consent-${item.id}`} className="text-sm font-normal leading-snug">
-                                                {item.key ? t(item.key, { defaultValue: item.def }) : (
-                                                    <>
-                                                        {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[0]}
-                                                        <a href={item.href} target="_blank" className="underline text-blue-600">
-                                                            {item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung'}
-                                                        </a>
-                                                        {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[1]}
-                                                    </>
-                                                )}
-                                            </Label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {isApproveOrCancel && (
-                            <div className="space-y-2">
-                                <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
-                                <Input
-                                    id="actionDate"
-                                    type="date"
-                                    value={actionDate}
-                                    onChange={(e) => setActionDate(e.target.value)}
-                                />
-                                <p className="text-xs text-muted-foreground pt-1">
-                                    {isSelfView
-                                        ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
-                                        : `Falls leer, wird das Datum ${actionModal === 'approve' && targetUser?.membership?.begin_date ? ` aus dem Antrag übernommen (${new Date(targetUser.membership.begin_date * 1000).toLocaleDateString()})` : " von heute verwendet"} .`}
-                                </p>
-                            </div>
-                        )}
-                    </CardContent>
-                    <CardFooter className="flex justify-end gap-2 bg-muted/20 py-4">
-                        <Button variant="ghost" onClick={() => {
-                            setActionModal(null);
-                            setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
-                        }} disabled={actionLoading}>
-                            {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
-                        </Button>
-                        <Button
-                            variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
-                            onClick={() => actionModal && handleMembershipAction(actionModal)}
-                            disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
-                        >
-                            {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) :
-                                actionModal === 'cancel' && isSelfView ? t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' }) :
-                                    'Bestätigen'}
-                        </Button>
-                    </CardFooter>
-                </Card>
-            </div>
-        );
-    };
 
 
     return (
@@ -509,7 +393,187 @@ export function UserDetailsPage() {
                 </div>
             </div>
 
-            {renderActionModal()}
+            {actionModal && (
+                <ActionModal
+                    actionModal={actionModal}
+                    setActionModal={setActionModal}
+                    isSelfView={isSelfView}
+                    targetUser={targetUser}
+                    actionDate={actionDate}
+                    setActionDate={setActionDate}
+                    handleMembershipAction={handleMembershipAction} // Pass the combined handler
+                    consents={consents}
+                    setConsents={setConsents}
+                    applyType={applyType}
+                    setApplyType={setApplyType}
+                    applyFee={applyFee}
+                    setApplyFee={setApplyFee}
+                    t={t}
+                    actionLoading={actionLoading} // Pass actionLoading
+                />
+            )}
+        </div>
+    );
+}
+
+function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, setConsents, t }: any) {
+    return (
+        <div className="space-y-4 pt-2">
+            <div className="space-y-2 border-b pb-4">
+                <Label>Art der Mitgliedschaft</Label>
+                <div className="flex flex-col gap-2">
+                    <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                        <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
+                        <span>Aktivmitgliedschaft (10 € / Jahr)</span>
+                    </Label>
+                    <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                        <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
+                        <span>Fördernde Mitgliedschaft</span>
+                    </Label>
+                </div>
+            </div>
+            {applyType === 'supporting' && (
+                <div className="space-y-2 animate-in fade-in pb-2">
+                    <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
+                    <Input
+                        id="customFee"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value={applyFee}
+                        onChange={(e) => setApplyFee(Number.parseInt(e.target.value))}
+                    />
+                </div>
+            )}
+            <div className="space-y-3">
+                {[
+                    { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der Datenschutzerklärung zu.' },
+                    { id: 'accuracy', key: 'club.details.membership.consent_accuracy', def: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' },
+                    { id: 'statutes', href: '/satzung', label: 'Ich habe die Satzung gelesen und erkenne sie an.' },
+                    { id: 'finances', href: '/beitragsordnung', label: 'Ich habe die Beitragsordnung gelesen und erkenne sie an.' }
+                ].map(item => (
+                    <div key={item.id} className="flex items-start space-x-2">
+                        <input
+                            type="checkbox"
+                            id={`consent-${item.id}`}
+                            className="mt-1"
+                            checked={consents[item.id as keyof typeof consents]}
+                            onChange={(e) => setConsents((p: any) => ({ ...p, [item.id]: e.target.checked }))}
+                        />
+                        <Label htmlFor={`consent-${item.id}`} className="text-sm font-normal leading-snug">
+                            {item.key ? t(item.key, { defaultValue: item.def }) : (
+                                <>
+                                    {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[0]}
+                                    {' '}
+                                    <a href={item.href} target="_blank" className="underline text-blue-600">
+                                        {item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung'}
+                                    </a>
+                                    {' '}
+                                    {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[1]}
+                                </>
+                            )}
+                        </Label>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function ActionModal({
+    actionModal,
+    setActionModal,
+    isSelfView,
+    targetUser,
+    actionDate,
+    setActionDate,
+    handleMembershipAction, // Use the combined handler
+    consents,
+    setConsents,
+    applyType,
+    setApplyType,
+    applyFee,
+    setApplyFee,
+    t,
+    actionLoading // Receive actionLoading
+}: any) {
+    if (!actionModal) return null;
+    const isApproveOrCancel = actionModal === 'approve' || actionModal === 'cancel';
+
+    return (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+            <Card className="w-full max-w-md shadow-lg border">
+                <CardHeader>
+                    <CardTitle>
+                        {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
+                        {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
+                        {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
+                        {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
+                        {actionModal === 'apply' && t('profile.actions.apply_membership')}
+                    </CardTitle>
+                    <CardDescription>
+                        {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
+                        {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
+                        {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
+                        {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
+                        {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {actionModal === 'apply' && (
+                        <ApplyForm
+                            applyType={applyType}
+                            setApplyType={setApplyType}
+                            applyFee={applyFee}
+                            setApplyFee={setApplyFee}
+                            consents={consents}
+                            setConsents={setConsents}
+                            t={t}
+                        />
+                    )}
+                    {isApproveOrCancel && (
+                        <div className="space-y-2">
+                            <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
+                            <Input
+                                id="actionDate"
+                                type="date"
+                                value={actionDate}
+                                onChange={(e) => setActionDate(e.target.value)}
+                            />
+                            <p className="text-xs text-muted-foreground pt-1">
+                                {isSelfView
+                                    ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
+                                    : (() => {
+                                        const mDate = targetUser?.membership?.begin_date;
+                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                        const type = actionModal === 'approve' ? "Antrag" : "heute";
+                                        return `Falls leer, wird das Datum ${mDate && actionModal === 'approve' ? ` aus dem ${type} übernommen (${dateStr})` : ` von ${type} verwendet`} .`;
+                                    })()}
+                            </p>
+                        </div>
+                    )}
+                </CardContent>
+                <CardFooter className="flex justify-end gap-2 bg-muted/20 py-4">
+                    <Button variant="ghost" onClick={() => {
+                        setActionModal(null);
+                        setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
+                    }} disabled={actionLoading}>
+                        {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
+                    </Button>
+                    <Button
+                        variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
+                        onClick={() => actionModal && handleMembershipAction(actionModal)}
+                        disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
+                    >
+                        {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {(() => {
+                            if (actionModal === 'apply') return t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' });
+                            if (actionModal === 'cancel' && isSelfView) return t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' });
+                            return 'Bestätigen';
+                        })()}
+                    </Button>
+                </CardFooter>
+            </Card>
         </div>
     );
 }
