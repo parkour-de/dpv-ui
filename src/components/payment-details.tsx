@@ -14,17 +14,17 @@ export interface PaymentData {
 }
 
 interface PaymentDetailsProps {
-    token: string;
-    fetchUrl: string; // e.g., '/club/123/payment-details'
-    isAdmin?: boolean;
+    readonly token: string;
+    readonly fetchUrl: string; // e.g., '/club/123/payment-details'
+    readonly isAdmin?: boolean;
 
     // Controlled mode (For embedded forms like in profile-page or club-details edit mode)
-    formData?: PaymentData;
-    onChange?: (field: string, value: string) => void;
+    readonly formData?: PaymentData;
+    readonly onChange?: (field: string, value: string) => void;
 
     // Presentation Options
-    isReadOnly?: boolean;
-    alwaysOpen?: boolean; // If true, skips the lazy-load toggle entirely.
+    readonly isReadOnly?: boolean;
+    readonly alwaysOpen?: boolean; // If true, skips the lazy-load toggle entirely.
 }
 
 export function PaymentDetails({
@@ -124,18 +124,18 @@ export function PaymentDetails({
                 <CardDescription>{t('club.payment.description', 'Hinterlegte Zahlungsverbindung')}</CardDescription>
             </CardHeader>
             <CardContent>
-                {!show ? (
-                    <Button type="button" variant="outline" onClick={handleShowToggle} disabled={loading}>
-                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Glasses className="mr-2 h-4 w-4" />}
-                        {t('club.payment.show', 'Zahlungsdaten anzeigen')}
-                    </Button>
-                ) : (
+                {show ? (
                     <div className="space-y-4">
                         {inputs}
                         <Button type="button" variant="outline" size="sm" onClick={() => setShow(false)}>
                             {t('club.payment.hide', 'Ausblenden')}
                         </Button>
                     </div>
+                ) : (
+                    <Button type="button" variant="outline" onClick={handleShowToggle} disabled={loading}>
+                        {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Glasses className="mr-2 h-4 w-4" />}
+                        {t('club.payment.show', 'Zahlungsdaten anzeigen')}
+                    </Button>
                 )}
             </CardContent>
         </Card>

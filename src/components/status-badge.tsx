@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { type Membership, CLUB_STATUS_COLORS } from "@/types";
 
 interface StatusBadgeProps {
-    membership?: Membership;
-    className?: string; // Additional classes
+    readonly membership?: Membership;
+    readonly className?: string; // Additional classes
 }
 
 export function StatusBadge({ membership, className }: StatusBadgeProps) {

@@ -3,8 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/auth-context-core";
 
 interface LayoutWrapperProps {
-    children: React.ReactNode;
-    title: string;
+    readonly children: React.ReactNode;
+    readonly title: string;
 }
 
 export function PageWrapper({ children, title }: LayoutWrapperProps) {

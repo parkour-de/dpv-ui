@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '@/lib/api';
 import { type User } from '@/types';
@@ -6,7 +6,7 @@ import { AuthContext } from './auth-context-core';
 
 const STORAGE_KEY_TOKEN = 'dpv_auth_token';
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { readonly children: ReactNode }) {
     const { i18n } = useTranslation();
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(() => sessionStorage.getItem(STORAGE_KEY_TOKEN));
@@ -41,30 +41,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userLanguage]);
 
-    const login = (newToken: string, newUser: User) => {
+    const login = useCallback((newToken: string, newUser: User) => {
         sessionStorage.setItem(STORAGE_KEY_TOKEN, newToken);
         setToken(newToken);
         setUser(newUser);
         setIsVerifying(false); // No need to verify if we just logged in
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         sessionStorage.removeItem(STORAGE_KEY_TOKEN);
         setToken(null);
         setUser(null);
         setIsVerifying(false);
-    };
+    }, []);
 
-    const apiUpdateUser = (updatedUser: User) => {
+    const apiUpdateUser = useCallback((updatedUser: User) => {
         setUser(updatedUser);
-    };
+    }, []);
+
+    const contextValue = useMemo(() => ({
+        user,
+        token,
+        login,
+        logout,
+        apiUpdateUser,
+        isAuthenticated: !!user
+    }), [user, token, login, logout, apiUpdateUser]);
 
     if (isVerifying) {
         return <div className="flex h-screen items-center justify-center">Loading...</div>;
     }
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, apiUpdateUser, isAuthenticated: !!user }}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );

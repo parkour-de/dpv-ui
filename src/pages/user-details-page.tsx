@@ -73,55 +73,62 @@ export function UserDetailsPage() {
         fetchUser();
     }, [isSelfView, targetUserId, token, currentUser, t]);
 
+    const handleSelfMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
+        if (!token || !targetUser) return;
+        const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
+        let body: Record<string, unknown> = {};
+
+        if (action === 'apply') {
+            body = {
+                consent_privacy: consents.privacy,
+                consent_accuracy: consents.accuracy,
+                consent_statutes: consents.statutes,
+                consent_finances: consents.finances,
+                type: applyType,
+                fee: applyType === 'supporting' ? applyFee : 10
+            };
+        } else if (action === 'cancel') {
+            body = { end_date: unixSeconds };
+        }
+
+        await api.post(`/users/me/${action}`, body, token);
+        const updatedUser = await api.get<User>('/users/me', token);
+        if (apiUpdateUser) apiUpdateUser(updatedUser);
+        setTargetUser(updatedUser);
+    };
+
+    const handleAdminMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
+        if (!token || !targetUser) return;
+        let body: Record<string, unknown> = {};
+
+        if ((action === 'approve' || action === 'cancel') && actionDate) {
+            const parts = actionDate.split('-');
+            if (parts.length === 3) {
+                const date = new Date(Date.UTC(Number.parseInt(parts[0]), Number.parseInt(parts[1]) - 1, Number.parseInt(parts[2])));
+                const timestamp = Math.floor(date.getTime() / 1000);
+                if (action === 'approve') {
+                    body = { begin_date: timestamp };
+                } else {
+                    body = { end_date: timestamp };
+                }
+            }
+        }
+
+        await api.post(`/user/${targetUser._key}/${action}`, body, token);
+        const data = await api.get<User>(`/user/${targetUserId}`, token);
+        setTargetUser(data);
+    };
+
     const handleMembershipAction = async (action: 'approve' | 'deny' | 'cancel' | 'apply') => {
         if (!token || !targetUser) return;
         setActionLoading(true);
         setError(null);
 
         try {
-            let body: Record<string, unknown> = {};
-
             if (isSelfView) {
-                // Self actions
-                const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
-
-                if (action === 'apply') {
-                    body = {
-                        consent_privacy: consents.privacy,
-                        consent_accuracy: consents.accuracy,
-                        consent_statutes: consents.statutes,
-                        consent_finances: consents.finances,
-                        type: applyType,
-                        fee: applyType === 'supporting' ? applyFee : 10
-                    };
-                } else if (action === 'cancel') {
-                    body = { end_date: unixSeconds };
-                }
-
-                await api.post(`/users/me/${action}`, body, token);
-
-                const updatedUser = await api.get<User>('/users/me', token);
-                if (apiUpdateUser) apiUpdateUser(updatedUser);
-                setTargetUser(updatedUser);
+                await handleSelfMembershipAction(action);
             } else {
-                // Admin actions
-                if ((action === 'approve' || action === 'cancel') && actionDate) {
-                    const parts = actionDate.split('-');
-                    if (parts.length === 3) {
-                        const date = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
-                        const timestamp = Math.floor(date.getTime() / 1000);
-                        if (action === 'approve') {
-                            body = { begin_date: timestamp };
-                        } else {
-                            body = { end_date: timestamp };
-                        }
-                    }
-                }
-
-                await api.post(`/user/${targetUser._key}/${action}`, body, token);
-
-                const data = await api.get<User>(`/user/${targetUserId}`, token);
-                setTargetUser(data);
+                await handleAdminMembershipAction(action);
             }
 
             setActionModal(null);
@@ -166,38 +173,203 @@ export function UserDetailsPage() {
         );
     }
 
-    return (
-        <div className="space-y-6 max-w-4xl mx-auto pb-12">
-            {!isSelfView ? (
-                <>
-                    <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        Zurück zur Benutzerverwaltung
-                    </Button>
+    const renderHeader = () => {
+        if (isSelfView) {
+            return <h1 className="text-2xl font-bold">{t('profile.title')}</h1>;
+        }
 
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h1 className="text-3xl font-bold tracking-tight">
-                                {targetUser.firstname} {targetUser.lastname}
-                            </h1>
-                            <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser._key}</p>
-                        </div>
-                        {targetUser.membership?.status && (
-                            <StatusBadge membership={targetUser.membership} />
+        return (
+            <>
+                <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Zurück zur Benutzerverwaltung
+                </Button>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            {targetUser?.firstname} {targetUser?.lastname}
+                        </h1>
+                        <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser?._key}</p>
+                    </div>
+                    {targetUser?.membership?.status && (
+                        <StatusBadge membership={targetUser.membership} />
+                    )}
+                </div>
+            </>
+        );
+    };
+
+    const renderVerbandCard = () => (
+        <Card>
+            <CardHeader>
+                <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                {isSelfView && <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>}
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
+                        <Input value={targetUser.membership?.membership_number || ''} disabled />
+                    </div>
+                    <div className="space-y-2">
+                        <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
+                        <Input value={targetUser?.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
+                        {isSelfView && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Siehe <a href="/satzung" target="_blank" className="underline">Satzung</a> und <a href="/beitragsordnung" target="_blank" className="underline">Beitragsordnung</a>
+                            </p>
                         )}
                     </div>
-                </>
-            ) : (
-                <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
-            )}
+                    <div className="space-y-2">
+                        <Label>Art der Mitgliedschaft</Label>
+                        <Input value={targetUser.membership?.type === 'active' ? 'Aktivmitgliedschaft' : targetUser.membership?.type === 'supporting' ? 'Fördernde Mitgliedschaft' : targetUser.membership?.type === 'ordinary' ? 'Ordentliche Mitgliedschaft' : (targetUser.membership?.type || '')} disabled />
+                    </div>
+                    <div className="space-y-2">
+                        <Label>Stimmenanzahl</Label>
+                        <Input value={targetUser.membership?.current_votes !== undefined ? targetUser.membership.current_votes.toString() : '0'} disabled />
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+
+    const renderActionModal = () => {
+        if (!actionModal) return null;
+
+        const isApproveOrCancel = actionModal === 'approve' || actionModal === 'cancel';
+
+        return (
+            <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+                <Card className="w-full max-w-md shadow-lg border">
+                    <CardHeader>
+                        <CardTitle>
+                            {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
+                            {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
+                            {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
+                            {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
+                            {actionModal === 'apply' && t('profile.actions.apply_membership')}
+                        </CardTitle>
+                        <CardDescription>
+                            {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
+                            {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
+                            {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
+                            {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
+                            {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {actionModal === 'apply' && (
+                            <div className="space-y-4 pt-2">
+                                <div className="space-y-2 border-b pb-4">
+                                    <Label>Art der Mitgliedschaft</Label>
+                                    <div className="flex flex-col gap-2">
+                                        <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                            <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
+                                            Aktivmitgliedschaft (10 € / Jahr)
+                                        </Label>
+                                        <Label className="flex items-center gap-2 cursor-pointer font-normal">
+                                            <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
+                                            Fördernde Mitgliedschaft
+                                        </Label>
+                                    </div>
+                                </div>
+                                {applyType === 'supporting' && (
+                                    <div className="space-y-2 animate-in fade-in pb-2">
+                                        <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
+                                        <Input
+                                            id="customFee"
+                                            type="number"
+                                            min="1"
+                                            step="1"
+                                            value={applyFee}
+                                            onChange={(e) => setApplyFee(Number(e.target.value))}
+                                        />
+                                    </div>
+                                )}
+                                <div className="space-y-3">
+                                    {[
+                                        { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der Datenschutzerklärung zu.' },
+                                        { id: 'accuracy', key: 'club.details.membership.consent_accuracy', def: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' },
+                                        { id: 'statutes', href: '/satzung', label: 'Ich habe die Satzung gelesen und erkenne sie an.' },
+                                        { id: 'finances', href: '/beitragsordnung', label: 'Ich habe die Beitragsordnung gelesen und erkenne sie an.' }
+                                    ].map(item => (
+                                        <div key={item.id} className="flex items-start space-x-2">
+                                            <input
+                                                type="checkbox"
+                                                id={`consent-${item.id}`}
+                                                className="mt-1"
+                                                checked={consents[item.id as keyof typeof consents]}
+                                                onChange={(e) => setConsents(p => ({ ...p, [item.id]: e.target.checked }))}
+                                            />
+                                            <Label htmlFor={`consent-${item.id}`} className="text-sm font-normal leading-snug">
+                                                {item.key ? t(item.key, { defaultValue: item.def }) : (
+                                                    <>
+                                                        {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[0]}
+                                                        <a href={item.href} target="_blank" className="underline text-blue-600">
+                                                            {item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung'}
+                                                        </a>
+                                                        {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[1]}
+                                                    </>
+                                                )}
+                                            </Label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {isApproveOrCancel && (
+                            <div className="space-y-2">
+                                <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
+                                <Input
+                                    id="actionDate"
+                                    type="date"
+                                    value={actionDate}
+                                    onChange={(e) => setActionDate(e.target.value)}
+                                />
+                                <p className="text-xs text-muted-foreground pt-1">
+                                    {isSelfView
+                                        ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
+                                        : `Falls leer, wird das Datum ${actionModal === 'approve' && targetUser?.membership?.begin_date ? ` aus dem Antrag übernommen (${new Date(targetUser.membership.begin_date * 1000).toLocaleDateString()})` : " von heute verwendet"} .`}
+                                </p>
+                            </div>
+                        )}
+                    </CardContent>
+                    <CardFooter className="flex justify-end gap-2 bg-muted/20 py-4">
+                        <Button variant="ghost" onClick={() => {
+                            setActionModal(null);
+                            setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
+                        }} disabled={actionLoading}>
+                            {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
+                        </Button>
+                        <Button
+                            variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
+                            onClick={() => actionModal && handleMembershipAction(actionModal)}
+                            disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
+                        >
+                            {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) :
+                                actionModal === 'cancel' && isSelfView ? t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' }) :
+                                    'Bestätigen'}
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
+        );
+    };
+
+
+    return (
+        <div className="space-y-6 max-w-4xl mx-auto pb-12">
+            {renderHeader()}
 
             <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-6">
                     <UserProfileForm
-                        user={targetUser}
-                        token={token!}
+                        user={targetUser!}
+                        token={token || ""}
                         isAdminView={!isSelfView}
-                        endpointOverride={`/user/${targetUser._key}`}
+                        endpointOverride={`/user/${targetUser?._key}`}
                         onSaveSuccess={handleSaveSuccess}
                     />
 
@@ -229,8 +401,8 @@ export function UserDetailsPage() {
                                                         : currentRoles.filter(r => r !== 'admin');
 
                                                     try {
-                                                        await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
-                                                        setTargetUser({ ...targetUser, roles: newRoles });
+                                                        await api.patch(`/user/${targetUser?._key}/roles`, { roles: newRoles }, token || "");
+                                                        setTargetUser(targetUser ? { ...targetUser, roles: newRoles } : null);
                                                     } catch (err: unknown) {
                                                         setError(getErrorMessage(err, t));
                                                     }
@@ -252,8 +424,8 @@ export function UserDetailsPage() {
                                                         : currentRoles.filter(r => r !== 'aktivadmin');
 
                                                     try {
-                                                        await api.patch(`/user/${targetUser._key}/roles`, { roles: newRoles }, token!);
-                                                        setTargetUser({ ...targetUser, roles: newRoles });
+                                                        await api.patch(`/user/${targetUser?._key}/roles`, { roles: newRoles }, token || "");
+                                                        setTargetUser(targetUser ? { ...targetUser, roles: newRoles } : null);
                                                     } catch (err: unknown) {
                                                         setError(getErrorMessage(err, t));
                                                     }
@@ -333,152 +505,11 @@ export function UserDetailsPage() {
                         )}
                     </Card>
 
-                    {/* Verbandsdaten (Read-Only) */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
-                            {isSelfView && <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>}
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
-                                    <Input value={targetUser.membership?.membership_number || ''} disabled />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
-                                    <Input value={targetUser.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
-                                    {isSelfView && <p className="text-xs text-muted-foreground mt-1">Siehe <a href="#" target="_blank" className="underline">Satzung</a> und <a href="#" target="_blank" className="underline">Beitragsordnung</a></p>}
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Art der Mitgliedschaft</Label>
-                                    <Input value={targetUser.membership?.type === 'active' ? 'Aktivmitgliedschaft' : targetUser.membership?.type === 'supporting' ? 'Fördernde Mitgliedschaft' : targetUser.membership?.type === 'ordinary' ? 'Ordentliche Mitgliedschaft' : (targetUser.membership?.type || '')} disabled />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Stimmenanzahl</Label>
-                                    <Input value={targetUser.membership?.current_votes !== undefined ? targetUser.membership.current_votes.toString() : '0'} disabled />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {renderVerbandCard()}
                 </div>
             </div>
 
-            {/* Action Modal */}
-            {actionModal && (
-                <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-                    <Card className="w-full max-w-md shadow-lg border">
-                        <CardHeader>
-                            <CardTitle>
-                                {actionModal === 'approve' && t('dashboard.admin.approve_membership')}
-                                {actionModal === 'deny' && t('dashboard.admin.deny_membership')}
-                                {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
-                                {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
-                                {actionModal === 'apply' && t('profile.actions.apply_membership')}
-                            </CardTitle>
-                            <CardDescription>
-                                {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
-                                {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
-                                {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
-                                {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
-                                {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            {actionModal === 'apply' ? (
-                                <div className="space-y-4 pt-2">
-                                    <div className="space-y-2 border-b pb-4">
-                                        <Label>Art der Mitgliedschaft</Label>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="flex items-center gap-2 cursor-pointer font-normal">
-                                                <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
-                                                Aktivmitgliedschaft (10 € / Jahr)
-                                            </Label>
-                                            <Label className="flex items-center gap-2 cursor-pointer font-normal">
-                                                <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
-                                                Fördernde Mitgliedschaft
-                                            </Label>
-                                        </div>
-                                    </div>
-                                    {applyType === 'supporting' && (
-                                        <div className="space-y-2 animate-in fade-in pb-2">
-                                            <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
-                                            <Input
-                                                id="customFee"
-                                                type="number"
-                                                min="1"
-                                                step="1"
-                                                value={applyFee}
-                                                onChange={(e) => setApplyFee(Number(e.target.value))}
-                                            />
-                                        </div>
-                                    )}
-                                    <div className="space-y-3">
-                                        <div className="flex items-start space-x-2">
-                                            <input type="checkbox" id="consent-privacy" className="mt-1" checked={consents.privacy} onChange={(e) => setConsents(p => ({ ...p, privacy: e.target.checked }))} />
-                                            <Label htmlFor="consent-privacy" className="text-sm font-normal leading-snug">
-                                                {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-start space-x-2">
-                                            <input type="checkbox" id="consent-accuracy" className="mt-1" checked={consents.accuracy} onChange={(e) => setConsents(p => ({ ...p, accuracy: e.target.checked }))} />
-                                            <Label htmlFor="consent-accuracy" className="text-sm font-normal leading-snug">
-                                                {t('club.details.membership.consent_accuracy', { defaultValue: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' })}
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-start space-x-2">
-                                            <input type="checkbox" id="consent-statutes" className="mt-1" checked={consents.statutes} onChange={(e) => setConsents(p => ({ ...p, statutes: e.target.checked }))} />
-                                            <Label htmlFor="consent-statutes" className="text-sm font-normal leading-snug">
-                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Satzung</a> gelesen und erkenne sie an.
-                                            </Label>
-                                        </div>
-                                        <div className="flex items-start space-x-2">
-                                            <input type="checkbox" id="consent-finances" className="mt-1" checked={consents.finances} onChange={(e) => setConsents(p => ({ ...p, finances: e.target.checked }))} />
-                                            <Label htmlFor="consent-finances" className="text-sm font-normal leading-snug">
-                                                Ich habe die <a href="#" target="_blank" className="underline text-blue-600">Beitragsordnung</a> gelesen und erkenne sie an.
-                                            </Label>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (actionModal === 'approve' || actionModal === 'cancel') ? (
-                                <div className="space-y-2">
-                                    <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
-                                    <Input
-                                        id="actionDate"
-                                        type="date"
-                                        value={actionDate}
-                                        onChange={(e) => setActionDate(e.target.value)}
-                                    />
-                                    <p className="text-xs text-muted-foreground pt-1">
-                                        {isSelfView
-                                            ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
-                                            : `Falls leer, wird das Datum ${actionModal === 'approve' && targetUser?.membership?.begin_date ? ` aus dem Antrag übernommen (${new Date(targetUser.membership.begin_date * 1000).toLocaleDateString()})` : " von heute verwendet"} .`}
-                                    </p>
-                                </div>
-                            ) : null}
-                        </CardContent>
-                        <CardFooter className="flex justify-end gap-2 bg-muted/20 py-4">
-                            <Button variant="ghost" onClick={() => {
-                                setActionModal(null);
-                                setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
-                            }} disabled={actionLoading}>
-                                {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
-                            </Button>
-                            <Button
-                                variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
-                                onClick={() => handleMembershipAction(actionModal)}
-                                disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
-                            >
-                                {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) :
-                                    actionModal === 'cancel' && isSelfView ? t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' }) :
-                                        'Bestätigen'}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                </div>
-            )}
+            {renderActionModal()}
         </div>
     );
 }
-

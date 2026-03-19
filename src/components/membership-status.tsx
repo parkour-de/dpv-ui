@@ -3,7 +3,7 @@ import { type Membership } from "@/types";
 import { StatusBadge } from "@/components/status-badge";
 
 interface MembershipStatusProps {
-    membership?: Membership;
+    readonly membership?: Membership;
 }
 
 export function MembershipStatus({ membership }: MembershipStatusProps) {

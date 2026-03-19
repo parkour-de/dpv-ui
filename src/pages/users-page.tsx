@@ -94,32 +94,35 @@ export function UsersPage() {
             }
 
             const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
+            const url = globalThis.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `${type}_export.csv`;
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+            globalThis.URL.revokeObjectURL(url);
+            a.remove();
         } catch (err) {
             console.error("Failed to export", err);
             setError(t('dashboard.admin.export_error'));
         }
     };
 
-    const filteredMembers = members.filter(m => {
+    const matchesFilter = (m: UnifiedMember) => {
         // Status filter
         if (statusFilter && m.membership?.status !== statusFilter) return false;
 
         // Type filter
         if (typeFilter) {
-            const memType = m.membership?.type || 'active'; // active is default for users, ordinary for clubs usually
-            if (typeFilter === 'ordinary' && (m._internal_type !== 'club' || (memType !== 'ordinary' && memType !== 'active'))) return false;
-            if (typeFilter === 'extraordinary' && (m._internal_type !== 'club' || memType !== 'extraordinary')) return false;
-            if (typeFilter === 'active' && (m._internal_type !== 'user' || memType !== 'active')) return false;
-            if (typeFilter === 'supporting' && (m._internal_type !== 'user' || memType !== 'supporting')) return false;
-            if (typeFilter === 'honorary' && (m._internal_type !== 'user' || memType !== 'honorary')) return false;
+            const memType = m.membership?.type || 'active'; 
+            const isMatch = (
+                (typeFilter === 'ordinary' && m._internal_type === 'club' && (memType === 'ordinary' || memType === 'active')) ||
+                (typeFilter === 'extraordinary' && m._internal_type === 'club' && memType === 'extraordinary') ||
+                (typeFilter === 'active' && m._internal_type === 'user' && memType === 'active') ||
+                (typeFilter === 'supporting' && m._internal_type === 'user' && memType === 'supporting') ||
+                (typeFilter === 'honorary' && m._internal_type === 'user' && memType === 'honorary')
+            );
+            if (!isMatch) return false;
         }
 
         // Fulltext search
@@ -129,7 +132,9 @@ export function UsersPage() {
             (m.name || "").toLowerCase().includes(q) ||
             (m.email || "").toLowerCase().includes(q)
         );
-    });
+    };
+
+    const filteredMembers = members.filter(matchesFilter);
 
     if (!user?.roles?.includes('admin')) {
         return (
@@ -210,14 +215,16 @@ export function UsersPage() {
                 </CardContent>
             </Card>
 
-            {loading ? (
-                <div className="text-center py-12 text-muted-foreground">{t('dashboard.loading')}</div>
-            ) : filteredMembers.length === 0 ? (
+            {loading && <div className="text-center py-12 text-muted-foreground">{t('dashboard.loading')}</div>}
+            
+            {!loading && filteredMembers.length === 0 && (
                 <div className="text-center py-12 border border-dashed rounded-lg">
                     <h3 className="text-lg font-medium">{t('dashboard.empty.title', 'Keine Benutzer gefunden')}</h3>
                     <p className="text-muted-foreground mb-4">Passe deine Filter an oder suche neu.</p>
                 </div>
-            ) : (
+            )}
+
+            {!loading && filteredMembers.length > 0 && (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {filteredMembers.map(m => (
                         <Link key={m._key} to={m._internal_type === 'user' ? `/users/${m._key}` : `/clubs/${m._key}`}>

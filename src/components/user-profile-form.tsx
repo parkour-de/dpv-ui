@@ -10,11 +10,11 @@ import { PaymentDetails } from "@/components/payment-details";
 import { api, getErrorMessage } from "@/lib/api";
 
 interface UserProfileFormProps {
-    user: User;
-    token: string;
-    isAdminView?: boolean;
-    onSaveSuccess?: (updatedUser: User, message: string) => void;
-    endpointOverride?: string; // e.g. "/user/123" for admin, defaults to "/users/me"
+    readonly user: User;
+    readonly token: string;
+    readonly isAdminView?: boolean;
+    readonly onSaveSuccess?: (updatedUser: User, message: string) => void;
+    readonly endpointOverride?: string; // e.g. "/user/123" for admin, defaults to "/users/me"
 }
 
 export function UserProfileForm({ user, token, isAdminView = false, onSaveSuccess, endpointOverride }: UserProfileFormProps) {
@@ -68,7 +68,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                 try {
                     const matches = await api.get<Club[]>(`/clubs/search?q=${encodeURIComponent(formData.your_club)}`, token);
                     const exactMatch = matches.find(c => c.name.toLowerCase() === formData.your_club.toLowerCase());
-                    if (exactMatch && exactMatch.membership.status === 'active') {
+                    if (exactMatch?.membership?.status === 'active') {
                         setClubMatch({ name: exactMatch.name, status: exactMatch.membership.status });
                     } else {
                         setClubMatch(null);
