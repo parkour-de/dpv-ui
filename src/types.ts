@@ -1,4 +1,4 @@
-export type ClubStatus = 'active' | 'inactive' | 'requested' | 'denied' | 'cancelled';
+export type ClubStatus = 'active' | 'inactive' | 'requested' | 'denied' | 'cancelled' | 'approved' | 'cancelling';
 
 export const CLUB_STATUS_LABELS: Record<ClubStatus, string> = {
     active: 'Aktiv',
@@ -6,6 +6,8 @@ export const CLUB_STATUS_LABELS: Record<ClubStatus, string> = {
     requested: 'Beantragt',
     denied: 'Abgelehnt',
     cancelled: 'Gekündigt',
+    approved: 'Angenommen',
+    cancelling: 'In Kündigung',
 };
 
 export const CLUB_STATUS_COLORS: Record<ClubStatus, string> = {
@@ -14,6 +16,8 @@ export const CLUB_STATUS_COLORS: Record<ClubStatus, string> = {
     requested: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
     denied: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
     cancelled: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+    approved: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400',
+    cancelling: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-400',
 };
 
 export interface Membership {
@@ -23,6 +27,7 @@ export interface Membership {
     iban?: string; // usually omitted except for owners
     account_holder?: string;
     sepa_mandate_number?: string;
+    application_date?: number; // unix seconds
     begin_date?: number; // unix seconds
     end_date?: number;   // unix seconds
     membership_number?: string;

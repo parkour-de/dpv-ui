@@ -20,6 +20,7 @@ export function ClubsPage() {
 
     // Admin filters
     const [statusFilter, setStatusFilter] = useState<ClubStatus | "">("");
+    const [missingCensusYear, setMissingCensusYear] = useState<number>(0);
     const [page, setPage] = useState(0);
     const LIMIT = 50;
 
@@ -38,6 +39,9 @@ export function ClubsPage() {
                 if (statusFilter) {
                     query += `&status=${statusFilter}`;
                 }
+                if (missingCensusYear > 0) {
+                    query += `&missing_census_year=${missingCensusYear}`;
+                }
 
                 if (token) {
                     const data = await api.get<Club[]>(`/clubs${query}`, token);
@@ -52,7 +56,7 @@ export function ClubsPage() {
         };
 
         fetchClubs();
-    }, [token, statusFilter, page, t]);
+    }, [token, statusFilter, missingCensusYear, page, t]);
 
     const clubsByStatus = clubs.reduce((acc, club) => {
         const status = club.membership.status;
@@ -102,6 +106,18 @@ export function ClubsPage() {
                                 <option key={key} value={key}>{t(`club.status.${key}`)}</option>
                             ))}
                         </select>
+                        <div className="flex items-center gap-2 ml-auto border-l pl-4 border-input">
+                            <input 
+                                type="checkbox" 
+                                id="missing-census"
+                                className="rounded border-input text-primary focus:ring-primary h-4 w-4"
+                                checked={missingCensusYear > 0}
+                                onChange={(e) => setMissingCensusYear(e.target.checked ? new Date().getFullYear() : 0)}
+                            />
+                            <label htmlFor="missing-census" className="text-sm font-medium cursor-pointer">
+                                {t('dashboard.filter.missing_census', { defaultValue: 'Fehlende Bestandsmeldung', year: new Date().getFullYear() })} ({new Date().getFullYear()})
+                            </label>
+                        </div>
                     </CardContent>
                 </Card>
             )}

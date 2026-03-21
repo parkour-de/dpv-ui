@@ -13,6 +13,7 @@ import { Loader2, ArrowLeft, AlertCircle, CheckCircle, XCircle } from "lucide-re
 import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
 import { UserProfileForm } from "@/components/user-profile-form";
+import { calculateCancellationDate } from "@/lib/utils";
 
 type MembershipAction = 'approve' | 'deny' | 'cancel' | 'apply';
 
@@ -78,7 +79,6 @@ export function UserDetailsPage() {
 
     const handleSelfMembershipAction = async (action: MembershipAction) => {
         if (!token || !targetUser) return;
-        const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
         let body: Record<string, unknown> = {};
 
         if (action === 'apply') {
@@ -91,7 +91,7 @@ export function UserDetailsPage() {
                 fee: applyType === 'supporting' ? applyFee : 10
             };
         } else if (action === 'cancel') {
-            body = { end_date: unixSeconds };
+            body = {};
         }
 
         await api.post(`/users/me/${action}`, body, token);
@@ -104,16 +104,12 @@ export function UserDetailsPage() {
         if (!token || !targetUser) return;
         let body: Record<string, unknown> = {};
 
-        if ((action === 'approve' || action === 'cancel') && actionDate) {
+        if (action === 'approve' && actionDate) {
             const parts = actionDate.split('-');
             if (parts.length === 3) {
                 const date = new Date(Date.UTC(Number.parseInt(parts[0]), Number.parseInt(parts[1]) - 1, Number.parseInt(parts[2])));
                 const timestamp = Math.floor(date.getTime() / 1000);
-                if (action === 'approve') {
-                    body = { begin_date: timestamp };
-                } else {
-                    body = { end_date: timestamp };
-                }
+                body = { begin_date: timestamp };
             }
         }
 
@@ -527,7 +523,6 @@ function ActionModal({
     actionLoading
 }: ActionModalProps) {
     if (!actionModal) return null;
-    const isApproveOrCancel = actionModal === 'approve' || actionModal === 'cancel';
 
     return (
         <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -560,9 +555,18 @@ function ActionModal({
                             t={t}
                         />
                     )}
-                    {isApproveOrCancel && (
+                    {actionModal === 'cancel' && (
+                        <div className="space-y-2 p-4 border rounded-md bg-muted/20">
+                            <p className="text-sm">
+                                {t('profile.actions.cancel_info_prefix', { defaultValue: "Wenn jetzt gekündigt wird, endet die Mitgliedschaft zum" })}
+                                {" "}
+                                <strong>{calculateCancellationDate().toLocaleDateString('de-DE')}</strong>.
+                            </p>
+                        </div>
+                    )}
+                    {actionModal === 'approve' && (
                         <div className="space-y-2">
-                            <Label htmlFor="actionDate">{isSelfView ? 'Ende' : 'Datum'} (Optional)</Label>
+                            <Label htmlFor="actionDate">Datum (Optional)</Label>
                             <Input
                                 id="actionDate"
                                 type="date"
@@ -570,14 +574,11 @@ function ActionModal({
                                 onChange={(e) => setActionDate(e.target.value)}
                             />
                             <p className="text-xs text-muted-foreground pt-1">
-                                {isSelfView
-                                    ? "Wenn du das Datum leer lässt, wird die Kündigung sofort wirksam."
-                                    : (() => {
-                                        const mDate = targetUser?.membership?.begin_date;
-                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
-                                        const type = actionModal === 'approve' ? "Antrag" : "heute";
-                                        return `Falls leer, wird das Datum ${mDate && actionModal === 'approve' ? ` aus dem ${type} übernommen (${dateStr})` : ` von ${type} verwendet`} .`;
-                                    })()}
+                                {(() => {
+                                    const mDate = targetUser?.membership?.application_date;
+                                    const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                    return `Falls leer, wird das Datum ${mDate ? ` aus dem Antrag übernommen (${dateStr})` : ` von heute verwendet`} .`;
+                                })()}
                             </p>
                         </div>
                     )}

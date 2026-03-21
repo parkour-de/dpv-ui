@@ -34,9 +34,6 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
         your_club: string;
         address: string;
         dateOfBirth: string;
-        iban?: string;
-        account_holder?: string;
-        sepa_mandate_number?: string;
     }>({
         firstname: '',
         lastname: '',
@@ -54,7 +51,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                 firstname: user.firstname || '',
                 lastname: user.lastname || '',
                 email: user.email || '',
-                language: user.language || 'default',
+                language: user.language || '',
                 your_club: user.your_club || '',
                 address: user.membership?.address || '',
                 dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : ''
@@ -133,7 +130,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
     };
 
     const languages = [
-        { code: "default", label: t('profile.language_options.browser_default') },
+        { code: "", label: t('profile.language_options.browser_default') },
         { code: "de", label: "🇩🇪 Deutsch" },
         { code: "en", label: "🇬🇧 English" },
         { code: "es", label: "🇪🇸 Español" },
@@ -244,16 +241,6 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                         </div>
                     </div>
 
-                    <PaymentDetails
-                        token={token}
-                        fetchUrl={`/user/${user._key}/payment-details`}
-                        isAdmin={isAdminView}
-                        formData={formData}
-                        onChange={(field, val) => setFormData(p => ({ ...p, [field]: val }))}
-                        isReadOnly={false}
-                        alwaysOpen={false}
-                    />
-
                     <div className="space-y-2">
                         <Label htmlFor="language">{t('profile.labels.language')}</Label>
                         <select
@@ -277,6 +264,17 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                     </Button>
                 </CardFooter>
             </Card>
+
+            <div className="mt-6">
+                <PaymentDetails
+                    token={token}
+                    fetchUrl={`/user/${user._key}/payment-details`}
+                    patchUrl={endpoint}
+                    isAdmin={isAdminView}
+                    canEdit={true}
+                    alwaysOpen={false}
+                />
+            </div>
         </form>
     );
 }

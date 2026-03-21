@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, calculateCancellationDate } from "@/lib/utils";
 import { PaymentDetails } from "@/components/payment-details";
 
 export function ClubDetailsPage() {
@@ -50,9 +50,6 @@ export function ClubDetailsPage() {
         email?: string;
         address?: string;
         contact_person?: string;
-        iban?: string;
-        account_holder?: string;
-        sepa_mandate_number?: string;
         state?: string;
         registerNumber?: string;
         exemptionValidity?: string;
@@ -62,9 +59,9 @@ export function ClubDetailsPage() {
     const [newOwnerAuthRep, setNewOwnerAuthRep] = useState(false);
     const [editingOwner, setEditingOwner] = useState<Record<string, boolean>>({});
 
-    // Modal state for Apply/Cancel with dates
-    const [actionModal, setActionModal] = useState<'apply' | 'cancel' | null>(null);
-    const [actionDate, setActionDate] = useState<string>(new Date().toISOString().split('T')[0]);
+    // Modal state for Apply/Cancel/Approve with dates
+    const [actionModal, setActionModal] = useState<'apply' | 'cancel' | 'approve' | null>(null);
+    const [actionDate, setActionDate] = useState<string>('');
     const [consents, setConsents] = useState({
         privacy: false,
         accuracy: false,
@@ -272,9 +269,6 @@ export function ClubDetailsPage() {
     const handleActionWithDate = () => {
         if (!actionModal) return;
 
-        // Convert date string to unix seconds if present
-        const unixSeconds = actionDate ? Math.floor(new Date(actionDate).getTime() / 1000) : 0;
-
         if (actionModal === 'apply') {
             handleAction('apply', {
                 consent_privacy: consents.privacy,
@@ -283,7 +277,17 @@ export function ClubDetailsPage() {
                 consent_finances: consents.finances
             });
         } else if (actionModal === 'cancel') {
-            handleAction('cancel', { end_date: unixSeconds });
+            handleAction('cancel');
+        } else if (actionModal === 'approve') {
+            const extraData: Record<string, unknown> = {};
+            if (actionDate) {
+                const parts = actionDate.split('-');
+                if (parts.length === 3) {
+                    const date = new Date(Date.UTC(Number.parseInt(parts[0]), Number.parseInt(parts[1]) - 1, Number.parseInt(parts[2])));
+                    extraData.begin_date = Math.floor(date.getTime() / 1000);
+                }
+            }
+            handleAction('approve', extraData);
         }
     };
 
@@ -460,7 +464,7 @@ export function ClubDetailsPage() {
                             )}
                             {isAdmin && club.membership.status === 'requested' && (
                                 <div className="flex gap-2">
-                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => handleAction('approve')} disabled={formLoading}>
+                                    <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700" onClick={() => { setActionDate(''); setActionModal('approve'); }} disabled={formLoading}>
                                         <Check className="mr-2 h-4 w-4" /> {t('club.details.membership.approve')}
                                     </Button>
                                     <Button size="sm" variant="destructive" onClick={() => handleAction('deny')} disabled={formLoading}>
@@ -474,9 +478,11 @@ export function ClubDetailsPage() {
                             }}>
                                 {t('club.details.actions.edit')}
                             </Button>
-                            <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
-                                <Trash2 className="h-4 w-4" />
-                            </Button>
+                            {!(club.membership.status === 'active' || club.membership.status === 'requested' || club.membership.status === 'cancelling') && (
+                                <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            )}
                         </>
                     )}
                 </div>
@@ -624,7 +630,7 @@ export function ClubDetailsPage() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        {(isAdmin || user?.roles?.includes('vorstand')) && member.email && editingOwner[member._key] && (
+                                        {member.email && editingOwner[member._key] && (
                                             <Button
                                                 variant="outline"
                                                 size="sm"
@@ -648,7 +654,7 @@ export function ClubDetailsPage() {
                                             </Button>
                                         )}
 
-                                        {(isAdmin || user?.roles?.includes('vorstand')) && member.email && (
+                                        {member.email && (
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
@@ -996,26 +1002,40 @@ export function ClubDetailsPage() {
                 <Card className="w-full max-w-md shadow-2xl">
                     <CardHeader>
                         <CardTitle>
-                            {actionModal === 'apply' ? t('club.details.membership.apply') : t('club.details.membership.cancel')}
+                            {actionModal === 'apply' ? t('club.details.membership.apply') : actionModal === 'cancel' ? t('club.details.membership.cancel') : t('club.details.membership.approve')}
                         </CardTitle>
                         <CardDescription>
                             {actionModal === 'apply'
                                 ? t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." })
-                                : t('club.details.membership.cancel_description', { defaultValue: "Specify when the membership should end (optional):" })}
+                                : actionModal === 'cancel'
+                                    ? t('profile.actions.cancel_info_prefix', { defaultValue: "Cancel membership:" })
+                                    : t('club.details.membership.approve_description', { defaultValue: "Specify the start date (optional):" })}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        {actionModal === 'cancel' ? (
+                        {actionModal === 'approve' ? (
                             <div className="space-y-2">
-                                <Label htmlFor="action-date">{t('club.details.membership.date_label', { defaultValue: "Date" })}</Label>
+                                <Label htmlFor="actionDate">{t('club.details.membership.date_label', { defaultValue: "Date (Optional)" })}</Label>
                                 <Input
-                                    id="action-date"
+                                    id="actionDate"
                                     type="date"
                                     value={actionDate}
                                     onChange={(e) => setActionDate(e.target.value)}
                                 />
-                                <p className="text-[10px] text-muted-foreground italic">
-                                    {t('club.details.membership.date_format_hint', { defaultValue: "Format: Day.Month.Year (default is today)" })}
+                                <p className="text-xs text-muted-foreground pt-1">
+                                    {(() => {
+                                        const mDate = club?.membership?.application_date;
+                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                        return `Falls leer, wird das Datum ${mDate ? ` aus dem Antrag übernommen (${dateStr})` : ` von heute verwendet`} .`;
+                                    })()}
+                                </p>
+                            </div>
+                        ) : actionModal === 'cancel' ? (
+                            <div className="space-y-2 p-4 border rounded-md bg-muted/20">
+                                <p className="text-sm">
+                                    {t('club.details.membership.cancel_info_prefix', { defaultValue: "Wenn Sie jetzt kündigen, endet die Mitgliedschaft zum" })}
+                                    {" "}
+                                    <strong>{calculateCancellationDate().toLocaleDateString('de-DE')}</strong>.
                                 </p>
                             </div>
                         ) : (
@@ -1103,22 +1123,25 @@ export function ClubDetailsPage() {
                         )}
                         <div className="grid md:grid-cols-2 gap-4">
                             {[
-                                { id: 'name', label: 'club.details.labels.name' },
-                                { id: 'legal_form', label: 'club.details.labels.legal_form' },
+                                { id: 'name', label: 'club.details.labels.name', locked: club.membership.status !== 'inactive' && !isAdmin },
+                                { id: 'legal_form', label: 'club.details.labels.legal_form', locked: club.membership.status !== 'inactive' && !isAdmin },
                                 { id: 'email', label: 'club.details.labels.email' },
                                 { id: 'address', label: 'club.details.labels.address' },
                                 { id: 'contact_person', label: 'club.details.labels.contact_person' },
                                 { id: 'state', label: 'club.details.labels.state' },
-                                { id: 'registerNumber', label: 'club.details.labels.registerNumber' },
+                                { id: 'registerNumber', label: 'club.details.labels.registerNumber', locked: club.membership.status !== 'inactive' && !isAdmin },
                                 { id: 'exemptionValidity', label: 'club.details.labels.exemptionValidity', placeholder: 'e.g. 31.05.2027' }
                             ].map(field => (
                                 <div key={field.id} className="space-y-2">
-                                    <Label htmlFor={field.id}>{t(field.label)}</Label>
+                                    <Label htmlFor={field.id} className={field.locked ? 'text-muted-foreground' : ''}>
+                                        {t(field.label)}
+                                        {field.locked && <span className="ml-2 text-xs">(Gesperrt)</span>}
+                                    </Label>
                                     <Input
                                         id={field.id}
                                         value={formData[field.id as keyof typeof formData] || ''}
                                         onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
-                                        disabled={!isEditing}
+                                        disabled={!isEditing || field.locked}
                                         placeholder={field.placeholder}
                                     />
                                 </div>
@@ -1126,18 +1149,6 @@ export function ClubDetailsPage() {
                         </div>
                     </CardContent>
                 </Card>
-
-                {isEditing && (
-                    <PaymentDetails
-                        token={token || ""}
-                        fetchUrl={`/club/${id}/payment-details`}
-                        isAdmin={isAdmin}
-                        isReadOnly={false}
-                        alwaysOpen={true}
-                        formData={formData}
-                        onChange={(field, val) => setFormData(p => ({ ...p, [field]: val }))}
-                    />
-                )}
 
                 {isEditing && (
                     <div className="flex justify-end gap-2 mt-6">
@@ -1167,13 +1178,16 @@ export function ClubDetailsPage() {
             {!isEditing && (
                 <>
                     {renderDocuments()}
-                    <PaymentDetails
-                        token={token || ""}
-                        fetchUrl={`/club/${id}/payment-details`}
-                        isAdmin={isAdmin}
-                        isReadOnly={true}
-                        alwaysOpen={false}
-                    />
+                    <div className="mt-6 mb-6">
+                        <PaymentDetails
+                            token={token || ""}
+                            fetchUrl={`/club/${id}/payment-details`}
+                            patchUrl={`/club/${id}`}
+                            isAdmin={isAdmin}
+                            canEdit={true}
+                            alwaysOpen={false}
+                        />
+                    </div>
                     {renderVerbandData()}
                     {renderVorstandManagement()}
                     {renderCensusSection()}

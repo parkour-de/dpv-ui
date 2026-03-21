@@ -16,42 +16,57 @@ export interface PaymentData {
 interface PaymentDetailsProps {
     readonly token: string;
     readonly fetchUrl: string; // e.g., '/club/123/payment-details'
+    readonly patchUrl?: string; // e.g., '/club/123'
     readonly isAdmin?: boolean;
-
-    // Controlled mode (For embedded forms like in profile-page or club-details edit mode)
-    readonly formData?: PaymentData;
-    readonly onChange?: (field: string, value: string) => void;
-
-    // Presentation Options
-    readonly isReadOnly?: boolean;
+    readonly canEdit?: boolean;
     readonly alwaysOpen?: boolean; // If true, skips the lazy-load toggle entirely.
 }
 
 export function PaymentDetails({
-    token, fetchUrl, isAdmin, formData, onChange, isReadOnly, alwaysOpen
+    token, fetchUrl, patchUrl, isAdmin, canEdit, alwaysOpen
 }: PaymentDetailsProps) {
     const { t } = useTranslation();
-    const [fetchedData, setFetchedData] = useState<PaymentData | null>(null);
+    const [fetchedData, setFetchedData] = useState<PaymentData>({});
+    const [editData, setEditData] = useState<PaymentData>({});
     const [show, setShow] = useState(alwaysOpen || false);
     const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
     const [hasAttemptedFetch, setHasAttemptedFetch] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleFetch = async () => {
-        if (!fetchedData && token) {
+        if (token) {
             setLoading(true);
             try {
                 const data = await api.get<PaymentData>(fetchUrl, token);
-                setFetchedData(data);
-                if (!isReadOnly && onChange) {
-                    onChange('iban', data.iban || '');
-                    onChange('account_holder', data.account_holder || '');
-                    onChange('sepa_mandate_number', data.sepa_mandate_number || '');
-                }
+                setFetchedData(data || {});
+                setEditData(data || {});
             } catch (e) {
                 console.error("Failed to fetch payment details", e);
             } finally {
                 setLoading(false);
             }
+        }
+    };
+
+    const handleSave = async () => {
+        if (!patchUrl || !token) return;
+        setSaving(true);
+        setError(null);
+        try {
+            await api.patch(patchUrl, {
+                iban: editData.iban,
+                account_holder: editData.account_holder,
+                sepa_mandate_number: editData.sepa_mandate_number
+            }, token);
+            setFetchedData(editData);
+            setIsEditing(false);
+        } catch (e) {
+            const err = e as { data?: { message?: string } };
+            setError(err?.data?.message || "Failed to save bank details");
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -71,65 +86,105 @@ export function PaymentDetails({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alwaysOpen, hasAttemptedFetch]);
 
-    const dataToDisplay = (isReadOnly && !alwaysOpen) ? (fetchedData || {}) : (formData || {});
+    const dataToDisplay = isEditing ? editData : fetchedData;
 
     const inputs = (
-        <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-                <Label htmlFor="iban">{t('club.payment.labels.iban', 'IBAN')}</Label>
-                <Input
-                    id="iban"
-                    value={dataToDisplay.iban || ''}
-                    onChange={(e) => onChange?.('iban', e.target.value)}
-                    placeholder={isReadOnly ? t('club.payment.no_iban', 'Keine IBAN hinterlegt') : "DE..."}
-                    disabled={isReadOnly}
-                    className={isReadOnly ? "bg-muted font-mono" : ""}
-                />
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor="account_holder">{t('club.payment.labels.account_holder', 'Kontoinhaber')}</Label>
-                <Input
-                    id="account_holder"
-                    value={dataToDisplay.account_holder || ''}
-                    onChange={(e) => onChange?.('account_holder', e.target.value)}
-                    placeholder={isReadOnly ? "" : t('club.payment.placeholders.account_holder', 'Name')}
-                    disabled={isReadOnly}
-                    className={isReadOnly ? "bg-muted" : ""}
-                />
-            </div>
-            {isAdmin && (isReadOnly ? dataToDisplay.sepa_mandate_number : true) && (
-                <div className="space-y-2 md:col-span-2">
-                    <Label htmlFor="sepa">{t('club.payment.labels.sepa', 'SEPA-Mandatsreferenz')}</Label>
+        <div className="space-y-4">
+            {error && <div className="text-sm text-destructive font-medium">{error}</div>}
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor="iban">{t('club.payment.labels.iban', 'IBAN')}</Label>
                     <Input
-                        id="sepa"
-                        value={dataToDisplay.sepa_mandate_number || ''}
-                        onChange={(e) => onChange?.('sepa_mandate_number', e.target.value)}
-                        disabled={isReadOnly}
-                        className={isReadOnly ? "bg-muted" : ""}
+                        id="iban"
+                        value={dataToDisplay.iban || ''}
+                        onChange={(e) => setEditData(p => ({ ...p, iban: e.target.value }))}
+                        placeholder={!isEditing ? t('club.payment.no_iban', 'Keine IBAN hinterlegt') : "DE..."}
+                        disabled={!isEditing || saving}
+                        className={!isEditing ? "bg-muted font-mono" : ""}
                     />
-                    {!isReadOnly && <p className="text-xs text-muted-foreground">{t('club.payment.admin_only', 'Nur für Administratoren sichtbar.')}</p>}
+                </div>
+                <div className="space-y-2">
+                    <Label htmlFor="account_holder">{t('club.payment.labels.account_holder', 'Kontoinhaber')}</Label>
+                    <Input
+                        id="account_holder"
+                        value={dataToDisplay.account_holder || ''}
+                        onChange={(e) => setEditData(p => ({ ...p, account_holder: e.target.value }))}
+                        placeholder={!isEditing ? "" : t('club.payment.placeholders.account_holder', 'Name')}
+                        disabled={!isEditing || saving}
+                        className={!isEditing ? "bg-muted" : ""}
+                    />
+                </div>
+                {isAdmin && (!isEditing ? dataToDisplay.sepa_mandate_number : true) && (
+                    <div className="space-y-2 md:col-span-2">
+                        <Label htmlFor="sepa">{t('club.payment.labels.sepa', 'SEPA-Mandatsreferenz')}</Label>
+                        <Input
+                            id="sepa"
+                            value={dataToDisplay.sepa_mandate_number || ''}
+                            onChange={(e) => setEditData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
+                            disabled={!isEditing || saving}
+                            className={!isEditing ? "bg-muted" : ""}
+                        />
+                        {isEditing && <p className="text-xs text-muted-foreground">{t('club.payment.admin_only', 'Nur für Administratoren sichtbar/bearbeitbar.')}</p>}
+                    </div>
+                )}
+            </div>
+            {isEditing && patchUrl && (
+                <div className="flex justify-end gap-2 mt-4">
+                    <Button type="button" variant="ghost" onClick={() => { setIsEditing(false); setEditData(fetchedData); setError(null); }} disabled={saving}>
+                        {t('club.details.actions.cancel', 'Abbrechen')}
+                    </Button>
+                    <Button type="button" onClick={handleSave} disabled={saving}>
+                        {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {t('club.details.actions.save', 'Speichern')}
+                    </Button>
                 </div>
             )}
         </div>
     );
 
+    const renderHeaderButtons = () => {
+        if (canEdit && patchUrl && !isEditing) {
+            return (
+                <Button variant="outline" size="sm" onClick={() => { setIsEditing(true); setEditData(fetchedData); }}>
+                    {t('club.details.actions.edit', 'Bearbeiten')}
+                </Button>
+            );
+        }
+        return null;
+    };
+
     if (alwaysOpen) {
-        return inputs;
+        return (
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-lg">{t('club.payment.title', 'Zahlungsdaten')}</CardTitle>
+                    {renderHeaderButtons()}
+                </CardHeader>
+                <CardContent className="pt-4">
+                    {inputs}
+                </CardContent>
+            </Card>
+        );
     }
 
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>{t('club.payment.title', 'Zahlungsdaten')}</CardTitle>
-                <CardDescription>{t('club.payment.description', 'Hinterlegte Zahlungsverbindung')}</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <div>
+                    <CardTitle className="text-lg">{t('club.payment.title', 'Zahlungsdaten')}</CardTitle>
+                    <CardDescription>{t('club.payment.description', 'Hinterlegte Zahlungsverbindung')}</CardDescription>
+                </div>
+                {show && renderHeaderButtons()}
             </CardHeader>
             <CardContent>
                 {show ? (
                     <div className="space-y-4">
                         {inputs}
-                        <Button type="button" variant="outline" size="sm" onClick={() => setShow(false)}>
-                            {t('club.payment.hide', 'Ausblenden')}
-                        </Button>
+                        {!isEditing && (
+                            <Button type="button" variant="outline" size="sm" onClick={() => setShow(false)}>
+                                {t('club.payment.hide', 'Ausblenden')}
+                            </Button>
+                        )}
                     </div>
                 ) : (
                     <Button type="button" variant="outline" onClick={handleShowToggle} disabled={loading}>

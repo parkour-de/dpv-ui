@@ -12,11 +12,18 @@ export function MembershipStatus({ membership }: MembershipStatusProps) {
         return <p className="text-muted-foreground text-sm">Kein aktiver Aufnahmeantrag vorhanden.</p>;
     }
 
-    const { begin_date, end_date, membership_number } = membership;
+    const { application_date, begin_date, end_date, membership_number } = membership;
 
-    const begin = begin_date
-        ? new Date(begin_date * 1000).toLocaleDateString()
-        : 'Sofort';
+    // Adaptive label based on status
+    const isRequested = membership.status === 'requested';
+    const dateLabel = isRequested ? 'Antragsdatum:' : 'Eintrittsdatum:';
+    
+    let begin = 'Sofort';
+    if (isRequested && application_date) {
+        begin = new Date(application_date * 1000).toLocaleDateString();
+    } else if (begin_date) {
+        begin = new Date(begin_date * 1000).toLocaleDateString();
+    }
 
     // Note: status 'active' but begin_date in future means it's upcoming (handled by StatusBadge)
     const end = end_date
@@ -30,7 +37,7 @@ export function MembershipStatus({ membership }: MembershipStatusProps) {
                 <span className="font-medium"><StatusBadge membership={membership} /></span>
             </div>
             <div className="flex justify-between border-b pb-2">
-                <span className="text-muted-foreground">Eintrittsdatum:</span>
+                <span className="text-muted-foreground">{dateLabel}</span>
                 <span className="font-medium">{begin}</span>
             </div>
             {end && (
