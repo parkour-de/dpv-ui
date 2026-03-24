@@ -55,11 +55,14 @@ export function PaymentDetails({
         setSaving(true);
         setError(null);
         try {
-            await api.patch(patchUrl, {
+            const payload: Partial<PaymentData> = {
                 iban: editData.iban,
                 account_holder: editData.account_holder,
-                sepa_mandate_number: editData.sepa_mandate_number
-            }, token);
+            };
+            if (isAdmin) {
+                payload.sepa_mandate_number = editData.sepa_mandate_number;
+            }
+            await api.patch(patchUrl, payload, token);
             setFetchedData(editData);
             setIsEditing(false);
         } catch (e) {
