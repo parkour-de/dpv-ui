@@ -110,7 +110,11 @@
                 "cancel_description": "Veuillez préciser quand l'adhésion doit prendre fin (facultatif) :",
                 "confirm": "Confirmer",
                 "date_label": "Date",
-                "date_format_hint": "Format : Jour.Mois.Année (par défaut aujourd'hui)"
+                "date_format_hint": "Format : Jour.Mois.Année (par défaut aujourd'hui)",
+                "consent_privacy": "J'accepte la <1>politique de confidentialité</1>.",
+                "consent_accuracy": "Je confirme que mes informations sont véridiques.",
+                "consent_statutes": "J'ai lu et j'accepte les <1>statuts</1>.",
+                "consent_finances": "J'ai lu et j'accepte le <1>règlement des cotisations</1>."
             }
         },
         "documents": {

@@ -110,7 +110,11 @@
                 "cancel_description": "Indique cuándo debe finalizar la membresía (opcional):",
                 "confirm": "Confirmar",
                 "date_label": "Fecha",
-                "date_format_hint": "Formato: Día.Mes.Año (por defecto es hoy)"
+                "date_format_hint": "Formato: Día.Mes.Año (por defecto es hoy)",
+                "consent_privacy": "Acepto la <1>política de privacidad</1>.",
+                "consent_accuracy": "Confirmo que mis datos son verídicos.",
+                "consent_statutes": "He leído y acepto los <1>estatutos</1>.",
+                "consent_finances": "He leído y acepto el <1>reglamento de cuotas</1>."
             }
         },
         "documents": {

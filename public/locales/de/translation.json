@@ -110,7 +110,11 @@
                 "cancel_description": "Geben Sie an, zu wann die Mitgliedschaft enden soll (optional):",
                 "confirm": "Bestätigen",
                 "date_label": "Datum",
-                "date_format_hint": "Format: Tag.Monat.Jahr (Standard ist heute)"
+                "date_format_hint": "Format: Tag.Monat.Jahr (Standard ist heute)",
+                "consent_privacy": "Ich stimme der <1>Datenschutzerklärung</1> zu.",
+                "consent_accuracy": "Ich versichere, dass meine Angaben der Wahrheit entsprechen.",
+                "consent_statutes": "Ich habe die <1>Satzung</1> gelesen und erkenne sie an.",
+                "consent_finances": "Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an."
             }
         },
         "documents": {

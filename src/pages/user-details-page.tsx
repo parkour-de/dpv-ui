@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, getErrorMessage } from "@/lib/api";
@@ -216,7 +216,7 @@ export function UserDetailsPage() {
                         <Input value={targetUser?.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
                         {isSelfView && (
                             <p className="text-xs text-muted-foreground mt-1">
-                                Siehe <a href="/satzung" target="_blank" className="underline">Satzung</a> und <a href="/beitragsordnung" target="_blank" className="underline">Beitragsordnung</a>
+                                Siehe <a href="https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf" target="_blank" rel="noopener noreferrer" className="underline">Satzung</a> und <a href="https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf" target="_blank" rel="noopener noreferrer" className="underline">Beitragsordnung</a>
                             </p>
                         )}
                     </div>
@@ -454,10 +454,10 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
             )}
             <div className="space-y-3">
                 {[
-                    { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der Datenschutzerklärung zu.' },
+                    { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der <1>Datenschutzerklärung</1> zu.', href: 'https://parkour-deutschland.de/datenschutzerklaerung/' },
                     { id: 'accuracy', key: 'club.details.membership.consent_accuracy', def: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' },
-                    { id: 'statutes', href: '/satzung', label: 'Ich habe die Satzung gelesen und erkenne sie an.' },
-                    { id: 'finances', href: '/beitragsordnung', label: 'Ich habe die Beitragsordnung gelesen und erkenne sie an.' }
+                    { id: 'statutes', key: 'club.details.membership.consent_statutes', def: 'Ich habe die <1>Satzung</1> gelesen und erkenne sie an.', href: 'https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf' },
+                    { id: 'finances', key: 'club.details.membership.consent_finances', def: 'Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an.', href: 'https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf' }
                 ].map(item => (
                     <div key={item.id} className="flex items-start space-x-2">
                         <input
@@ -468,16 +468,14 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
                             onChange={(e) => setConsents(p => ({ ...p, [item.id]: e.target.checked }))}
                         />
                         <Label htmlFor={`consent-${item.id}`} className="text-sm font-normal leading-snug">
-                            {item.key ? t(item.key, { defaultValue: item.def }) : (
-                                <>
-                                    {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[0]}
-                                    {' '}
-                                    <a href={item.href} target="_blank" className="underline text-blue-600">
-                                        {item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung'}
-                                    </a>
-                                    {' '}
-                                    {item.label?.split(item.id === 'statutes' ? 'Satzung' : 'Beitragsordnung')[1]}
-                                </>
+                            {item.href ? (
+                                <Trans
+                                    i18nKey={item.key!}
+                                    defaults={item.def}
+                                    components={{ 1: <a href={item.href} target="_blank" rel="noopener noreferrer" className="underline text-blue-600" /> }}
+                                />
+                            ) : (
+                                t(item.key!, { defaultValue: item.def })
                             )}
                         </Label>
                     </div>

@@ -110,7 +110,11 @@
                 "cancel_description": "Podaj, kiedy ma się zakończyć członkostwo (opcjonalnie):",
                 "confirm": "Potwierdź",
                 "date_label": "Data",
-                "date_format_hint": "Format: Dzień.Miesiąc.Rok (domyślnie dzisiaj)"
+                "date_format_hint": "Format: Dzień.Miesiąc.Rok (domyślnie dzisiaj)",
+                "consent_privacy": "Akceptuję <1>politykę prywatności</1>.",
+                "consent_accuracy": "Potwierdzam, że moje dane są prawdziwe.",
+                "consent_statutes": "Zapoznałem/am się ze <1>statutem</1> i akceptuję go.",
+                "consent_finances": "Zapoznałem/am się z <1>regulaminem składek</1> i akceptuję go."
             }
         },
         "documents": {

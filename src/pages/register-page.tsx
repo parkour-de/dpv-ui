@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { api, getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,7 +118,13 @@ export function RegisterPage() {
                                 className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                             />
                             <Label htmlFor="consentPrivacy" className="text-sm font-normal leading-tight text-muted-foreground">
-                                {t('club.details.membership.consent_privacy', { defaultValue: 'Ich stimme der Datenschutzerklärung zu.' })}
+                                <Trans
+                                    i18nKey="club.details.membership.consent_privacy"
+                                    defaults="Ich stimme der <1>Datenschutzerklärung</1> zu."
+                                    components={{
+                                        1: <a href="https://parkour-deutschland.de/datenschutzerklaerung/" target="_blank" rel="noopener noreferrer" className="underline text-blue-600" />
+                                    }}
+                                />
                             </Label>
                         </div>
                         {error && (

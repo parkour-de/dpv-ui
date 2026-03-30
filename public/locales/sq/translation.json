@@ -110,7 +110,11 @@
                 "cancel_description": "Ju lutemi specifikoni se kur duhet të përfundojë anëtarësimi (opsionale):",
                 "confirm": "Konfirmo",
                 "date_label": "Data",
-                "date_format_hint": "Formati: Dita.Muaji.Viti (parazgjedhur është sot)"
+                "date_format_hint": "Formati: Dita.Muaji.Viti (parazgjedhur është sot)",
+                "consent_privacy": "Pranoj <1>politikën e privatësisë</1>.",
+                "consent_accuracy": "Konfirmoj që të dhënat e mia janë të sakta.",
+                "consent_statutes": "Kam lexuar dhe pranoj <1>statutin</1>.",
+                "consent_finances": "Kam lexuar dhe pranoj <1>rregulloren e kontributeve</1>."
             }
         },
         "documents": {

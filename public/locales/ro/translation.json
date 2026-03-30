@@ -110,7 +110,11 @@
                 "cancel_description": "Vă rugăm să specificați când ar trebui să se încheie calitatea de membru (opțional):",
                 "confirm": "Confirmă",
                 "date_label": "Data",
-                "date_format_hint": "Format: Zi.Lună.An (implicit este astăzi)"
+                "date_format_hint": "Format: Zi.Lună.An (implicit este astăzi)",
+                "consent_privacy": "Sunt de acord cu <1>politica de confidențialitate</1>.",
+                "consent_accuracy": "Confirm că datele mele sunt corecte.",
+                "consent_statutes": "Am citit și accept <1>statutul</1>.",
+                "consent_finances": "Am citit și accept <1>regulamentul de cotizații</1>."
             }
         },
         "documents": {

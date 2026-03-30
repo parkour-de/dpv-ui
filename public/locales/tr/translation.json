@@ -110,7 +110,11 @@
                 "cancel_description": "Üyeliğin ne zaman sona ereceğini belirtin (isteğe bağlı):",
                 "confirm": "Onayla",
                 "date_label": "Tarih",
-                "date_format_hint": "Format: Gün.Ay.Yıl (varsayılan bugündür)"
+                "date_format_hint": "Format: Gün.Ay.Yıl (varsayılan bugündür)",
+                "consent_privacy": "<1>Gizlilik politikasını</1> kabul ediyorum.",
+                "consent_accuracy": "Bilgilerimin doğru olduğunu onaylıyorum.",
+                "consent_statutes": "<1>Tüzüğü</1> okudum ve kabul ediyorum.",
+                "consent_finances": "<1>Aidat yönetmeliğini</1> okudum ve kabul ediyorum."
             }
         },
         "documents": {

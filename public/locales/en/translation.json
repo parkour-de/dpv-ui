@@ -110,7 +110,11 @@
                 "cancel_description": "Please specify when the membership should end (optional):",
                 "confirm": "Confirm",
                 "date_label": "Date",
-                "date_format_hint": "Format: Day.Month.Year (default is today)"
+                "date_format_hint": "Format: Day.Month.Year (default is today)",
+                "consent_privacy": "I agree to the <1>privacy policy</1>.",
+                "consent_accuracy": "I confirm that my information is truthful.",
+                "consent_statutes": "I have read and accept the <1>statutes</1>.",
+                "consent_finances": "I have read and accept the <1>contribution regulations</1>."
             }
         },
         "documents": {
