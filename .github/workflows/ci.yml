@@ -17,11 +17,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Use Node.js
       uses: actions/setup-node@v4
@@ -36,13 +37,37 @@ jobs:
     - name: Lint
       run: npm run lint
 
-    - name: Build
+    - name: Build for Pages
       run: npm run build
 
-    - name: Upload artifact
+    - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: './dist'
+
+    - name: Configure Server Environment
+      run: |
+        echo "VITE_API_BASE_URL=/dpv" > .env.production
+        echo "VITE_TEST_ENVIRONMENT=false" >> .env.production
+
+    - name: Build for Server Release
+      run: npm run build
+
+    - name: Get commit count
+      id: vars
+      run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+
+    - name: Package Release
+      run: tar -czvf dpv-ui-release-v${{ steps.vars.outputs.count }}.tar.gz -C dist .
+
+    - name: Create Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: "v${{ steps.vars.outputs.count }}"
+        name: "Release v${{ steps.vars.outputs.count }}"
+        files: dpv-ui-release-v${{ steps.vars.outputs.count }}.tar.gz
+        make_latest: true
 
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
