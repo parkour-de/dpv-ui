@@ -227,7 +227,7 @@ export function UsersPage() {
             {!loading && filteredMembers.length > 0 && (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {filteredMembers.map(m => (
-                        <Link key={m._key} to={m._internal_type === 'user' ? `/users/${m._key}` : `/clubs/${m._key}`}>
+                        <Link key={m._key} to={m._internal_type === 'user' ? `/user/${m._key}` : `/club/${m._key}`}>
                             <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
                                 <CardHeader className="pb-4">
                                     <div className="flex items-center justify-between space-x-4">

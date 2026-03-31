@@ -124,7 +124,7 @@ export function UserDetailsPage() {
         setError(null);
 
         try {
-            if (isSelfView) {
+            if (isSelfView && (action === 'apply' || (action === 'cancel' && !currentUser?.roles?.includes('admin')))) {
                 await handleSelfMembershipAction(action);
             } else {
                 await handleAdminMembershipAction(action);
@@ -365,7 +365,7 @@ export function UserDetailsPage() {
                             )}
                         </CardContent>
 
-                        {!isSelfView && targetUser.membership?.status === 'requested' && (
+                        {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'requested' && (
                             <CardFooter className="flex flex-col sm:flex-row gap-2 border-t pt-4">
                                 <Button className="w-full bg-green-600 hover:bg-green-700" onClick={() => setActionModal('approve')} disabled={actionLoading}>
                                     <CheckCircle className="mr-2 h-4 w-4" />
@@ -377,7 +377,7 @@ export function UserDetailsPage() {
                                 </Button>
                             </CardFooter>
                         )}
-                        {!isSelfView && targetUser.membership?.status === 'active' && (
+                        {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'active' && (
                             <CardFooter className="border-t pt-4">
                                 <Button variant="outline" className="w-full text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
                                     Kündigen (Admin)

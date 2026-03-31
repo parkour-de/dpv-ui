@@ -106,7 +106,7 @@ export function CreateClubPage() {
                                     {searchResults.map(club => (
                                         <li key={club._key} className="text-sm flex items-center justify-between">
                                             <span className="font-semibold text-amber-900 dark:text-amber-100">{club.name} ({club.legal_form})</span>
-                                            <Link to={`/clubs/${club._key}`} className="text-primary hover:underline flex items-center gap-1 text-xs" target="_blank">
+                                            <Link to={`/club/${club._key}`} className="text-primary hover:underline flex items-center gap-1 text-xs" target="_blank">
                                                 {t('club.details.actions.back')} <ExternalLink className="h-3 w-3" />
                                             </Link>
                                         </li>

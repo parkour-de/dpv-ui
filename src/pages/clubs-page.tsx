@@ -139,7 +139,7 @@ export function ClubsPage() {
                             {isAdmin ? (
                                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                                     {clubs.map(club => (
-                                        <Link key={club._key} to={`/clubs/${club._key}`}>
+                                        <Link key={club._key} to={`/club/${club._key}`}>
                                             <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
                                                 <CardHeader className="pb-2">
                                                     <div className="flex items-center justify-between space-x-4">
@@ -176,7 +176,7 @@ export function ClubsPage() {
                                             </h2>
                                             <div className="grid gap-4">
                                                 {groupClubs.map((club) => (
-                                                    <Link key={club._key} to={`/clubs/${club._key}`}>
+                                                    <Link key={club._key} to={`/club/${club._key}`}>
                                                         <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
                                                             <CardHeader className="pb-2">
                                                                 <div className="flex items-center justify-between space-x-4">
