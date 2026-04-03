@@ -107,3 +107,7 @@ export interface ActiveMembersResponse {
     exact_matches: ActiveMemberMatch[];
     partial_matches: ActiveMemberMatch[];
 }
+
+export interface Config {
+    links?: Record<string, string>;
+}

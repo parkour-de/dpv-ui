@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
+import { useConfig } from "@/context/config-context";
 import { api, getErrorMessage } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 
 export function RegisterPage() {
     const { t } = useTranslation();
+    const { config } = useConfig();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -122,7 +124,7 @@ export function RegisterPage() {
                                     i18nKey="club.details.membership.consent_privacy"
                                     defaults="Ich stimme der <1>Datenschutzerklärung</1> zu."
                                     components={{
-                                        1: <a href="https://parkour-deutschland.de/datenschutzerklaerung/" target="_blank" rel="noopener noreferrer" className="underline text-blue-600" />
+                                        1: <a href={config?.links?.privacy || "https://parkour-deutschland.de/datenschutzerklaerung/"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" />
                                     }}
                                 />
                             </Label>

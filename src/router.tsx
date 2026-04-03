@@ -14,6 +14,7 @@ import { HelpPage } from "@/pages/help-page";
 import { UsersPage } from "@/pages/users-page";
 import { UserDetailsPage } from "@/pages/user-details-page";
 import { AuditPage } from "@/pages/audit-page";
+import { SettingsPage } from "@/pages/settings-page";
 import { ProtectedRoute } from "@/components/protected-route";
 
 
@@ -91,6 +92,10 @@ export const router = createHashRouter([
             {
                 path: "/audit",
                 element: <AuditPage />,
+            },
+            {
+                path: "/settings",
+                element: <SettingsPage />,
             },
         ],
     },

@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
+import { useConfig } from "@/context/config-context";
 import { api, getErrorMessage } from "@/lib/api";
 import { type User } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -22,6 +23,7 @@ export function UserDetailsPage() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { user: currentUser, token, apiUpdateUser, login } = useAuth();
+    const { config } = useConfig();
 
     // Determine if we are looking at our own profile via /profile or /user/:my_id
     const isSelfView = !id || id === currentUser?._key;
@@ -216,7 +218,7 @@ export function UserDetailsPage() {
                         <Input value={targetUser?.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
                         {isSelfView && (
                             <p className="text-xs text-muted-foreground mt-1">
-                                Siehe <a href="https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf" target="_blank" rel="noopener noreferrer" className="underline">Satzung</a> und <a href="https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf" target="_blank" rel="noopener noreferrer" className="underline">Beitragsordnung</a>
+                                Siehe <a href={config?.links?.statutes || "https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Satzung</a> und <a href={config?.links?.finances || "https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Beitragsordnung</a>
                             </p>
                         )}
                     </div>
@@ -416,6 +418,7 @@ export function UserDetailsPage() {
                     setApplyFee={setApplyFee}
                     t={t}
                     actionLoading={actionLoading} // Pass actionLoading
+                    configLinks={config?.links}
                 />
             )}
         </div>
@@ -430,9 +433,10 @@ interface ApplyFormProps {
     consents: { privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean };
     setConsents: React.Dispatch<React.SetStateAction<{ privacy: boolean; accuracy: boolean; statutes: boolean; finances: boolean }>>;
     t: TFunction; 
+    configLinks: Record<string, string> | undefined;
 }
 
-function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, setConsents, t }: ApplyFormProps) {
+function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, setConsents, t, configLinks }: ApplyFormProps) {
     return (
         <div className="space-y-4 pt-2">
             <div className="space-y-2 border-b pb-4">
@@ -463,10 +467,10 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
             )}
             <div className="space-y-3">
                 {[
-                    { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der <1>Datenschutzerklärung</1> zu.', href: 'https://parkour-deutschland.de/datenschutzerklaerung/' },
+                    { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der <1>Datenschutzerklärung</1> zu.', href: configLinks?.privacy || 'https://parkour-deutschland.de/datenschutzerklaerung/' },
                     { id: 'accuracy', key: 'club.details.membership.consent_accuracy', def: 'Ich versichere, dass meine Angaben der Wahrheit entsprechen.' },
-                    { id: 'statutes', key: 'club.details.membership.consent_statutes', def: 'Ich habe die <1>Satzung</1> gelesen und erkenne sie an.', href: 'https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf' },
-                    { id: 'finances', key: 'club.details.membership.consent_finances', def: 'Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an.', href: 'https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf' }
+                    { id: 'statutes', key: 'club.details.membership.consent_statutes', def: 'Ich habe die <1>Satzung</1> gelesen und erkenne sie an.', href: configLinks?.statutes || 'https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf' },
+                    { id: 'finances', key: 'club.details.membership.consent_finances', def: 'Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an.', href: configLinks?.finances || 'https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf' }
                 ].map(item => (
                     <div key={item.id} className="flex items-start space-x-2">
                         <input
@@ -481,7 +485,7 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
                                 <Trans
                                     i18nKey={item.key!}
                                     defaults={item.def}
-                                    components={{ 1: <a href={item.href} target="_blank" rel="noopener noreferrer" className="underline text-blue-600" /> }}
+                                    components={{ 1: <a href={item.href} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" /> }}
                                 />
                             ) : (
                                 t(item.key!, { defaultValue: item.def })
@@ -510,6 +514,7 @@ interface ActionModalProps {
     setApplyFee: (val: number) => void;
     t: TFunction;
     actionLoading: boolean;
+    configLinks: Record<string, string> | undefined;
 }
 
 function ActionModal({
@@ -527,7 +532,8 @@ function ActionModal({
     applyFee,
     setApplyFee,
     t,
-    actionLoading
+    actionLoading,
+    configLinks
 }: ActionModalProps) {
     if (!actionModal) return null;
 
@@ -560,6 +566,7 @@ function ActionModal({
                             consents={consents}
                             setConsents={setConsents}
                             t={t}
+                            configLinks={configLinks}
                         />
                     )}
                     {actionModal === 'cancel' && (

@@ -62,6 +62,11 @@ export function Layout() {
                         <Link to="/help" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
                             {t('layout.nav.help')}
                         </Link>
+                        {user?.roles?.includes('global_admin') && (
+                            <Link to="/settings" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
+                                Einstellungen
+                            </Link>
+                        )}
                     </nav>
 
                     <div className="hidden md:flex items-center gap-6">
@@ -88,6 +93,11 @@ export function Layout() {
                     <Link to="/help" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
                         {t('layout.nav.help')}
                     </Link>
+                    {user?.roles?.includes('global_admin') && (
+                        <Link to="/settings" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
+                            Einstellungen
+                        </Link>
+                    )}
                     <div className="pt-2 border-t border-border space-y-3">
                         <Link to="/profile" className="block text-xs text-muted-foreground hover:underline" onClick={() => setMobileMenuOpen(false)}>
                             {user?.email}
