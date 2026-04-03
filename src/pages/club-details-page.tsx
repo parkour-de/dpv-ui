@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff } from "lucide-react";
+import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff, Section } from "lucide-react";
 import { cn, calculateCancellationDate } from "@/lib/utils";
 import { PaymentDetails } from "@/components/payment-details";
 
@@ -57,7 +57,9 @@ export function ClubDetailsPage() {
 
     // New Owner form
     const [newOwnerAuthRep, setNewOwnerAuthRep] = useState(false);
+    const [newOwnerFunction, setNewOwnerFunction] = useState("");
     const [editingOwner, setEditingOwner] = useState<Record<string, boolean>>({});
+    const [editedFunction, setEditedFunction] = useState<Record<string, string>>({});
 
     // Modal state for Apply/Cancel/Approve with dates
     const [actionModal, setActionModal] = useState<'apply' | 'cancel' | 'approve' | null>(null);
@@ -316,9 +318,10 @@ export function ClubDetailsPage() {
         setOwnerLoading(true);
         setOwnerError(null);
         try {
-            await api.post(`/club/${id}/owners`, { email: newOwnerEmail, authorizedRepresentative: newOwnerAuthRep }, token);
+            await api.post(`/club/${id}/owners`, { email: newOwnerEmail, authorizedRepresentative: newOwnerAuthRep, function: newOwnerFunction }, token);
             setNewOwnerEmail("");
             setNewOwnerAuthRep(false);
+            setNewOwnerFunction("");
             await fetchClub();
         } catch (err: unknown) {
             console.error(err);
@@ -630,15 +633,55 @@ export function ClubDetailsPage() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
+                                        {!editingOwner[member._key] && member.function && (
+                                            <span className="text-sm font-medium mr-2 bg-muted px-2 py-0.5 rounded-md">{member.function}</span>
+                                        )}
+
+                                        {member.email && editingOwner[member._key] && (
+                                            <Input
+                                                placeholder="Rolle"
+                                                className="h-8 w-32 px-2 py-1 text-xs"
+                                                value={editedFunction[member._key] ?? member.function ?? ""}
+                                                onChange={(e) => setEditedFunction(prev => ({ ...prev, [member._key]: e.target.value }))}
+                                                onBlur={async () => {
+                                                    const currentVal = editedFunction[member._key] ?? member.function ?? "";
+                                                    if (currentVal !== (member.function ?? "")) {
+                                                        setOwnerLoading(true);
+                                                        try {
+                                                            await api.post(`/club/${id}/owners`, { 
+                                                                email: member.email, 
+                                                                authorizedRepresentative: member.authorizedRepresentative, 
+                                                                function: currentVal 
+                                                            }, token || "");
+                                                            await fetchClub();
+                                                        } catch (err) {
+                                                            console.error(err);
+                                                        } finally {
+                                                            setOwnerLoading(false);
+                                                        }
+                                                    }
+                                                }}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.currentTarget.blur();
+                                                    }
+                                                }}
+                                            />
+                                        )}
+
                                         {member.email && editingOwner[member._key] && (
                                             <Button
-                                                variant="outline"
+                                                variant={member.authorizedRepresentative ? "default" : "outline"}
                                                 size="sm"
-                                                className={cn("h-8 text-xs", member.authorizedRepresentative && "bg-primary/10")}
+                                                className="h-8 px-2 transition-colors"
                                                 onClick={async () => {
                                                     setOwnerLoading(true);
                                                     try {
-                                                        await api.post(`/club/${id}/owners`, { email: member.email, authorizedRepresentative: !member.authorizedRepresentative }, token || "");
+                                                        await api.post(`/club/${id}/owners`, { 
+                                                            email: member.email, 
+                                                            authorizedRepresentative: !member.authorizedRepresentative,
+                                                            function: editedFunction[member._key] ?? member.function ?? ""
+                                                        }, token || "");
                                                         await fetchClub();
                                                     } catch (err) {
                                                         console.error(err);
@@ -648,9 +691,9 @@ export function ClubDetailsPage() {
                                                     }
                                                 }}
                                                 disabled={ownerLoading}
-                                                title="Toggle §26 BGB"
+                                                title="Vertretungsberechtigt (§26 BGB)"
                                             >
-                                                {t('club.owners.labels.authorizedRepresentative')}
+                                                <Section className="h-4 w-4" />
                                             </Button>
                                         )}
 
@@ -659,7 +702,12 @@ export function ClubDetailsPage() {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="text-muted-foreground hover:text-primary"
-                                                onClick={() => setEditingOwner(prev => ({ ...prev, [member._key]: !prev[member._key] }))}
+                                                onClick={() => {
+                                                    if (!editingOwner[member._key]) {
+                                                        setEditedFunction(prev => ({ ...prev, [member._key]: member.function ?? "" }));
+                                                    }
+                                                    setEditingOwner(prev => ({ ...prev, [member._key]: !prev[member._key] }));
+                                                }}
                                                 title="Bearbeiten"
                                             >
                                                 {editingOwner[member._key] ? <PenOff className="h-4 w-4" /> : <PenLine className="h-4 w-4" />}
@@ -687,9 +735,15 @@ export function ClubDetailsPage() {
                     <div className="flex gap-2 pt-4 border-t flex-wrap items-center">
                         <Input
                             placeholder={t('club.owners.add_placeholder')}
-                            className="max-w-xs"
+                            className="max-w-[200px]"
                             value={newOwnerEmail}
                             onChange={(e) => setNewOwnerEmail(e.target.value)}
+                        />
+                        <Input
+                            placeholder="Rolle"
+                            className="max-w-[150px]"
+                            value={newOwnerFunction}
+                            onChange={(e) => setNewOwnerFunction(e.target.value)}
                             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}
                         />
                         <label className="flex items-center gap-2 text-sm cursor-pointer ml-2">

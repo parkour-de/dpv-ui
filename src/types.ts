@@ -77,6 +77,7 @@ export interface VorstandUser {
     lastname: string;
     email?: string;
     authorizedRepresentative?: boolean;
+    function?: string;
 }
 
 export interface User {
