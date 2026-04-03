@@ -13,7 +13,7 @@ import { Loader2, ArrowLeft, AlertCircle, CheckCircle, XCircle } from "lucide-re
 import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
 import { UserProfileForm } from "@/components/user-profile-form";
-import { calculateCancellationDate } from "@/lib/utils";
+import { calculateCancellationDate, cn } from "@/lib/utils";
 
 type MembershipAction = 'approve' | 'deny' | 'cancel' | 'apply';
 
@@ -293,29 +293,38 @@ export function UserDetailsPage() {
                                             />
                                             <span>Systemadministrator (admin)</span>
                                         </Label>
-                                        <Label className="flex items-center gap-2 cursor-pointer text-sm font-normal">
-                                            <input
-                                                type="checkbox"
-                                                checked={targetUser.roles?.includes('aktivadmin') || false}
-                                                onChange={async (e) => {
-                                                    const checked = e.target.checked;
-                                                    const currentRoles = targetUser.roles || [];
-                                                    const newRoles = checked
-                                                        ? [...currentRoles, 'aktivadmin']
-                                                        : currentRoles.filter(r => r !== 'aktivadmin');
+                                        {(() => {
+                                            const isAktivAdmin = targetUser.roles?.includes('aktivadmin') || false;
+                                            const hasActiveMembership = targetUser.membership?.type === 'active' && 
+                                                (targetUser.membership?.status === 'active' || targetUser.membership?.status === 'cancelling');
+                                            const aktivAdminDisabled = !isAktivAdmin && !hasActiveMembership;
+                                            
+                                            return (
+                                                <Label className={cn("flex items-center gap-2 cursor-pointer text-sm font-normal", aktivAdminDisabled && "text-muted-foreground opacity-60 cursor-not-allowed")}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={isAktivAdmin}
+                                                        onChange={async (e) => {
+                                                            const checked = e.target.checked;
+                                                            const currentRoles = targetUser.roles || [];
+                                                            const newRoles = checked
+                                                                ? [...currentRoles, 'aktivadmin']
+                                                                : currentRoles.filter(r => r !== 'aktivadmin');
 
-                                                    try {
-                                                        await api.patch(`/user/${targetUser?._key}/roles`, { roles: newRoles }, token || "");
-                                                        setTargetUser(targetUser ? { ...targetUser, roles: newRoles } : null);
-                                                    } catch (err: unknown) {
-                                                        setError(getErrorMessage(err, t));
-                                                    }
-                                                }}
-                                                disabled={actionLoading}
-                                                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                            />
-                                            <span>Aktivenbetreuer (aktivadmin)</span>
-                                        </Label>
+                                                            try {
+                                                                await api.patch(`/user/${targetUser?._key}/roles`, { roles: newRoles }, token || "");
+                                                                setTargetUser(targetUser ? { ...targetUser, roles: newRoles } : null);
+                                                            } catch (err: unknown) {
+                                                                setError(getErrorMessage(err, t));
+                                                            }
+                                                        }}
+                                                        disabled={actionLoading || aktivAdminDisabled}
+                                                        className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                                    />
+                                                    <span>Aktivenbetreuer (aktivadmin)</span>
+                                                </Label>
+                                            );
+                                        })()}
                                     </div>
                                 </div>
                             </CardContent>
