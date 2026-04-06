@@ -193,6 +193,15 @@
             "membership_number": "Număr de membru",
             "fee": "Taxă curentă",
             "votes": "Drepturi de vot"
+        },
+        "active_members": {
+            "title": "Verificarea membrilor activi",
+            "description": "Compararea datelor de recensămînt cu înregistrările din portal.",
+            "refresh": "Actualizare",
+            "click_to_load": "Apasă Actualizare pentru a încărca verificarea membrilor activi.",
+            "exact_matches": "Potriviri exacte",
+            "partial_matches": "Potriviri parțiale",
+            "none": "Niciuna"
         }
     },
     "create_club": {

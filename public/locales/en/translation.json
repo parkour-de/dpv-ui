@@ -193,6 +193,15 @@
             "membership_number": "Membership Number",
             "fee": "Current Fee",
             "votes": "Voting Rights"
+        },
+        "active_members": {
+            "title": "Active Members Review",
+            "description": "Cross-reference census data with portal registrations.",
+            "refresh": "Refresh",
+            "click_to_load": "Click Refresh to load the active members review.",
+            "exact_matches": "Exact Matches",
+            "partial_matches": "Partial Matches",
+            "none": "None"
         }
     },
     "create_club": {

@@ -193,6 +193,15 @@
             "membership_number": "Üyelik Numarası",
             "fee": "Güncel Ücret",
             "votes": "Oy Hakları"
+        },
+        "active_members": {
+            "title": "Aktif Üye İncelemesi",
+            "description": "Sayım verilerini portal kayıtlarıyla karşılaştırın.",
+            "refresh": "Yenile",
+            "click_to_load": "Aktif üye incelemesini yüklemek için Yenile'ye tıklayın.",
+            "exact_matches": "Tam Eşleşmeler",
+            "partial_matches": "Kısmi Eşleşmeler",
+            "none": "Yok"
         }
     },
     "create_club": {

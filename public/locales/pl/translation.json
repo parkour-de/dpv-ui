@@ -193,6 +193,15 @@
             "membership_number": "Numer członkowski",
             "fee": "Aktualna opłata",
             "votes": "Prawa głosu"
+        },
+        "active_members": {
+            "title": "Przegląd aktywnych członków",
+            "description": "Porównanie danych ze spisu z rejestracjami w portalu.",
+            "refresh": "Odśwież",
+            "click_to_load": "Kliknij Odśwież, aby załadować przegląd aktywnych członków.",
+            "exact_matches": "Dokładne dopasowania",
+            "partial_matches": "Częściowe dopasowania",
+            "none": "Brak"
         }
     },
     "create_club": {

@@ -193,6 +193,15 @@
             "membership_number": "Número de miembro",
             "fee": "Cuota actual",
             "votes": "Derechos de voto"
+        },
+        "active_members": {
+            "title": "Revisión de miembros activos",
+            "description": "Comparar datos del censo con registros del portal.",
+            "refresh": "Actualizar",
+            "click_to_load": "Haz clic en Actualizar para cargar la revisión de miembros activos.",
+            "exact_matches": "Coincidencias exactas",
+            "partial_matches": "Coincidencias parciales",
+            "none": "Ninguno"
         }
     },
     "create_club": {

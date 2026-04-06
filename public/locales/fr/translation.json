@@ -193,6 +193,15 @@
             "membership_number": "Numéro d'adhérent",
             "fee": "Cotisation actuelle",
             "votes": "Droits de vote"
+        },
+        "active_members": {
+            "title": "Vérification des membres actifs",
+            "description": "Comparaison des données de recensement avec les inscriptions du portail.",
+            "refresh": "Actualiser",
+            "click_to_load": "Cliquez sur Actualiser pour charger la vérification des membres actifs.",
+            "exact_matches": "Correspondances exactes",
+            "partial_matches": "Correspondances partielles",
+            "none": "Aucun"
         }
     },
     "create_club": {

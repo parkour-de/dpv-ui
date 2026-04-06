@@ -193,6 +193,15 @@
             "membership_number": "Mitgliedsnummer",
             "fee": "Aktueller Beitrag",
             "votes": "Stimmrechte"
+        },
+        "active_members": {
+            "title": "Aktivmitglieder-Abgleich",
+            "description": "Abgleich der Bestandserhebung mit Portalregistrierungen.",
+            "refresh": "Aktualisieren",
+            "click_to_load": "Klicke auf Aktualisieren, um den Aktivmitglieder-Abgleich zu laden.",
+            "exact_matches": "Exakte Treffer",
+            "partial_matches": "Teilweise Treffer",
+            "none": "Keine"
         }
     },
     "create_club": {

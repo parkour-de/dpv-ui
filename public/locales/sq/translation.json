@@ -193,6 +193,15 @@
             "membership_number": "Numri i anëtarësisë",
             "fee": "Tarifa aktuale",
             "votes": "Të drejtat e votës"
+        },
+        "active_members": {
+            "title": "Rishikimi i anëtarëve aktivë",
+            "description": "Krahasimi i të dhënave të regjistrimit me regjistrimet në portal.",
+            "refresh": "Rifresko",
+            "click_to_load": "Kliko Rifresko për të ngarkuar rishikimin e anëtarëve aktivë.",
+            "exact_matches": "Përputhje të sakta",
+            "partial_matches": "Përputhje të pjesshme",
+            "none": "Asnjë"
         }
     },
     "create_club": {
