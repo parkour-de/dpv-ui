@@ -503,7 +503,7 @@ export function ClubDetailsPage() {
         if (!club) return null;
         return (
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <CardTitle>{t('club.documents.title')}</CardTitle>
                         <CardDescription>{t('club.documents.description')}</CardDescription>
@@ -774,7 +774,7 @@ export function ClubDetailsPage() {
         if (!club) return null;
         return (
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <CardTitle>{t('club.census.title')}</CardTitle>
                         <CardDescription>{t('club.census.description')}</CardDescription>
@@ -944,7 +944,7 @@ export function ClubDetailsPage() {
         if (!isAdmin || !club) return null;
         return (
             <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
                         <CardTitle>{t('club.active_members.title')}</CardTitle>
                         <CardDescription>{t('club.active_members.description')}</CardDescription>
