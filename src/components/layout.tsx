@@ -29,7 +29,7 @@ export function Layout() {
                 ></div>
                 <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">
                     <div className="flex items-center gap-4">
-                        <Link to="/" className="relative flex items-center h-14 w-[280px] sm:w-[310px] group">
+                        <Link to="/" className="relative flex items-center h-14 w-[280px] sm:w-[310px] group translate-y-[8px]">
                             <img
                                 src={logoBlack}
                                 alt="Deutscher Parkourverband"
