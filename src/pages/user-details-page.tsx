@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { useConfig } from "@/context/config-context";
+import { useConfig } from "@/hooks/use-config";
 import { api, getErrorMessage } from "@/lib/api";
 import { type User } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";

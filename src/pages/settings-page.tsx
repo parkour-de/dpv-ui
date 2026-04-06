@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, getErrorMessage } from "@/lib/api";
 import { useAuth } from "@/context/auth-context-core";
-import { useConfig } from "@/context/config-context";
+import { useConfig } from "@/hooks/use-config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

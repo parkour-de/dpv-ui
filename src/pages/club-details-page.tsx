@@ -2,7 +2,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
-import { useConfig } from "@/context/config-context";
+import { useConfig } from "@/hooks/use-config";
 import { api, ApiError } from "@/lib/api";
 import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
 import { Button } from "@/components/ui/button";

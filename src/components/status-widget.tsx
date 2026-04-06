@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Trash2, Plus, Save, X, ExternalLink, Settings2 } from "lucide-react";
 import { api } from "@/lib/api";
-import { useConfig } from "@/context/config-context";
+import { useConfig } from "@/hooks/use-config";
 import { useAuth } from "@/context/auth-context-core";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,11 +27,13 @@ export function StatusWidget() {
             .catch(() => setBackendVersion("Error"));
     }, []);
 
-    useEffect(() => {
+    const [prevConfigLinks, setPrevConfigLinks] = useState(config?.links);
+    if (config?.links !== prevConfigLinks) {
+        setPrevConfigLinks(config?.links);
         if (config?.links) {
             setEditedLinks({ ...config.links });
         }
-    }, [config]);
+    }
 
     const handleSave = async () => {
         try {
@@ -176,7 +178,7 @@ export function StatusWidget() {
                             </div>
                         ) : (
                             <div className="grid gap-2">
-                                {Object.entries(config?.links || {}).filter(([key]) => ['privacy', 'statutes', 'finances'].includes(key)).map(([key, url]) => (
+                                {((Object.entries(config?.links || {}) as [string, string][]).filter(([key]) => ['privacy', 'statutes', 'finances'].includes(key))).map(([key, url]) => (
                                     <a 
                                         key={key}
                                         href={url}
@@ -188,7 +190,7 @@ export function StatusWidget() {
                                         <ExternalLink className="h-3 w-3 text-muted-foreground group-hover:text-primary" />
                                     </a>
                                 ))}
-                                {Object.entries(config?.links || {}).filter(([key]) => !['privacy', 'statutes', 'finances'].includes(key)).map(([key, url]) => (
+                                {((Object.entries(config?.links || {}) as [string, string][]).filter(([key]) => !['privacy', 'statutes', 'finances'].includes(key))).map(([key, url]) => (
                                     <a 
                                         key={key}
                                         href={url}
