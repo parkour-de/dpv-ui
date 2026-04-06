@@ -37,17 +37,19 @@ jobs:
     - name: Lint
       run: npm run lint
 
+    - name: Get commit count
+      id: vars
+      run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+
     - name: Build for Pages
       run: npm run build
+      env:
+        VITE_APP_VERSION: ${{ steps.vars.outputs.count }}
 
     - name: Upload pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: './dist'
-
-    - name: Get commit count
-      id: vars
-      run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
 
     - name: Configure Server Environment
       run: |
