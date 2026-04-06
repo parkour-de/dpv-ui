@@ -256,7 +256,7 @@ export function UserDetailsPage() {
                         onSaveSuccess={handleSaveSuccess}
                     />
 
-                    {!isSelfView && currentUser?.roles?.includes('admin') && (
+                    {currentUser?.roles?.includes('admin') && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Rollenverwaltung</CardTitle>

@@ -117,17 +117,17 @@ export function PaymentDetails({
                         className={!isEditing ? "bg-muted" : ""}
                     />
                 </div>
-                {isAdmin && (!isEditing ? dataToDisplay.sepa_mandate_number : true) && (
+                {(isAdmin || (!isAdmin && dataToDisplay.sepa_mandate_number)) && (
                     <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="sepa">{t('club.payment.labels.sepa', 'SEPA-Mandatsreferenz')}</Label>
                         <Input
                             id="sepa"
                             value={dataToDisplay.sepa_mandate_number || ''}
                             onChange={(e) => setEditData(p => ({ ...p, sepa_mandate_number: e.target.value }))}
-                            disabled={!isEditing || saving}
+                            disabled={!isAdmin || !isEditing || saving}
                             className={!isEditing ? "bg-muted" : ""}
                         />
-                        {isEditing && <p className="text-xs text-muted-foreground">{t('club.payment.admin_only', 'Nur für Administratoren sichtbar/bearbeitbar.')}</p>}
+                        {isEditing && isAdmin && <p className="text-xs text-muted-foreground">{t('club.payment.admin_only', 'Nur für Administratoren editierbar.')}</p>}
                     </div>
                 )}
             </div>

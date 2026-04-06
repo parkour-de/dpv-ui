@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { DobInput } from "@/components/ui/dob-input";
 
 export function RegisterPage() {
     const { t } = useTranslation();
@@ -97,7 +98,12 @@ export function RegisterPage() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="dateOfBirth">Geburtsdatum</Label>
-                            <Input id="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} required />
+                            <DobInput 
+                                id="dateOfBirth" 
+                                value={formData.dateOfBirth} 
+                                onChangeValue={(val) => setFormData(p => ({ ...p, dateOfBirth: val }))} 
+                                required 
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">{t('auth.fields.email')}</Label>
