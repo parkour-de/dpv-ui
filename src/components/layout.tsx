@@ -59,6 +59,14 @@ export function Layout() {
                         <Link to="/dashboard" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
                             {t('layout.nav.dashboard')}
                         </Link>
+                        {user?.roles?.includes('admin') && (
+                            <Link to="/admin" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
+                                Admin
+                            </Link>
+                        )}
+                        <Link to="/status" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
+                            Status
+                        </Link>
                         <Link to="/help" className="text-sm font-semibold transition-colors hover:text-primary text-foreground/80 hover:underline underline-offset-8 decoration-2">
                             {t('layout.nav.help')}
                         </Link>
@@ -89,6 +97,14 @@ export function Layout() {
                 <div className="md:hidden border-b border-border p-4 space-y-4 bg-background animate-in slide-in-from-top duration-200">
                     <Link to="/dashboard" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
                         {t('layout.nav.dashboard')}
+                    </Link>
+                    {user?.roles?.includes('admin') && (
+                        <Link to="/admin" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
+                            Admin
+                        </Link>
+                    )}
+                    <Link to="/status" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
+                        Status
                     </Link>
                     <Link to="/help" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
                         {t('layout.nav.help')}

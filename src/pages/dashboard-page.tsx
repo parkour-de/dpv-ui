@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { StatusWidget } from "@/components/status-widget";
 
 export function DashboardPage() {
     const { t } = useTranslation();
@@ -85,55 +84,7 @@ export function DashboardPage() {
                         </Button>
                     </CardContent>
                 </Card>
-
-                {/* System Status / Links */}
-                <StatusWidget />
             </div>
-
-            {user?.roles?.includes('admin') && (
-                <div className="mt-12 space-y-6">
-                    <div className="border-t pt-8">
-                        <h2 className="text-2xl font-bold tracking-tight">{t('dashboard.admin.title')}</h2>
-                        <p className="text-muted-foreground">
-                            {t('dashboard.admin.description')}
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                        <Card className="bg-muted/30 border-dashed hover:border-primary/50 transition-colors">
-                            <CardHeader>
-                                <CardTitle>{t('dashboard.admin.users_button')}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex flex-col gap-4">
-                                <CardDescription>
-                                    Verwalte Benutzerkonten, Rollen und Aktivmitgliedschaftsanträge.
-                                </CardDescription>
-                                <Button asChild variant="outline" className="w-full">
-                                    <Link to="/users">
-                                        Anzeigen
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-
-                        <Card className="bg-muted/30 border-dashed hover:border-primary/50 transition-colors">
-                            <CardHeader>
-                                <CardTitle>{t('dashboard.admin.audit_button')}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex flex-col gap-4">
-                                <CardDescription>
-                                    Sieh dir die letzten Änderungen an der Datenbank an.
-                                </CardDescription>
-                                <Button asChild variant="outline" className="w-full">
-                                    <Link to="/audit">
-                                        Anzeigen
-                                    </Link>
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

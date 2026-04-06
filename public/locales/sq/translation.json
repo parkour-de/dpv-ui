@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Anëtarësimi aktiv",
             "description": "A dëshironi të bëheni anëtar si individ? Menaxhoni atë nga profili juaj personal.",
-            "button": "Te Anëtarësimi Aktiv"
+            "button": "Në profilin e përdoruesit"
         },
         "ordinary_membership": {
             "title": "Anëtarësimi i Zakonshëm",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Anëtarësimi Mbështetës",
             "description": "Dëshironi të mbështesni shoqatën financiarisht? Bëhuni anëtar mbështetës me shumë tuaj.",
-            "button": "Së shpejti"
+            "button": "Në profilin e përdoruesit"
         },
         "extraordinary_membership": {
             "title": "Anëtarësimi i Jashtëzakonshëm",

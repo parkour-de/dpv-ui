@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Active Membership",
             "description": "Do you want to become a member of the Parkour Association as a private person? Then manage your membership in your personal profile.",
-            "button": "To Active Membership"
+            "button": "To User Profile"
         },
         "ordinary_membership": {
             "title": "Ordinary Membership",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Supporting Membership",
             "description": "Do you want to support the association financially? Then become a supporting member and decide for yourself how much contribution you want to pay.",
-            "button": "Coming soon"
+            "button": "To User Profile"
         },
         "extraordinary_membership": {
             "title": "Extraordinary Membership",

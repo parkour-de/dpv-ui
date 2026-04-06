@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Aktivmitgliedschaft",
             "description": "Du möchtest als Privatperson Mitglied im Parkourverband werden? Dann verwalte deine Mitgliedschaft in deinem persönlichen Profil.",
-            "button": "Zur Aktivmitgliedschaft"
+            "button": "Zum Benutzerprofil"
         },
         "ordinary_membership": {
             "title": "Ordentliche Mitgliedschaft",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Fördernde Mitgliedschaft",
             "description": "Du möchtest den Verband finanziell unterstützen? Dann werde förderndes Mitglied und lege selbst fest, wie viel Beitrag du zahlen möchtest.",
-            "button": "Coming soon"
+            "button": "Zum Benutzerprofil"
         },
         "extraordinary_membership": {
             "title": "Außerordentliche Mitgliedschaft",

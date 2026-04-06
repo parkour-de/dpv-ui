@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Aktif Üyelik",
             "description": "Özel kişi olarak üye olmak ister misiniz? Üyeliğinizi kişisel profilinizden yönetin.",
-            "button": "Aktif Üyeliğe Git"
+            "button": "Kullanıcı Profiline Git"
         },
         "ordinary_membership": {
             "title": "Normal Üyelik",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Destekleyici Üyelik",
             "description": "Federasyonu finansal olarak desteklemek ister misiniz? Kendi bağışınızı belirleyin.",
-            "button": "Yakında"
+            "button": "Kullanıcı Profiline Git"
         },
         "extraordinary_membership": {
             "title": "Olağanüstü Üyelik",

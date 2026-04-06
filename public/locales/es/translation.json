@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Membresía activa",
             "description": "¿Quieres hacerte miembro como particular? Gestiona tu membresía en tu perfil personal.",
-            "button": "A la membresía activa"
+            "button": "Al perfil de usuario"
         },
         "ordinary_membership": {
             "title": "Membresía ordinaria",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Membresía de apoyo",
             "description": "¿Quieres apoyar económicamente a la asociación? Hazte miembro de apoyo y decide tu propia contribución.",
-            "button": "Próximamente"
+            "button": "Al perfil de usuario"
         },
         "extraordinary_membership": {
             "title": "Membresía extraordinaria",

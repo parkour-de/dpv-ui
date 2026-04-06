@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Adhésion active",
             "description": "Vous souhaitez devenir membre à titre individuel ? Gérez votre adhésion dans votre profil.",
-            "button": "Vers l'adhésion active"
+            "button": "Au profil utilisateur"
         },
         "ordinary_membership": {
             "title": "Adhésion ordinaire",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Adhésion de soutien",
             "description": "Vous souhaitez soutenir financièrement l'association ? Devenez membre de soutien et choisissez votre cotisation.",
-            "button": "Bientôt disponible"
+            "button": "Au profil utilisateur"
         },
         "extraordinary_membership": {
             "title": "Adhésion extraordinaire",

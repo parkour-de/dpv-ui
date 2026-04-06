@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Aktywne członkostwo",
             "description": "Chcesz zostać członkiem prywatnie? Zarządzaj swoim członkostwem w swoim profilu.",
-            "button": "Przejdź do aktywnego członkostwa"
+            "button": "Do profilu użytkownika"
         },
         "ordinary_membership": {
             "title": "Członkostwo zwyczajne",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Członkostwo wspierające",
             "description": "Chcesz finansowo wesprzeć stowarzyszenie? Zostań członkiem wspierającym i sam zdecyduj o wpłacie.",
-            "button": "Wkrótce"
+            "button": "Do profilu użytkownika"
         },
         "extraordinary_membership": {
             "title": "Członkostwo nadzwyczajne",

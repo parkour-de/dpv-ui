@@ -605,6 +605,44 @@ export function ClubDetailsPage() {
         );
     };
 
+    const renderMembershipDetailsCard = () => {
+        if (!club) return null;
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                    <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
+                            <Input value={club.membership?.membership_number || ''} disabled />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>{t('profile.verband.fee', { defaultValue: 'Aktueller Beitrag' })}</Label>
+                            <Input value={club.membership?.current_fee !== undefined ? `${club.membership.current_fee.toFixed(2)} €` : ''} disabled />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Art der Mitgliedschaft</Label>
+                            <Input value={(() => {
+                                const mType = club.membership?.type;
+                                if (mType === 'ordinary') return 'Ordentliche Mitgliedschaft';
+                                if (mType === 'supporting') return 'Fördernde Mitgliedschaft';
+                                if (mType === 'extraordinary') return 'Außerordentliche Mitgliedschaft';
+                                return mType || '';
+                            })()} disabled />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Stimmenanzahl</Label>
+                            <Input value={club.membership?.current_votes?.toString() ?? '0'} disabled />
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    };
+
     const renderVorstandManagement = () => {
         if (!club) return null;
         return (
@@ -1248,6 +1286,7 @@ export function ClubDetailsPage() {
                             alwaysOpen={false}
                         />
                     </div>
+                    {renderMembershipDetailsCard()}
                     {renderVerbandData()}
                     {renderVorstandManagement()}
                     {renderCensusSection()}

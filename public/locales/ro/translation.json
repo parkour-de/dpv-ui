@@ -408,7 +408,7 @@
         "active_membership": {
             "title": "Abonament Activ",
             "description": "Vrei să devii membru ca persoană privată? Poți gestiona abonamentul din profilul tău.",
-            "button": "Către Abonamentul Activ"
+            "button": "Către profilul utilizatorului"
         },
         "ordinary_membership": {
             "title": "Abonament Ordinar",
@@ -418,7 +418,7 @@
         "supporting_membership": {
             "title": "Membru de Sprijin",
             "description": "Vrei să susții financiar asociația? Devino membru de sprijin și decide singur contribuția.",
-            "button": "În curând"
+            "button": "Către profilul utilizatorului"
         },
         "extraordinary_membership": {
             "title": "Abonament Extraordinar",

@@ -6,6 +6,8 @@ import { LoginPage } from "@/pages/login-page";
 import { DashboardPage } from "@/pages/dashboard-page";
 import { ClubsPage } from "@/pages/clubs-page";
 import { ClubDetailsPage } from "@/pages/club-details-page";
+import { AdminPage } from "@/pages/admin-page";
+import { StatusPage } from "@/pages/status-page";
 import { CreateClubPage } from "@/pages/create-club-page";
 import { RegisterPage } from "@/pages/register-page";
 import { ResetPasswordPage } from "@/pages/reset-password-page";
@@ -96,6 +98,14 @@ export const router = createHashRouter([
             {
                 path: "/settings",
                 element: <SettingsPage />,
+            },
+            {
+                path: "/admin",
+                element: <AdminPage />,
+            },
+            {
+                path: "/status",
+                element: <StatusPage />,
             },
         ],
     },
