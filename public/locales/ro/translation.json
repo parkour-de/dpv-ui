@@ -8,6 +8,10 @@
     "errors": {
         "network": "Eroare de rețea"
     },
+    "common": {
+        "save": "Salvează",
+        "cancel": "Anulează"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panou",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Panou",
         "welcome": "Bine ai revenit, {{firstname}}. Iată cluburile tale.",
+        "status": {
+            "title": "Starea Sistemului",
+            "description": "Versiuni și configurare",
+            "links_title": "Documente Importante"
+        },
         "actions": {
             "new_club": "Club Nou",
             "create_club": "Înființează un Club",

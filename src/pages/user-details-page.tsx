@@ -351,18 +351,28 @@ export function UserDetailsPage() {
 
                             {isSelfView && (
                                 <div className="flex justify-end mt-4">
-                                    {(targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'requested') ? (
-                                        <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
-                                            if (targetUser?.membership?.status === 'requested') {
-                                                if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
-                                                    handleMembershipAction('cancel');
+                                    {['active', 'requested', 'approved', 'cancelling'].includes(targetUser?.membership?.status || '') ? (
+                                        <Button 
+                                            size="sm" 
+                                            variant="outline" 
+                                            className="text-destructive hover:text-destructive" 
+                                            onClick={() => {
+                                                if (targetUser?.membership?.status === 'requested') {
+                                                    if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
+                                                        handleMembershipAction('cancel');
+                                                    }
+                                                } else if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') {
+                                                    setActionModal('cancel');
                                                 }
-                                            } else {
-                                                setActionModal('cancel');
-                                            }
-                                        }} disabled={actionLoading}>
+                                            }} 
+                                            disabled={actionLoading || targetUser?.membership?.status === 'cancelling'}
+                                        >
                                             {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                            {targetUser?.membership?.status === 'active' ? t('profile.actions.cancel_membership') : t('profile.actions.withdraw_application')}
+                                            {(() => {
+                                                if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') return t('profile.actions.cancel_membership');
+                                                if (targetUser?.membership?.status === 'requested') return t('profile.actions.withdraw_application');
+                                                return 'Kündigung läuft';
+                                            })()}
                                         </Button>
                                     ) : (
                                         <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>

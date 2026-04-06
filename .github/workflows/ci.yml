@@ -45,17 +45,18 @@ jobs:
       with:
         path: './dist'
 
+    - name: Get commit count
+      id: vars
+      run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+
     - name: Configure Server Environment
       run: |
         echo "VITE_API_BASE_URL=/dpv" > .env.production
         echo "VITE_TEST_ENVIRONMENT=false" >> .env.production
+        echo "VITE_APP_VERSION=${{ steps.vars.outputs.count }}" >> .env.production
 
     - name: Build for Server Release
       run: npm run build
-
-    - name: Get commit count
-      id: vars
-      run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
 
     - name: Package Release
       run: tar -czvf dpv-ui-release-v${{ steps.vars.outputs.count }}.tar.gz -C dist .

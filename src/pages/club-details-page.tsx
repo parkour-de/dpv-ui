@@ -444,15 +444,19 @@ export function ClubDetailsPage() {
                 <div className="flex items-center gap-2">
                     {!isEditing && (
                         <>
-                            {club.membership.status === 'active' || club.membership.status === 'requested' ? (
+                            {['active', 'requested', 'approved', 'cancelling'].includes(club.membership.status || '') ? (
                                 <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
                                     if (club.membership.status === 'requested') {
                                         handleAction('cancel');
-                                    } else {
+                                    } else if (club.membership.status === 'active' || club.membership.status === 'approved') {
                                         setActionModal('cancel');
                                     }
-                                }} disabled={formLoading}>
-                                    {club.membership.status === 'active' ? t('club.details.membership.cancel') : t('club.details.membership.withdraw')}
+                                }} disabled={formLoading || club.membership.status === 'cancelling'}>
+                                    {(() => {
+                                        if (club.membership.status === 'active' || club.membership.status === 'approved') return t('club.details.membership.cancel');
+                                        if (club.membership.status === 'requested') return t('club.details.membership.withdraw');
+                                        return 'Kündigung läuft';
+                                    })()}
                                 </Button>
                             ) : (
                                 <Button size="sm" onClick={() => {
@@ -483,7 +487,7 @@ export function ClubDetailsPage() {
                             }}>
                                 {t('club.details.actions.edit')}
                             </Button>
-                            {!(club.membership.status === 'active' || club.membership.status === 'requested' || club.membership.status === 'cancelling') && (
+                            {!(club.membership.status === 'active' || club.membership.status === 'requested' || club.membership.status === 'cancelling' || club.membership.status === 'approved') && (
                                 <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
                                     <Trash2 className="h-4 w-4" />
                                 </Button>

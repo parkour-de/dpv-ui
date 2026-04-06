@@ -8,6 +8,10 @@
     "errors": {
         "network": "Ошибка сети"
     },
+    "common": {
+        "save": "Сохранить",
+        "cancel": "Отмена"
+    },
     "layout": {
         "nav": {
             "dashboard": "Панель",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Панель",
         "welcome": "С возвращением, {{firstname}}. Вот ваши клубы.",
+        "status": {
+            "title": "Статус системы",
+            "description": "Версии и конфигурация",
+            "links_title": "Важные документы"
+        },
         "actions": {
             "new_club": "Новый клуб",
             "create_club": "Создать клуб",

@@ -8,6 +8,10 @@
     "errors": {
         "network": "Network error"
     },
+    "common": {
+        "save": "Save",
+        "cancel": "Cancel"
+    },
     "layout": {
         "nav": {
             "dashboard": "Dashboard",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Dashboard",
         "welcome": "Welcome back, {{firstname}}. Here are your clubs.",
+        "status": {
+            "title": "System Status",
+            "description": "Versions and configuration",
+            "links_title": "Important Documents"
+        },
         "actions": {
             "new_club": "New Club",
             "create_club": "Found a Club",

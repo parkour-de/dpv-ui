@@ -18,9 +18,13 @@ export function StatusBadge({ membership, className }: StatusBadgeProps) {
 
     let labelKey = `club.status.${status}`;
 
-    if (status === 'active' && begin_date && begin_date > now) {
+    if ((status === 'active' || status === 'approved') && begin_date && begin_date > now) {
         labelKey = 'club.status.upcoming_membership';
-    } else if (status === 'cancelled' && end_date && end_date > now) {
+    } else if (status === 'approved') {
+        labelKey = 'club.status.upcoming_membership';
+    } else if ((status === 'cancelled' || status === 'cancelling') && end_date && end_date > now) {
+        labelKey = 'club.status.pending_cancellation';
+    } else if (status === 'cancelling') {
         labelKey = 'club.status.pending_cancellation';
     }
 

@@ -8,6 +8,10 @@
     "errors": {
         "network": "Gabim në rrjet"
     },
+    "common": {
+        "save": "Ruaj",
+        "cancel": "Anulo"
+    },
     "layout": {
         "nav": {
             "dashboard": "Paneli",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Paneli",
         "welcome": "Mirë se u kthyet, {{firstname}}. Këtu janë klubet tuaja.",
+        "status": {
+            "title": "Statusi i Sistemit",
+            "description": "Versionet dhe konfigurimi",
+            "links_title": "Dokumente të Rëndësishme"
+        },
         "actions": {
             "new_club": "Klub i Ri",
             "create_club": "Krijo një Klub",

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatusWidget } from "@/components/status-widget";
 
 export function DashboardPage() {
     const { t } = useTranslation();
@@ -84,6 +85,9 @@ export function DashboardPage() {
                         </Button>
                     </CardContent>
                 </Card>
+
+                {/* System Status / Links */}
+                <StatusWidget />
             </div>
 
             {user?.roles?.includes('admin') && (

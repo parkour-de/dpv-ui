@@ -8,6 +8,10 @@
     "errors": {
         "network": "Ağ hatası"
     },
+    "common": {
+        "save": "Kaydet",
+        "cancel": "İptal"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panel",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Panel",
         "welcome": "Tekrar hoş geldiniz, {{firstname}}. İşte kulüpleriniz.",
+        "status": {
+            "title": "Sistem Durumu",
+            "description": "Sürümler ve yapılandırma",
+            "links_title": "Önemli Belgeler"
+        },
         "actions": {
             "new_club": "Yeni Kulüp",
             "create_club": "Kulüp Oluştur",

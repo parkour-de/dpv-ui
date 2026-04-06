@@ -8,6 +8,10 @@
     "errors": {
         "network": "Помилка мережі"
     },
+    "common": {
+        "save": "Зберегти",
+        "cancel": "Скасувати"
+    },
     "layout": {
         "nav": {
             "dashboard": "Панель",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Панель",
         "welcome": "Ласкаво просимо, {{firstname}}. Ось ваші клуби.",
+        "status": {
+            "title": "Стан системи",
+            "description": "Версії та конфігурація",
+            "links_title": "Важливі документи"
+        },
         "actions": {
             "new_club": "Новий клуб",
             "create_club": "Створити клуб",

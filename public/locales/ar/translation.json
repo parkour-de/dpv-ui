@@ -8,6 +8,10 @@
     "errors": {
         "network": "خطأ في الشبكة"
     },
+    "common": {
+        "save": "حفظ",
+        "cancel": "إلغاء"
+    },
     "layout": {
         "nav": {
             "dashboard": "لوحة التحكم",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "لوحة التحكم",
         "welcome": "مرحباً بعودتك، {{firstname}}. إليك أنديتك.",
+        "status": {
+            "title": "حالة النظام",
+            "description": "الإصدارات والتكوين",
+            "links_title": "مستندات مهمة"
+        },
         "actions": {
             "new_club": "نادٍ جديد",
             "create_club": "إنشاء نادٍ",

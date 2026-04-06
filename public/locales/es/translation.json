@@ -8,6 +8,10 @@
     "errors": {
         "network": "Error de red"
     },
+    "common": {
+        "save": "Guardar",
+        "cancel": "Cancelar"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panel",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Panel",
         "welcome": "Bienvenido de nuevo, {{firstname}}. Aquí están tus clubes.",
+        "status": {
+            "title": "Estado del Sistema",
+            "description": "Versiones y configuración",
+            "links_title": "Documentos Importantes"
+        },
         "actions": {
             "new_club": "Nuevo Club",
             "create_club": "Fundar un Club",

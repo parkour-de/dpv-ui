@@ -8,6 +8,10 @@
     "errors": {
         "network": "Błąd sieci"
     },
+    "common": {
+        "save": "Zapisz",
+        "cancel": "Anuluj"
+    },
     "layout": {
         "nav": {
             "dashboard": "Panel",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Panel",
         "welcome": "Witaj ponownie, {{firstname}}. Oto Twoje kluby.",
+        "status": {
+            "title": "Status Systemu",
+            "description": "Wersje i konfiguracja",
+            "links_title": "Ważne Dokumenty"
+        },
         "actions": {
             "new_club": "Nowy Klub",
             "create_club": "Załóż Klub",

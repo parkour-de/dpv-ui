@@ -60,6 +60,20 @@ export const api = {
         }
     },
 
+    getText: async (endpoint: string, token?: string): Promise<string> => {
+        try {
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                method: 'GET',
+                headers: getHeaders(token),
+            });
+            if (!res.ok) throw new ApiError(res.status, res.statusText, await res.json().catch(() => { }));
+            return res.text();
+        } catch (error) {
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(0, 'Network Error', { message: error instanceof Error ? error.message : 'Unknown network error' });
+        }
+    },
+
     post: async <T>(endpoint: string, body: unknown, token?: string): Promise<T> => {
         try {
             const res = await fetch(`${API_BASE}${endpoint}`, {

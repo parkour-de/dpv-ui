@@ -8,6 +8,10 @@
     "errors": {
         "network": "Netzwerkfehler"
     },
+    "common": {
+        "save": "Speichern",
+        "cancel": "Abbrechen"
+    },
     "layout": {
         "nav": {
             "dashboard": "Übersicht",
@@ -19,6 +23,11 @@
     "dashboard": {
         "title": "Übersicht",
         "welcome": "Willkommen zurück, {{firstname}}. Hier sind Ihre Vereine.",
+        "status": {
+            "title": "System-Status",
+            "description": "Versionen und Konfiguration",
+            "links_title": "Wichtige Dokumente"
+        },
         "actions": {
             "new_club": "Neuer Verein",
             "create_club": "Einen Verein gründen",
