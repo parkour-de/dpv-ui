@@ -13,7 +13,7 @@ export function StatsWidget() {
     const [stats, setStats] = useState<StatsResponse | null>(null);
 
     useEffect(() => {
-        api.get<StatsResponse>('/dpv/stats')
+        api.get<StatsResponse>('/stats')
             .then(data => setStats(data))
             .catch(err => console.error("Failed to fetch stats", err));
     }, []);
