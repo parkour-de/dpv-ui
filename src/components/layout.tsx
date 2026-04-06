@@ -90,40 +90,39 @@ export function Layout() {
                         {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                     </button>
                 </div>
-            </header>
-
-            {/* Mobile Menu */}
-            {mobileMenuOpen && (
-                <div className="md:hidden border-b border-border p-4 space-y-4 bg-background animate-in slide-in-from-top duration-200">
-                    <Link to="/dashboard" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                        {t('layout.nav.dashboard')}
-                    </Link>
-                    {user?.roles?.includes('admin') && (
-                        <Link to="/admin" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                            Admin
+                {/* Mobile Menu */}
+                {mobileMenuOpen && (
+                    <div className="md:hidden absolute top-full left-0 w-full border-b border-border/40 p-4 space-y-2 bg-background/95 backdrop-blur-md shadow-xl animate-in slide-in-from-top-2 duration-200">
+                        <Link to="/dashboard" className="flex items-center w-full px-4 py-3 rounded-md text-base font-semibold text-foreground/80 hover:text-primary hover:bg-muted/50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                            {t('layout.nav.dashboard')}
                         </Link>
-                    )}
-                    <Link to="/status" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                        Status
-                    </Link>
-                    <Link to="/help" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                        {t('layout.nav.help')}
-                    </Link>
-                    {user?.roles?.includes('global_admin') && (
-                        <Link to="/settings" className="block text-sm font-semibold text-foreground/80 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
-                            Einstellungen
+                        {user?.roles?.includes('admin') && (
+                            <Link to="/admin" className="flex items-center w-full px-4 py-3 rounded-md text-base font-semibold text-foreground/80 hover:text-primary hover:bg-muted/50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                                Admin
+                            </Link>
+                        )}
+                        <Link to="/status" className="flex items-center w-full px-4 py-3 rounded-md text-base font-semibold text-foreground/80 hover:text-primary hover:bg-muted/50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                            Status
                         </Link>
-                    )}
-                    <div className="pt-2 border-t border-border space-y-3">
-                        <Link to="/profile" className="block text-xs text-muted-foreground hover:underline" onClick={() => setMobileMenuOpen(false)}>
-                            {user?.email}
+                        <Link to="/help" className="flex items-center w-full px-4 py-3 rounded-md text-base font-semibold text-foreground/80 hover:text-primary hover:bg-muted/50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                            {t('layout.nav.help')}
                         </Link>
-                        <button onClick={handleLogout} className="text-sm font-bold text-destructive w-full text-left uppercase tracking-wider">
-                            {t('layout.nav.logout')}
-                        </button>
+                        {user?.roles?.includes('global_admin') && (
+                            <Link to="/settings" className="flex items-center w-full px-4 py-3 rounded-md text-base font-semibold text-foreground/80 hover:text-primary hover:bg-muted/50 transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                                Einstellungen
+                            </Link>
+                        )}
+                        <div className="pt-4 mt-2 border-t border-border/40 space-y-2">
+                            <Link to="/profile" className="flex items-center w-full px-4 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors break-all" onClick={() => setMobileMenuOpen(false)}>
+                                {user?.email}
+                            </Link>
+                            <button onClick={handleLogout} className="flex items-center w-full px-4 py-3 rounded-md text-sm font-bold text-destructive hover:bg-destructive/10 transition-colors uppercase tracking-wider">
+                                {t('layout.nav.logout')}
+                            </button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </header>
 
             <main className="flex-1 container max-w-screen-xl py-6 px-4 md:px-6">
                 <Outlet />
