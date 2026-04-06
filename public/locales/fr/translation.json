@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "Nouveau Club",
-            "create_club": "Fonder un Club",
+            "create_club": "Enregistrer un Club",
             "load_more": "Charger plus",
             "back_to_overview": "Retour à l'aperçu"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Fonder un Nouveau Club",
+        "title": "Enregistrer un Nouveau Club",
         "card": {
             "title": "Données du Club",
             "description": "Entrez les données de base de votre club."
@@ -362,12 +362,12 @@
         "title": "Aide et Support",
         "faq": {
             "create_club": {
-                "question": "Comment fonder un club ?",
-                "answer": "Pour enregistrer un nouveau club auprès du DPV, vous devez être inscrit et connecté. Cliquez sur \"Fonder un Club\" dans le tableau de bord et remplissez le formulaire. Votre demande sera examinée par un administrateur."
+                "question": "Comment enregistrer un club ?",
+                "answer": "Pour enregistrer un nouveau club auprès du DPV, vous devez être inscrit et connecté. Cliquez sur \"Enregistrer un Club\" dans le tableau de bord et remplissez le formulaire. Votre demande sera examinée par un administrateur."
             },
             "after_registration": {
                 "question": "Que se passe-t-il après l'inscription ?",
-                "answer": "Après l'inscription, vous recevrez un e-mail pour confirmer votre adresse. Vous pourrez ensuite vous connecter et gérer ou fonder des clubs."
+                "answer": "Après l'inscription, vous recevrez un e-mail pour confirmer votre adresse. Vous pourrez ensuite vous connecter et gérer ou enregistrer des clubs."
             },
             "reset_password": {
                 "question": "Comment puis-je changer mon mot de passe ?",

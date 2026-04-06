@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "Nowy Klub",
-            "create_club": "Załóż Klub",
+            "create_club": "Zarejestruj Klub",
             "load_more": "Załaduj więcej",
             "back_to_overview": "Powrót do przeglądu"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Załóż Nowy Klub",
+        "title": "Zarejestruj Nowy Klub",
         "card": {
             "title": "Dane Klubu",
             "description": "Wprowadź podstawowe dane swojego klubu."
@@ -362,12 +362,12 @@
         "title": "Pomoc i Wsparcie",
         "faq": {
             "create_club": {
-                "question": "Jak założyć klub?",
-                "answer": "Aby zarejestrować nowy klub w DPV, musisz być zarejestrowany i zalogowany. Kliknij \"Załóż Klub\" w panelu i wypełnij formularz. Twój wniosek zostanie rozpatrzony przez administratora."
+                "question": "Jak zarejestrować klub?",
+                "answer": "Aby zarejestrować nowy klub w DPV, musisz być zarejestrowany i zalogowany. Kliknij \"Zarejestruj Klub\" w panelu i wypełnij formularz. Twój wniosek zostanie rozpatrzony przez administratora."
             },
             "after_registration": {
                 "question": "Co się dzieje po rejestracji?",
-                "answer": "Po rejestracji otrzymasz e-mail w celu potwierdzenia adresu. Następnie możesz się zalogować i zarządzać lub zakładać kluby."
+                "answer": "Po rejestracji otrzymasz e-mail w celu potwierdzenia adresu. Następnie możesz się zalogować i zarządzać lub rejestrować kluby."
             },
             "reset_password": {
                 "question": "Jak mogę zmienić hasło?",

@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "New Club",
-            "create_club": "Found a Club",
+            "create_club": "Register a Club",
             "load_more": "Load More",
             "back_to_overview": "Back to Overview"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Found a New Club",
+        "title": "Register a New Club",
         "card": {
             "title": "Club Data",
             "description": "Enter the basic data of your club."
@@ -362,12 +362,12 @@
         "title": "Help & Support",
         "faq": {
             "create_club": {
-                "question": "How do I found a club?",
-                "answer": "To register a new club with the DPV, you must be registered and logged in. Click on \"Found a Club\" in the dashboard and fill out the form. Your application will then be reviewed by an administrator."
+                "question": "How do I register a club?",
+                "answer": "To register a new club with the DPV, you must be registered and logged in. Click on \"Register a Club\" in the dashboard and fill out the form. Your application will then be reviewed by an administrator."
             },
             "after_registration": {
                 "question": "What happens after registration?",
-                "answer": "After registration, you will receive an email to confirm your address. You can then log in and manage or found clubs."
+                "answer": "After registration, you will receive an email to confirm your address. You can then log in and manage or register clubs."
             },
             "reset_password": {
                 "question": "How can I change my password?",

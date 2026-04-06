@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "Neuer Verein",
-            "create_club": "Einen Verein gründen",
+            "create_club": "Einen Verein anlegen",
             "load_more": "Mehr laden",
             "back_to_overview": "Zurück zur Übersicht"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Neuen Verein gründen",
+        "title": "Neuen Verein anlegen",
         "card": {
             "title": "Vereinsdaten",
             "description": "Tragen Sie die Basisdaten Ihres Vereins ein."
@@ -362,12 +362,12 @@
         "title": "Hilfe & Support",
         "faq": {
             "create_club": {
-                "question": "Wie gründe ich einen Verein?",
-                "answer": "Um einen neuen Verein beim DPV anzumelden, müssen Sie registriert und angemeldet sein. Klicken Sie im Dashboard auf \"Neuen Verein gründen\" und füllen Sie das Formular aus. Ihr Antrag wird anschließend von einem Administrator geprüft."
+                "question": "Wie lege ich einen Verein an?",
+                "answer": "Um einen neuen Verein beim DPV anzumelden, müssen Sie registriert und angemeldet sein. Klicken Sie im Dashboard auf \"Neuen Verein anlegen\" und füllen Sie das Formular aus. Ihr Antrag wird anschließend von einem Administrator geprüft."
             },
             "after_registration": {
                 "question": "Was passiert nach der Registrierung?",
-                "answer": "Nach der Registrierung erhalten Sie eine E-Mail zur Bestätigung Ihrer Adresse. Anschließend können Sie sich anmelden und Vereine verwalten oder gründen."
+                "answer": "Nach der Registrierung erhalten Sie eine E-Mail zur Bestätigung Ihrer Adresse. Anschließend können Sie sich anmelden und Vereine verwalten oder anlegen."
             },
             "reset_password": {
                 "question": "Wie kann ich mein Passwort ändern?",

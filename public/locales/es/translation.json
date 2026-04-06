@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "Nuevo Club",
-            "create_club": "Fundar un Club",
+            "create_club": "Registrar un Club",
             "load_more": "Cargar más",
             "back_to_overview": "Volver a la vista general"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Fundar un Nuevo Club",
+        "title": "Registrar un Nuevo Club",
         "card": {
             "title": "Datos del Club",
             "description": "Introduce los datos básicos de tu club."
@@ -362,12 +362,12 @@
         "title": "Ayuda y Soporte",
         "faq": {
             "create_club": {
-                "question": "¿Cómo fundo un club?",
-                "answer": "Para registrar un nuevo club con DPV, debes estar registrado e iniciar sesión. Haz clic en \"Fundar un Club\" en el panel y completa el formulario. Tu solicitud será revisada por un administrador."
+                "question": "¿Cómo registro un club?",
+                "answer": "Para registrar un nuevo club con DPV, debes estar registrado e iniciar sesión. Haz clic en \"Registrar un Club\" en el panel y completa el formulario. Tu solicitud será revisada por un administrador."
             },
             "after_registration": {
                 "question": "¿Qué pasa después del registro?",
-                "answer": "Después del registro, recibirás un correo para confirmar tu dirección. Luego podrás iniciar sesión y gestionar o fundar clubes."
+                "answer": "Después del registro, recibirás un correo para confirmar tu dirección. Luego podrás iniciar sesión y gestionar o registrar clubes."
             },
             "reset_password": {
                 "question": "¿Cómo puedo cambiar mi contraseña?",

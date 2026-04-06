@@ -30,7 +30,7 @@
         },
         "actions": {
             "new_club": "Club Nou",
-            "create_club": "Înființează un Club",
+            "create_club": "Înregistrează un Club",
             "load_more": "Încarcă mai mult",
             "back_to_overview": "Înapoi la prezentare generală"
         },
@@ -205,7 +205,7 @@
         }
     },
     "create_club": {
-        "title": "Înființează un Club Nou",
+        "title": "Înregistrează un Club Nou",
         "card": {
             "title": "Date Club",
             "description": "Introduceți datele de bază ale clubului."
@@ -362,12 +362,12 @@
         "title": "Ajutor și Suport",
         "faq": {
             "create_club": {
-                "question": "Cum înființez un club?",
-                "answer": "Pentru a înregistra un club nou la DPV, trebuie să fiți înregistrat și autentificat. Faceți clic pe Înființează un Club în panou și completați formularul."
+                "question": "Cum înregistrez un club?",
+                "answer": "Pentru a înregistra un club nou la DPV, trebuie să fiți înregistrat și autentificat. Faceți clic pe Înregistrează un Club în panou și completați formularul."
             },
             "after_registration": {
                 "question": "Ce se întâmplă după înregistrare?",
-                "answer": "După înregistrare, veți primi un e-mail pentru a confirma adresa. Apoi vă puteți autentifica și gestiona sau înființa cluburi."
+                "answer": "După înregistrare, veți primi un e-mail pentru a confirma adresa. Apoi vă puteți autentifica și gestiona sau înregistra cluburi."
             },
             "reset_password": {
                 "question": "Cum îmi pot schimba parola?",
