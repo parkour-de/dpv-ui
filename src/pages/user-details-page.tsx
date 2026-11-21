@@ -88,7 +88,7 @@ export function UserDetailsPage() {
             }
         };
 
-        fetchUser();
+        void fetchUser();
     }, [isSelfView, targetUserId, token, currentUser, t]);
 
     const handleSelfMembershipAction = async (action: MembershipAction) => {
@@ -189,7 +189,6 @@ export function UserDetailsPage() {
         }
 
         return (
-            <>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">
@@ -198,7 +197,6 @@ export function UserDetailsPage() {
                         <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser?._key}</p>
                     </div>
                 </div>
-            </>
         );
     };
 
@@ -239,7 +237,7 @@ export function UserDetailsPage() {
                         <Input value={targetUser?.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
                         {isSelfView && (
                             <p className="text-xs text-muted-foreground mt-1">
-                                <Trans i18nKey="profile.verband.see_documents" components={{ statutes: <a href={config?.links?.statutes || "https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" />, finances: <a href={config?.links?.finances || "https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" /> }} />
+                                <Trans i18nKey="profile.verband.see_documents" components={{ statutes: <a href={config?.links?.statutes || "https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Satzung</a>, finances: <a href={config?.links?.finances || "https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Beitragsordnung</a> }} />
                             </p>
                         )}
                     </div>

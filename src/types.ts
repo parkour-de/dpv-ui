@@ -21,7 +21,7 @@ export const CLUB_STATUS_COLORS: Record<ClubStatus, string> = {
 };
 
 // Former members ("cancelled") are shown exactly like people/clubs without a membership ("inactive")
-export const displayStatus = (status?: ClubStatus | string): ClubStatus =>
+export const displayStatus = (status?: string): ClubStatus =>
     (status === 'cancelled' ? 'inactive' : status) as ClubStatus;
 
 // The 16 German federal states (official names), used for a club's "Bundesland"

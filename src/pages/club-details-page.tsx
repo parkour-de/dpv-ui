@@ -133,7 +133,7 @@ export function ClubDetailsPage() {
         };
 
         fetchClub();
-        fetchDocuments();
+        void fetchDocuments();
     }, [id, token, fetchClub]);
 
     const fetchActiveMembers = async () => {
@@ -278,7 +278,7 @@ export function ClubDetailsPage() {
         if (!actionModal) return;
 
         if (actionModal === 'apply') {
-            handleAction('apply', {
+            void handleAction('apply', {
                 consent_privacy: consents.privacy,
                 consent_accuracy: consents.accuracy,
                 consent_statutes: consents.statutes,
@@ -286,7 +286,7 @@ export function ClubDetailsPage() {
             });
         } else if (actionModal === 'cancel' || actionModal === 'withdraw') {
             // Withdrawing an application uses the same server action as cancelling
-            handleAction('cancel');
+            void handleAction('cancel');
         } else if (actionModal === 'approve') {
             const extraData: Record<string, unknown> = {};
             if (actionDate) {
@@ -299,7 +299,7 @@ export function ClubDetailsPage() {
                 // No date chosen: the membership begins on the application date (the server would otherwise use today)
                 extraData.begin_date = club.membership.application_date;
             }
-            handleAction('approve', extraData);
+            void handleAction('approve', extraData);
         }
     };
 
@@ -758,7 +758,7 @@ export function ClubDetailsPage() {
                             className="max-w-[150px]"
                             value={newOwnerFunction}
                             onChange={(e) => setNewOwnerFunction(e.target.value)}
-                            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}
+                            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void handleAddOwner(); } }}
                         />
                         <label className="flex items-center gap-2 text-sm cursor-pointer ml-2">
                             <input
@@ -1066,29 +1066,39 @@ export function ClubDetailsPage() {
 
     const renderActionModal = () => {
         if (!actionModal) return null;
+        // Title, description and confirm label per dialog type
+        const texts = {
+            apply: {
+                title: t('club.details.membership.apply'),
+                description: t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." }),
+                confirm: t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }),
+            },
+            cancel: {
+                title: t('club.details.membership.cancel'),
+                description: t('club.details.membership.cancel_dialog_description'),
+                confirm: t('club.details.membership.cancel'),
+            },
+            withdraw: {
+                title: t('club.details.membership.withdraw'),
+                description: t('club.details.membership.withdraw_dialog_description'),
+                confirm: t('club.details.membership.withdraw'),
+            },
+            approve: {
+                title: t('club.details.membership.approve'),
+                description: t('club.details.membership.approve_description', { defaultValue: "Specify the start date (optional):" }),
+                confirm: t('club.details.membership.confirm', { defaultValue: "Confirm" }),
+            },
+        }[actionModal];
         return (
             <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                 <Card className="w-full max-w-md shadow-2xl">
                     <CardHeader>
-                        <CardTitle>
-                            {actionModal === 'apply' ? t('club.details.membership.apply')
-                                : actionModal === 'cancel' ? t('club.details.membership.cancel')
-                                : actionModal === 'withdraw' ? t('club.details.membership.withdraw')
-                                : t('club.details.membership.approve')}
-                        </CardTitle>
-                        <CardDescription>
-                            {actionModal === 'apply'
-                                ? t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." })
-                                : actionModal === 'cancel'
-                                    ? t('club.details.membership.cancel_dialog_description')
-                                    : actionModal === 'withdraw'
-                                        ? t('club.details.membership.withdraw_dialog_description')
-                                        : t('club.details.membership.approve_description', { defaultValue: "Specify the start date (optional):" })}
-                        </CardDescription>
+                        <CardTitle>{texts.title}</CardTitle>
+                        <CardDescription>{texts.description}</CardDescription>
                     </CardHeader>
                     {/* The withdraw dialog has no content beyond its description */}
                     <CardContent className={actionModal === 'withdraw' ? "hidden" : "space-y-4"}>
-                        {actionModal === 'approve' ? (
+                        {actionModal === 'approve' && (
                             <div className="space-y-2">
                                 <Label htmlFor="actionDate">{t('club.details.membership.date_label', { defaultValue: "Date (Optional)" })}</Label>
                                 <Input
@@ -1105,7 +1115,8 @@ export function ClubDetailsPage() {
                                     })()}
                                 </p>
                             </div>
-                        ) : actionModal === 'cancel' ? (
+                        )}
+                        {actionModal === 'cancel' && (
                             <div className="space-y-2 p-4 border rounded-md bg-muted/20">
                                 <p className="text-sm">
                                     <Trans
@@ -1115,7 +1126,8 @@ export function ClubDetailsPage() {
                                     />
                                 </p>
                             </div>
-                        ) : actionModal === 'withdraw' ? null : (
+                        )}
+                        {actionModal === 'apply' && (
                             <div className="space-y-3 pt-2">
                                 {[
                                     { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der <1>Datenschutzerklärung</1> zu.', href: config?.links?.privacy || 'https://parkour-deutschland.de/datenschutzerklaerung/' },
@@ -1157,10 +1169,7 @@ export function ClubDetailsPage() {
                             disabled={formLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
                         >
                             {formLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                            {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' })
-                                : actionModal === 'cancel' ? t('club.details.membership.cancel')
-                                : actionModal === 'withdraw' ? t('club.details.membership.withdraw')
-                                : t('club.details.membership.confirm', { defaultValue: "Confirm" })}
+                            {texts.confirm}
                         </Button>
                     </CardFooter>
                 </Card>

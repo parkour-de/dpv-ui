@@ -43,7 +43,7 @@ export function ClubsPage() {
                 const statuses = statusFilter === 'inactive' ? ['inactive', 'cancelled'] : [statusFilter];
 
                 if (token) {
-                    const results = await Promise.all(statuses.map(s => api.get<Club[]>(`/clubs${query}${s ? `&status=${s}` : ''}`, token)));
+                    const results = await Promise.all(statuses.map(s => api.get<Club[]>(`/clubs${query}` + (s ? `&status=${s}` : ''), token)));
                     setClubs(results.flatMap(data => data || []));
                 }
             } catch (err: unknown) {
@@ -54,7 +54,7 @@ export function ClubsPage() {
             }
         };
 
-        fetchClubs();
+        void fetchClubs();
     }, [token, statusFilter, missingCensusYear, page, t]);
 
     const clubsByStatus = clubs.reduce((acc, club) => {

@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 // "Aktiv" in the status filter also covers memberships that start later or are being cancelled
-const ACTIVE_STATUSES = ['active', 'approved', 'cancelling'];
+const ACTIVE_STATUSES = new Set(['active', 'approved', 'cancelling']);
 
 type UnifiedMember = {
     _key: string;
@@ -80,7 +80,7 @@ export function UsersPage() {
         };
 
         if (user?.roles?.includes('admin')) {
-            fetchMembers();
+            void fetchMembers();
         } else {
             setLoading(false);
         }
@@ -118,7 +118,7 @@ export function UsersPage() {
 
     const matchesFilter = (m: UnifiedMember) => {
         // Status filter
-        if (statusFilter === 'active' ? !ACTIVE_STATUSES.includes(m.membership?.status || '') : statusFilter && displayStatus(m.membership?.status) !== statusFilter) return false;
+        if (statusFilter === 'active' ? !ACTIVE_STATUSES.has(m.membership?.status || '') : statusFilter && displayStatus(m.membership?.status) !== statusFilter) return false;
 
         // Person / Verein filter
         if (kindFilter && m._internal_type !== kindFilter) return false;
@@ -163,7 +163,8 @@ export function UsersPage() {
     // Same categories as the "Mitgliedsform" filter above; no category without a membership
     const memberTypeLabel = (m: UnifiedMember) => {
         // Only current members and applicants have a membership type; former or rejected ones show "–"
-        if (![...ACTIVE_STATUSES, 'requested'].includes(m.membership?.status || '')) return '–';
+        const status = m.membership?.status || '';
+        if (!ACTIVE_STATUSES.has(status) && status !== 'requested') return '–';
         const memType = m.membership?.type || 'active';
         if (m._internal_type === 'club') {
             if (memType === 'extraordinary') return t('dashboard.admin.member_types.extraordinary');

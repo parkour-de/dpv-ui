@@ -87,7 +87,7 @@ export function PaymentDetails({
     useEffect(() => {
         if (alwaysOpen && !hasAttemptedFetch) {
             setHasAttemptedFetch(true);
-            handleFetch();
+            void handleFetch();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [alwaysOpen, hasAttemptedFetch]);

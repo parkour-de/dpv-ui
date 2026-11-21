@@ -1,9 +1,8 @@
-import { type ReactNode } from "react";
 import { Info } from "lucide-react";
 
 interface InfoBoxProps {
     readonly title?: string;
-    readonly items: ReactNode[];
+    readonly items: string[];
 }
 
 /** Highlighted hint box with an optional title and a list of short notes. */
@@ -23,8 +22,8 @@ export function InfoBox({ title, items }: InfoBoxProps) {
                 </p>
             ) : (
                 <ul className={title ? "list-disc pl-6 space-y-1 text-muted-foreground" : "space-y-1 text-muted-foreground"}>
-                    {items.map((item, i) => (
-                        <li key={i} className={title ? "" : "flex items-start gap-2"}>
+                    {items.map((item) => (
+                        <li key={item} className={title ? "" : "flex items-start gap-2"}>
                             {!title && <Info className="h-4 w-4 text-primary shrink-0 mt-0.5" />}
                             <span>{item}</span>
                         </li>
