@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-import { type Membership, CLUB_STATUS_COLORS } from "@/types";
+import { type Membership, CLUB_STATUS_COLORS, displayStatus } from "@/types";
 
 interface StatusBadgeProps {
     readonly membership?: Membership;
@@ -14,7 +14,8 @@ export function StatusBadge({ membership, className }: StatusBadgeProps) {
 
     if (!membership) return null;
 
-    const { status, begin_date, end_date } = membership;
+    const { begin_date } = membership;
+    const status = displayStatus(membership.status);
 
     let labelKey = `club.status.${status}`;
 
@@ -22,8 +23,6 @@ export function StatusBadge({ membership, className }: StatusBadgeProps) {
         labelKey = 'club.status.upcoming_membership';
     } else if (status === 'approved') {
         labelKey = 'club.status.upcoming_membership';
-    } else if ((status === 'cancelled' || status === 'cancelling') && end_date && end_date > now) {
-        labelKey = 'club.status.pending_cancellation';
     } else if (status === 'cancelling') {
         labelKey = 'club.status.pending_cancellation';
     }

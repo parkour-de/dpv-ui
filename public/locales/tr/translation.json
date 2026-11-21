@@ -322,11 +322,12 @@
             "date_hint_today": "Boş bırakılırsa bugünün tarihi kullanılır.",
             "cancelling": "Fesih işlemde",
             "cancel_admin": "Feshet (yönetici)",
-            "apply_description_self": "Lütfen ne zaman başlamak istediğini seç.",
+            "apply_description_self": "Üyeliğiniz, DPV başvurunuzu onayladığında başvuru tarihinizden itibaren başlar.",
             "cancel_dialog_description_self": "Fesih süresinin sonuna kadar DPV üyesi olmaya devam edersiniz.",
             "cancel_dialog_description_other": "Bu kişi fesih süresinin sonuna kadar DPV üyesi olmaya devam eder.",
             "cancel_dialog_info": "Şimdi feshedilirse üyelik <strong>{{date}}</strong> tarihinde sona erer. Fesih burada geri alınamaz.",
-            "withdraw_dialog_description": "Üyelik başvurunuz geri çekilecek. İstediğiniz zaman yeni bir başvuru yapabilirsiniz."
+            "withdraw_dialog_description": "Üyelik başvurunuz geri çekilecek. İstediğiniz zaman yeni bir başvuru yapabilirsiniz.",
+            "apply_needs_bank": "Üyelik başvurusu yapabilmek için önce \"Ödeme Bilgileri\" bölümüne banka bilgilerinizi girin."
         },
         "language_options": {
             "browser_default": "Tarayıcı Varsayılanı"
@@ -339,7 +340,8 @@
             "membership_type": "Üyelik türü",
             "votes": "Oy sayısı",
             "see_documents": "Bkz. <statutes>tüzük</statutes> ve <finances>aidat yönetmeliği</finances>",
-            "landesverband": "Eyalet federasyonu"
+            "landesverband": "Eyalet federasyonu",
+            "begin_date": "Üyelik başlangıcı"
         },
         "roles": {
             "title": "Rol yönetimi",
@@ -357,7 +359,9 @@
             "entry_date": "Giriş tarihi:",
             "immediately": "Hemen",
             "end_date": "Fesih tarihi:",
-            "membership_number": "Üye numarası:"
+            "membership_number": "Üye numarası:",
+            "planned_begin": "Planlanan başlangıç:",
+            "after_approval": "onaydan sonra"
         },
         "apply": {
             "active_option": "Aktif üyelik (yılda 10 €)",

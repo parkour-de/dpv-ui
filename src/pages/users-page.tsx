@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, API_BASE, getErrorMessage } from "@/lib/api";
-import { type User, type Club, type ClubStatus, type Membership } from "@/types";
+import { type User, type Club, type ClubStatus, type Membership, displayStatus } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Filter, AlertCircle, Search, Users, Building2, Download } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
@@ -118,7 +118,7 @@ export function UsersPage() {
 
     const matchesFilter = (m: UnifiedMember) => {
         // Status filter
-        if (statusFilter === 'active' ? !ACTIVE_STATUSES.includes(m.membership?.status || '') : statusFilter && m.membership?.status !== statusFilter) return false;
+        if (statusFilter === 'active' ? !ACTIVE_STATUSES.includes(m.membership?.status || '') : statusFilter && displayStatus(m.membership?.status) !== statusFilter) return false;
 
         // Person / Verein filter
         if (kindFilter && m._internal_type !== kindFilter) return false;
@@ -154,7 +154,7 @@ export function UsersPage() {
         if (ms.begin_date && (ms.status === 'approved' || (ms.status === 'active' && ms.begin_date > now))) {
             return t('dashboard.admin.table.from_date', { date: formatDate(ms.begin_date) });
         }
-        if (ms.end_date && (ms.status === 'cancelling' || (ms.status === 'cancelled' && ms.end_date > now))) {
+        if (ms.end_date && ms.status === 'cancelling') {
             return t('dashboard.admin.table.until_date', { date: formatDate(ms.end_date) });
         }
         return null;
@@ -162,8 +162,9 @@ export function UsersPage() {
 
     // Same categories as the "Mitgliedsform" filter above; no category without a membership
     const memberTypeLabel = (m: UnifiedMember) => {
-        if (!m.membership?.status || m.membership.status === 'inactive') return '–';
-        const memType = m.membership.type || 'active';
+        // Only current members and applicants have a membership type; former or rejected ones show "–"
+        if (![...ACTIVE_STATUSES, 'requested'].includes(m.membership?.status || '')) return '–';
+        const memType = m.membership?.type || 'active';
         if (m._internal_type === 'club') {
             if (memType === 'extraordinary') return t('dashboard.admin.member_types.extraordinary');
             if (memType === 'ordinary' || memType === 'active') return t('dashboard.admin.member_types.ordinary');
@@ -255,7 +256,7 @@ export function UsersPage() {
                         onChange={(e) => setStatusFilter(e.target.value as ClubStatus | "")}
                     >
                         <option value="">{t('dashboard.filter.all_status')}</option>
-                        {['active', 'inactive', 'requested', 'denied', 'cancelled'].map((key) => (
+                        {['active', 'inactive', 'requested', 'denied'].map((key) => (
                             <option key={key} value={key}>{t(`club.status.${key}`)}</option>
                         ))}
                     </select>

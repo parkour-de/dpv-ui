@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Check, Loader2 } from "lucide-react";
-import { PaymentDetails } from "@/components/payment-details";
+import { PaymentDetails, type PaymentData } from "@/components/payment-details";
 import { api, getErrorMessage } from "@/lib/api";
 import { DobInput } from "@/components/ui/dob-input";
 
@@ -16,9 +16,10 @@ interface UserProfileFormProps {
     readonly isAdminView?: boolean;
     readonly onSaveSuccess?: (updatedUser: User, message: string) => void;
     readonly endpointOverride?: string; // e.g. "/user/123" for admin, defaults to "/users/me"
+    readonly onPaymentSaved?: (data: PaymentData) => void; // Passed on to the payment section
 }
 
-export function UserProfileForm({ user, token, isAdminView = false, onSaveSuccess, endpointOverride }: UserProfileFormProps) {
+export function UserProfileForm({ user, token, isAdminView = false, onSaveSuccess, endpointOverride, onPaymentSaved }: UserProfileFormProps) {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -291,6 +292,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                         isAdmin={isAdminView}
                         canEdit={true}
                         alwaysOpen={false}
+                        onSaved={onPaymentSaved}
                     />
                 </div>
             )}

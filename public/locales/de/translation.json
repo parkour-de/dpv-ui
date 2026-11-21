@@ -322,11 +322,12 @@
             "date_hint_today": "Falls leer, wird das heutige Datum verwendet.",
             "cancelling": "Kündigung läuft",
             "cancel_admin": "Kündigen (Admin)",
-            "apply_description_self": "Bitte wähle aus, ab wann du aktiv werden möchtest.",
+            "apply_description_self": "Deine Mitgliedschaft beginnt am Tag deines Antrags, sobald der DPV ihn genehmigt hat.",
             "cancel_dialog_description_self": "Du bleibst bis zum Ende der Kündigungsfrist Mitglied im DPV.",
             "cancel_dialog_description_other": "Die Person bleibt bis zum Ende der Kündigungsfrist Mitglied im DPV.",
             "cancel_dialog_info": "Wird jetzt gekündigt, endet die Mitgliedschaft am <strong>{{date}}</strong>. Die Kündigung kann hier nicht zurückgenommen werden.",
-            "withdraw_dialog_description": "Dein Antrag auf Mitgliedschaft wird zurückgezogen. Du kannst später jederzeit einen neuen Antrag stellen."
+            "withdraw_dialog_description": "Dein Antrag auf Mitgliedschaft wird zurückgezogen. Du kannst später jederzeit einen neuen Antrag stellen.",
+            "apply_needs_bank": "Hinterlege zuerst deine Bankverbindung unter „Zahlungsdetails“, um die Mitgliedschaft beantragen zu können."
         },
         "language_options": {
             "browser_default": "Browser Standard"
@@ -339,7 +340,8 @@
             "membership_type": "Art der Mitgliedschaft",
             "votes": "Stimmenanzahl",
             "see_documents": "Siehe <statutes>Satzung</statutes> und <finances>Beitragsordnung</finances>",
-            "landesverband": "Landesverband"
+            "landesverband": "Landesverband",
+            "begin_date": "Beginn der Mitgliedschaft"
         },
         "roles": {
             "title": "Rollenverwaltung",
@@ -357,7 +359,9 @@
             "entry_date": "Eintrittsdatum:",
             "immediately": "Sofort",
             "end_date": "Kündigungsdatum:",
-            "membership_number": "Mitgliedsnummer:"
+            "membership_number": "Mitgliedsnummer:",
+            "planned_begin": "Geplanter Beginn:",
+            "after_approval": "nach Genehmigung"
         },
         "apply": {
             "active_option": "Aktivmitgliedschaft (10 € / Jahr)",

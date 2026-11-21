@@ -5,6 +5,7 @@ import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { useConfig } from "@/hooks/use-config";
 import { api, getErrorMessage } from "@/lib/api";
+import { type PaymentData } from "@/components/payment-details";
 import { type User } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +24,7 @@ type ModalType = MembershipAction | 'withdraw';
 
 export function UserDetailsPage() {
     const { id } = useParams<{ id: string }>();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user: currentUser, token, apiUpdateUser, login } = useAuth();
     const { config } = useConfig();
 
@@ -33,6 +34,14 @@ export function UserDetailsPage() {
 
     const [targetUser, setTargetUser] = useState<User | null>(null);
     useBreadcrumbLabel(targetUser ? `${targetUser.firstname} ${targetUser.lastname}` : undefined);
+    // Personal applications need bank details (IBAN + account holder) before the apply button is enabled
+    const [hasBankDetails, setHasBankDetails] = useState(false);
+    useEffect(() => {
+        if (!token || !targetUser?._key) return;
+        api.get<PaymentData>(`/user/${targetUser._key}/payment-details`, token)
+            .then(data => setHasBankDetails(!!(data?.iban && data?.account_holder)))
+            .catch(() => setHasBankDetails(false));
+    }, [token, targetUser?._key]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -116,6 +125,9 @@ export function UserDetailsPage() {
                 const timestamp = Math.floor(date.getTime() / 1000);
                 body = { begin_date: timestamp };
             }
+        } else if (action === 'approve' && targetUser.membership?.application_date) {
+            // No date chosen: the membership begins on the application date (the server would otherwise use today)
+            body = { begin_date: targetUser.membership.application_date };
         }
 
         await api.post(`/user/${targetUser._key}/${action}`, body, token);
@@ -185,22 +197,39 @@ export function UserDetailsPage() {
                         </h1>
                         <p className="text-muted-foreground font-mono text-sm mt-1">ID: {targetUser?._key}</p>
                     </div>
-                    {targetUser?.membership?.status && (
-                        <StatusBadge membership={targetUser.membership} />
-                    )}
                 </div>
             </>
         );
     };
 
+    // Members (active, accepted but starting later, or in their notice period) see one "Mitgliedschaft" card
+    // with status, dates and association data; everyone else only sees the status card with apply/withdraw.
+    const isMember = ['active', 'approved', 'cancelling'].includes(targetUser.membership?.status || '');
+    const formatDate = (ts?: number) => (ts ? new Date(ts * 1000).toLocaleDateString(i18n.language) : '');
+
     const renderVerbandCard = () => (
         <Card>
-            <CardHeader>
-                <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
-                {isSelfView && <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>}
+            <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+                <div className="space-y-1.5">
+                    <CardTitle>{t('profile.membership.title_self')}</CardTitle>
+                    {isSelfView && <CardDescription>{t('profile.membership.description')}</CardDescription>}
+                </div>
+                <StatusBadge membership={targetUser.membership} />
             </CardHeader>
             <CardContent className="space-y-4">
+                {/* Pending cancellation: entry and cancellation date in the status box (the chip is in the header) */}
+                {targetUser.membership?.status === 'cancelling' && (
+                    <div className="p-4 border rounded-md bg-muted/20">
+                        <MembershipStatus membership={targetUser.membership} datesOnly />
+                    </div>
+                )}
                 <div className="grid md:grid-cols-2 gap-4">
+                    {targetUser.membership?.status !== 'cancelling' && (
+                        <div className="space-y-2">
+                            <Label>{t('profile.verband.begin_date')}</Label>
+                            <Input value={formatDate(targetUser.membership?.begin_date)} disabled />
+                        </div>
+                    )}
                     <div className="space-y-2">
                         <Label>{t('profile.verband.membership_number', { defaultValue: 'Mitgliedsnummer' })}</Label>
                         <Input value={targetUser.membership?.membership_number || ''} disabled />
@@ -229,7 +258,28 @@ export function UserDetailsPage() {
                         <Input value={targetUser.membership?.current_votes?.toString() ?? '0'} disabled />
                     </div>
                 </div>
+
+                {isSelfView && (
+                    <div className="flex justify-end">
+                        <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => setActionModal('cancel')}
+                            disabled={actionLoading || targetUser.membership?.status === 'cancelling'}
+                        >
+                            {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {targetUser.membership?.status === 'cancelling' ? t('profile.actions.cancelling') : t('profile.actions.cancel_membership')}
+                        </Button>
+                    </div>
+                )}
             </CardContent>
+            {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'active' && (
+                <CardFooter className="border-t pt-4">
+                    <Button variant="destructive" className="w-full" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
+                        {t('profile.actions.cancel_admin')}
+                    </Button>
+                </CardFooter>
+            )}
         </Card>
     );
 
@@ -246,6 +296,7 @@ export function UserDetailsPage() {
                         isAdminView={!isSelfView}
                         endpointOverride={`/user/${targetUser?._key}`}
                         onSaveSuccess={handleSaveSuccess}
+                        onPaymentSaved={(data) => setHasBankDetails(!!(data.iban && data.account_holder))}
                     />
 
                     {currentUser?.roles?.includes('admin') && (
@@ -327,6 +378,7 @@ export function UserDetailsPage() {
                 </div>
 
                 <div className="space-y-6">
+                    {!isMember && (
                     <Card>
                         <CardHeader>
                             <CardTitle>{isSelfView ? t('profile.membership.title_self') : t('profile.membership.title_other')}</CardTitle>
@@ -343,35 +395,23 @@ export function UserDetailsPage() {
 
                             {isSelfView && (
                                 <div className="flex justify-end mt-4">
-                                    {['active', 'requested', 'approved', 'cancelling'].includes(targetUser?.membership?.status || '') ? (
-                                        <Button 
-                                            size="sm" 
-                                            variant="destructive" 
-                                            onClick={() => {
-                                                if (targetUser?.membership?.status === 'requested') {
-                                                    setActionModal('withdraw');
-                                                } else if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') {
-                                                    setActionModal('cancel');
-                                                }
-                                            }} 
-                                            disabled={actionLoading || targetUser?.membership?.status === 'cancelling'}
-                                        >
+                                    {targetUser?.membership?.status === 'requested' ? (
+                                        <Button size="sm" variant="destructive" onClick={() => setActionModal('withdraw')} disabled={actionLoading}>
                                             {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                            {(() => {
-                                                if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') return t('profile.actions.cancel_membership');
-                                                if (targetUser?.membership?.status === 'requested') return t('profile.actions.withdraw_application');
-                                                return t('profile.actions.cancelling');
-                                            })()}
+                                            {t('profile.actions.withdraw_application')}
                                         </Button>
                                     ) : (
-                                        <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading}>
+                                        <Button size="sm" onClick={() => setActionModal('apply')} disabled={actionLoading || !hasBankDetails}>
                                             {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                            {(targetUser?.membership?.status === 'cancelled' || targetUser?.membership?.status === 'denied')
+                                            {targetUser?.membership?.status === 'denied'
                                                 ? t('profile.actions.reapply')
                                                 : t('profile.actions.apply_membership')}
                                         </Button>
                                     )}
                                 </div>
+                            )}
+                            {isSelfView && targetUser?.membership?.status !== 'requested' && !hasBankDetails && (
+                                <p className="text-xs text-muted-foreground text-right">{t('profile.actions.apply_needs_bank')}</p>
                             )}
                         </CardContent>
 
@@ -387,16 +427,10 @@ export function UserDetailsPage() {
                                 </Button>
                             </CardFooter>
                         )}
-                        {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'active' && (
-                            <CardFooter className="border-t pt-4">
-                                <Button variant="destructive" className="w-full" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
-                                    {t('profile.actions.cancel_admin')}
-                                </Button>
-                            </CardFooter>
-                        )}
                     </Card>
+                    )}
 
-                    {renderVerbandCard()}
+                    {isMember && renderVerbandCard()}
                 </div>
             </div>
 
@@ -594,7 +628,7 @@ function ActionModal({
                             <p className="text-xs text-muted-foreground pt-1">
                                 {(() => {
                                     const mDate = targetUser?.membership?.application_date;
-                                    const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                    const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString(i18n.language) : "";
                                     return mDate ? t('profile.actions.date_hint_application', { date: dateStr }) : t('profile.actions.date_hint_today');
                                 })()}
                             </p>

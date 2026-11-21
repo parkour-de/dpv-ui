@@ -322,11 +322,12 @@
             "date_hint_today": "Jeśli puste, zostanie użyta dzisiejsza data.",
             "cancelling": "Wypowiedzenie w toku",
             "cancel_admin": "Wypowiedz (admin)",
-            "apply_description_self": "Wybierz, od kiedy chcesz rozpocząć.",
+            "apply_description_self": "Twoje członkostwo zaczyna się w dniu złożenia wniosku, gdy tylko DPV go zatwierdzi.",
             "cancel_dialog_description_self": "Pozostajesz członkiem DPV do końca okresu wypowiedzenia.",
             "cancel_dialog_description_other": "Ta osoba pozostaje członkiem DPV do końca okresu wypowiedzenia.",
             "cancel_dialog_info": "W przypadku wypowiedzenia teraz członkostwo kończy się <strong>{{date}}</strong>. Wypowiedzenia nie można tutaj cofnąć.",
-            "withdraw_dialog_description": "Twój wniosek o członkostwo zostanie wycofany. W każdej chwili możesz złożyć nowy wniosek."
+            "withdraw_dialog_description": "Twój wniosek o członkostwo zostanie wycofany. W każdej chwili możesz złożyć nowy wniosek.",
+            "apply_needs_bank": "Najpierw podaj dane bankowe w sekcji „Dane Płatności”, aby móc złożyć wniosek o członkostwo."
         },
         "language_options": {
             "browser_default": "Domyślny przeglądarki"
@@ -339,7 +340,8 @@
             "membership_type": "Rodzaj członkostwa",
             "votes": "Liczba głosów",
             "see_documents": "Zobacz <statutes>statut</statutes> i <finances>regulamin składek</finances>",
-            "landesverband": "Związek regionalny"
+            "landesverband": "Związek regionalny",
+            "begin_date": "Początek członkostwa"
         },
         "roles": {
             "title": "Zarządzanie rolami",
@@ -357,7 +359,9 @@
             "entry_date": "Data przystąpienia:",
             "immediately": "Natychmiast",
             "end_date": "Data wypowiedzenia:",
-            "membership_number": "Numer członkowski:"
+            "membership_number": "Numer członkowski:",
+            "planned_begin": "Planowany początek:",
+            "after_approval": "po zatwierdzeniu"
         },
         "apply": {
             "active_option": "Członkostwo aktywne (10 € / rok)",

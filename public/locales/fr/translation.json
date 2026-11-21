@@ -322,11 +322,12 @@
             "date_hint_today": "Si vide, la date du jour sera utilisée.",
             "cancelling": "Résiliation en cours",
             "cancel_admin": "Résilier (admin)",
-            "apply_description_self": "Veuillez choisir à partir de quand vous souhaitez commencer.",
+            "apply_description_self": "Votre adhésion commence le jour de votre demande, dès que la DPV l'a validée.",
             "cancel_dialog_description_self": "Vous restez membre de la DPV jusqu'à la fin du préavis.",
             "cancel_dialog_description_other": "Cette personne reste membre de la DPV jusqu'à la fin du préavis.",
             "cancel_dialog_info": "En cas de résiliation maintenant, l'adhésion prend fin le <strong>{{date}}</strong>. La résiliation ne peut pas être annulée ici.",
-            "withdraw_dialog_description": "Votre demande d'adhésion sera retirée. Vous pourrez déposer une nouvelle demande à tout moment."
+            "withdraw_dialog_description": "Votre demande d'adhésion sera retirée. Vous pourrez déposer une nouvelle demande à tout moment.",
+            "apply_needs_bank": "Renseignez d'abord vos coordonnées bancaires dans « Détails de Paiement » pour pouvoir demander l'adhésion."
         },
         "language_options": {
             "browser_default": "Par défaut du navigateur"
@@ -339,7 +340,8 @@
             "membership_type": "Type d'adhésion",
             "votes": "Nombre de voix",
             "see_documents": "Voir les <statutes>statuts</statutes> et le <finances>règlement des cotisations</finances>",
-            "landesverband": "Fédération régionale"
+            "landesverband": "Fédération régionale",
+            "begin_date": "Début de l'adhésion"
         },
         "roles": {
             "title": "Gestion des rôles",
@@ -357,7 +359,9 @@
             "entry_date": "Date d'entrée :",
             "immediately": "Immédiatement",
             "end_date": "Date de résiliation :",
-            "membership_number": "Numéro de membre :"
+            "membership_number": "Numéro de membre :",
+            "planned_begin": "Début prévu :",
+            "after_approval": "après validation"
         },
         "apply": {
             "active_option": "Adhésion active (10 € / an)",

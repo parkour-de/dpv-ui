@@ -322,11 +322,12 @@
             "date_hint_today": "إذا تُرك فارغاً، يُستخدم تاريخ اليوم.",
             "cancelling": "الإلغاء قيد التنفيذ",
             "cancel_admin": "إلغاء (المسؤول)",
-            "apply_description_self": "يرجى اختيار موعد البدء.",
+            "apply_description_self": "تبدأ عضويتك من يوم تقديم طلبك، بمجرد أن توافق عليه DPV.",
             "cancel_dialog_description_self": "تبقى عضواً في DPV حتى نهاية مهلة الإلغاء.",
             "cancel_dialog_description_other": "يبقى هذا الشخص عضواً في DPV حتى نهاية مهلة الإلغاء.",
             "cancel_dialog_info": "عند الإلغاء الآن، تنتهي العضوية في <strong>{{date}}</strong>. لا يمكن التراجع عن الإلغاء هنا.",
-            "withdraw_dialog_description": "سيتم سحب طلب عضويتك. يمكنك تقديم طلب جديد في أي وقت."
+            "withdraw_dialog_description": "سيتم سحب طلب عضويتك. يمكنك تقديم طلب جديد في أي وقت.",
+            "apply_needs_bank": "أضف بياناتك المصرفية أولاً في \"تفاصيل الدفع\" لتتمكن من التقدم بطلب العضوية."
         },
         "language_options": {
             "browser_default": "الافتراضي للمتصفح"
@@ -339,7 +340,8 @@
             "membership_type": "نوع العضوية",
             "votes": "عدد الأصوات",
             "see_documents": "راجع <statutes>النظام الأساسي</statutes> و<finances>لائحة الرسوم</finances>",
-            "landesverband": "الاتحاد الإقليمي"
+            "landesverband": "الاتحاد الإقليمي",
+            "begin_date": "بداية العضوية"
         },
         "roles": {
             "title": "إدارة الأدوار",
@@ -357,7 +359,9 @@
             "entry_date": "تاريخ الانضمام:",
             "immediately": "فوراً",
             "end_date": "تاريخ الإلغاء:",
-            "membership_number": "رقم العضوية:"
+            "membership_number": "رقم العضوية:",
+            "planned_begin": "البداية المخططة:",
+            "after_approval": "بعد الموافقة"
         },
         "apply": {
             "active_option": "عضوية نشطة (10 € / سنة)",

@@ -322,11 +322,12 @@
             "date_hint_today": "Nëse lihet bosh, përdoret data e sotme.",
             "cancelling": "Ndërprerja në proces",
             "cancel_admin": "Anulo (admin)",
-            "apply_description_self": "Zgjidh nga kur dëshiron të fillosh.",
+            "apply_description_self": "Anëtarësimi yt fillon në ditën e kërkesës, sapo DPV ta miratojë.",
             "cancel_dialog_description_self": "Mbetesh anëtar i DPV deri në fund të afatit të njoftimit.",
             "cancel_dialog_description_other": "Ky person mbetet anëtar i DPV deri në fund të afatit të njoftimit.",
             "cancel_dialog_info": "Nëse anulohet tani, anëtarësimi përfundon më <strong>{{date}}</strong>. Anulimi nuk mund të zhbëhet këtu.",
-            "withdraw_dialog_description": "Kërkesa jote për anëtarësim do të tërhiqet. Mund të bësh një kërkesë të re në çdo kohë."
+            "withdraw_dialog_description": "Kërkesa jote për anëtarësim do të tërhiqet. Mund të bësh një kërkesë të re në çdo kohë.",
+            "apply_needs_bank": "Shto fillimisht të dhënat bankare te \"Detajet e Pagesës\" që të mund të aplikosh për anëtarësim."
         },
         "language_options": {
             "browser_default": "Parazgjedhja e shfletuesit"
@@ -339,7 +340,8 @@
             "membership_type": "Lloji i anëtarësimit",
             "votes": "Numri i votave",
             "see_documents": "Shih <statutes>statutin</statutes> dhe <finances>rregulloren e kuotave</finances>",
-            "landesverband": "Federata rajonale"
+            "landesverband": "Federata rajonale",
+            "begin_date": "Fillimi i anëtarësimit"
         },
         "roles": {
             "title": "Menaxhimi i roleve",
@@ -357,7 +359,9 @@
             "entry_date": "Data e anëtarësimit:",
             "immediately": "Menjëherë",
             "end_date": "Data e ndërprerjes:",
-            "membership_number": "Numri i anëtarit:"
+            "membership_number": "Numri i anëtarit:",
+            "planned_begin": "Fillimi i planifikuar:",
+            "after_approval": "pas miratimit"
         },
         "apply": {
             "active_option": "Anëtarësim aktiv (10 € / vit)",

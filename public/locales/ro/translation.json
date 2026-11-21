@@ -322,11 +322,12 @@
             "date_hint_today": "Dacă este gol, se folosește data de azi.",
             "cancelling": "Reziliere în curs",
             "cancel_admin": "Reziliază (admin)",
-            "apply_description_self": "Alege de când vrei să începi.",
+            "apply_description_self": "Calitatea ta de membru începe în ziua cererii, de îndată ce DPV o aprobă.",
             "cancel_dialog_description_self": "Rămâi membru DPV până la sfârșitul perioadei de preaviz.",
             "cancel_dialog_description_other": "Această persoană rămâne membru DPV până la sfârșitul perioadei de preaviz.",
             "cancel_dialog_info": "Dacă se reziliază acum, calitatea de membru se încheie la <strong>{{date}}</strong>. Rezilierea nu poate fi anulată aici.",
-            "withdraw_dialog_description": "Cererea ta de aderare va fi retrasă. Poți depune oricând o cerere nouă."
+            "withdraw_dialog_description": "Cererea ta de aderare va fi retrasă. Poți depune oricând o cerere nouă.",
+            "apply_needs_bank": "Adaugă mai întâi datele bancare la „Detalii Plată” pentru a putea solicita calitatea de membru."
         },
         "language_options": {
             "browser_default": "Implicit browser"
@@ -339,7 +340,8 @@
             "membership_type": "Tipul calității de membru",
             "votes": "Număr de voturi",
             "see_documents": "Vezi <statutes>statutul</statutes> și <finances>regulamentul cotizațiilor</finances>",
-            "landesverband": "Federația regională"
+            "landesverband": "Federația regională",
+            "begin_date": "Începutul calității de membru"
         },
         "roles": {
             "title": "Gestionarea rolurilor",
@@ -357,7 +359,9 @@
             "entry_date": "Data aderării:",
             "immediately": "Imediat",
             "end_date": "Data rezilierii:",
-            "membership_number": "Număr de membru:"
+            "membership_number": "Număr de membru:",
+            "planned_begin": "Început planificat:",
+            "after_approval": "după aprobare"
         },
         "apply": {
             "active_option": "Membru activ (10 € / an)",

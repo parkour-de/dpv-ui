@@ -322,11 +322,12 @@
             "date_hint_today": "If left empty, today's date is used.",
             "cancelling": "Cancellation in progress",
             "cancel_admin": "Cancel (admin)",
-            "apply_description_self": "Please choose when you want to start.",
+            "apply_description_self": "Your membership starts on the day of your application, once the DPV has approved it.",
             "cancel_dialog_description_self": "You remain a DPV member until the end of the notice period.",
             "cancel_dialog_description_other": "This person remains a DPV member until the end of the notice period.",
             "cancel_dialog_info": "If cancelled now, the membership ends on <strong>{{date}}</strong>. The cancellation cannot be undone here.",
-            "withdraw_dialog_description": "Your membership application will be withdrawn. You can submit a new application at any time."
+            "withdraw_dialog_description": "Your membership application will be withdrawn. You can submit a new application at any time.",
+            "apply_needs_bank": "Add your bank details under \"Payment Details\" first to be able to apply for membership."
         },
         "language_options": {
             "browser_default": "Browser Default"
@@ -339,7 +340,8 @@
             "membership_type": "Membership type",
             "votes": "Number of votes",
             "see_documents": "See <statutes>statutes</statutes> and <finances>fee regulations</finances>",
-            "landesverband": "State association"
+            "landesverband": "State association",
+            "begin_date": "Membership start"
         },
         "roles": {
             "title": "Role management",
@@ -357,7 +359,9 @@
             "entry_date": "Start date:",
             "immediately": "Immediately",
             "end_date": "Cancellation date:",
-            "membership_number": "Membership number:"
+            "membership_number": "Membership number:",
+            "planned_begin": "Planned start:",
+            "after_approval": "after approval"
         },
         "apply": {
             "active_option": "Active membership (€10 / year)",

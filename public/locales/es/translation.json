@@ -322,11 +322,12 @@
             "date_hint_today": "Si se deja vacío, se usará la fecha de hoy.",
             "cancelling": "Baja en curso",
             "cancel_admin": "Dar de baja (admin)",
-            "apply_description_self": "Elige a partir de cuándo quieres empezar.",
+            "apply_description_self": "Tu membresía empieza el día de tu solicitud, una vez que la DPV la haya aprobado.",
             "cancel_dialog_description_self": "Sigues siendo miembro de la DPV hasta el final del plazo de preaviso.",
             "cancel_dialog_description_other": "Esta persona sigue siendo miembro de la DPV hasta el final del plazo de preaviso.",
             "cancel_dialog_info": "Si se cancela ahora, la membresía termina el <strong>{{date}}</strong>. La cancelación no se puede deshacer aquí.",
-            "withdraw_dialog_description": "Se retirará tu solicitud de membresía. Puedes presentar una nueva solicitud en cualquier momento."
+            "withdraw_dialog_description": "Se retirará tu solicitud de membresía. Puedes presentar una nueva solicitud en cualquier momento.",
+            "apply_needs_bank": "Primero añade tus datos bancarios en «Datos de Pago» para poder solicitar la membresía."
         },
         "language_options": {
             "browser_default": "Predeterminado del navegador"
@@ -339,7 +340,8 @@
             "membership_type": "Tipo de membresía",
             "votes": "Número de votos",
             "see_documents": "Ver <statutes>estatutos</statutes> y <finances>reglamento de cuotas</finances>",
-            "landesverband": "Federación regional"
+            "landesverband": "Federación regional",
+            "begin_date": "Inicio de la membresía"
         },
         "roles": {
             "title": "Gestión de roles",
@@ -357,7 +359,9 @@
             "entry_date": "Fecha de alta:",
             "immediately": "Inmediatamente",
             "end_date": "Fecha de baja:",
-            "membership_number": "Número de socio:"
+            "membership_number": "Número de socio:",
+            "planned_begin": "Inicio previsto:",
+            "after_approval": "tras la aprobación"
         },
         "apply": {
             "active_option": "Membresía activa (10 € / año)",

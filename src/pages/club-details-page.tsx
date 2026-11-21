@@ -295,6 +295,9 @@ export function ClubDetailsPage() {
                     const date = new Date(Date.UTC(Number.parseInt(parts[0]), Number.parseInt(parts[1]) - 1, Number.parseInt(parts[2])));
                     extraData.begin_date = Math.floor(date.getTime() / 1000);
                 }
+            } else if (club?.membership.application_date) {
+                // No date chosen: the membership begins on the application date (the server would otherwise use today)
+                extraData.begin_date = club.membership.application_date;
             }
             handleAction('approve', extraData);
         }
@@ -456,7 +459,7 @@ export function ClubDetailsPage() {
                                     }
                                     setActionModal('apply');
                                 }} disabled={formLoading}>
-                                    {(club.membership.status === 'cancelled' || club.membership.status === 'denied')
+                                    {club.membership.status === 'denied'
                                         ? t('club.details.membership.reapply')
                                         : t('club.details.membership.apply')}
                                 </Button>
@@ -1097,7 +1100,7 @@ export function ClubDetailsPage() {
                                 <p className="text-xs text-muted-foreground pt-1">
                                     {(() => {
                                         const mDate = club?.membership?.application_date;
-                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString(i18n.language) : "";
                                         return `Falls leer, wird das Datum ${mDate ? ` aus dem Antrag übernommen (${dateStr})` : ` von heute verwendet`} .`;
                                     })()}
                                 </p>
