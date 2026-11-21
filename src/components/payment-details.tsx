@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,10 +20,11 @@ interface PaymentDetailsProps {
     readonly isAdmin?: boolean;
     readonly canEdit?: boolean;
     readonly alwaysOpen?: boolean; // If true, skips the lazy-load toggle entirely.
+    readonly hint?: ReactNode; // Optional note shown above the fields
 }
 
 export function PaymentDetails({
-    token, fetchUrl, patchUrl, isAdmin, canEdit, alwaysOpen
+    token, fetchUrl, patchUrl, isAdmin, canEdit, alwaysOpen, hint
 }: PaymentDetailsProps) {
     const { t } = useTranslation();
     const [fetchedData, setFetchedData] = useState<PaymentData>({});
@@ -163,7 +164,8 @@ export function PaymentDetails({
                     <CardTitle className="text-lg">{t('club.payment.title', 'Zahlungsdaten')}</CardTitle>
                     {renderHeaderButtons()}
                 </CardHeader>
-                <CardContent className="pt-4">
+                <CardContent className="pt-4 space-y-4">
+                    {hint}
                     {inputs}
                 </CardContent>
             </Card>
@@ -179,7 +181,8 @@ export function PaymentDetails({
                 </div>
                 {show && renderHeaderButtons()}
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
+                {hint}
                 {show ? (
                     <div className="space-y-4">
                         {inputs}

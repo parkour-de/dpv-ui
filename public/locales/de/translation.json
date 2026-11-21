@@ -149,7 +149,9 @@
                 "consent_statutes": "Ich habe die <1>Satzung</1> gelesen und erkenne sie an.",
                 "consent_finances": "Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an.",
                 "apply_button": "Antrag stellen",
-                "cancel_button": "Kündigen"
+                "cancel_dialog_description": "Dein Verein bleibt bis zum Ende der Kündigungsfrist Mitglied im DPV.",
+                "cancel_dialog_info": "Wenn du jetzt kündigst, endet die Mitgliedschaft am <strong>{{date}}</strong>. Die Kündigung kann hier nicht zurückgenommen werden.",
+                "withdraw_dialog_description": "Der Antrag deines Vereins auf Mitgliedschaft wird zurückgezogen. Du kannst später jederzeit einen neuen Antrag stellen."
             }
         },
         "documents": {
@@ -157,7 +159,8 @@
             "description": "Lade hier Vereinsdokumente hoch.",
             "upload_label": "Neues Dokument hochladen",
             "download_all": "Alle herunterladen",
-            "empty": "Keine Dokumente vorhanden."
+            "empty": "Keine Dokumente vorhanden.",
+            "info": "Lade hier die Satzung und den Freistellungsbescheid deines Vereins hoch, damit wir prüfen können, ob er Mitglied im DPV werden kann."
         },
         "payment": {
             "title": "Zahlungsdetails",
@@ -174,7 +177,9 @@
             "placeholders": {
                 "account_holder": "Name des Kontoinhabers"
             },
-            "admin_only": "Nur für Administratoren editierbar."
+            "admin_only": "Nur für Administratoren editierbar.",
+            "info_debit": "Hinterlege hier die Bankverbindung deines Vereins. Wenn ihr die Mitgliedschaft beantragt, ziehen wir die Mitgliedsbeiträge von diesem Konto ein.",
+            "info_required": "Die Bankverbindung muss ausgefüllt sein, bevor ihr die Mitgliedschaft beantragen könnt."
         },
         "owners": {
             "title": "Vorstand & Verwalter",
@@ -183,7 +188,9 @@
             "add_placeholder": "Neuen Verwalter per E-Mail hinzufügen",
             "labels": {
                 "authorizedRepresentative": "Vertretungsberechtigt nach §26 BGB"
-            }
+            },
+            "info_who": "Füge Personen hinzu, die die Angaben des Vereins bearbeiten dürfen. Sie müssen im DPV Mitgliederportal registriert sein.",
+            "info_26": "Mindestens eine Person muss nach §26 BGB vertretungsberechtigt sein."
         },
         "census": {
             "title": "Bestandsmeldung",
@@ -199,7 +206,8 @@
                 "birthdate": "Geburtsdatum"
             },
             "empty": "Keine Bestandsmeldungen vorhanden.",
-            "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchtest du diese überschreiben?"
+            "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchtest du diese überschreiben?",
+            "info_required": "Bevor ihr die Mitgliedschaft beantragen könnt, muss eine Bestandsmeldung für {{year}} vorliegen."
         },
         "messages": {
             "load_error": "Verein konnte nicht geladen werden.",
@@ -241,13 +249,18 @@
             "name": "Name des Vereins",
             "legal_form": "Rechtsform",
             "email_opt": "E-Mail (optional)",
-            "address_opt": "Adresse (optional)"
+            "address_opt": "Adresse (optional)",
+            "authorized_representative": "Ich bin für diesen Verein vertretungsberechtigt (§26 BGB)",
+            "my_function": "Deine Funktion im Verein (optional)",
+            "club_email_opt": "Vereins-E-Mail (optional)",
+            "contact_person_opt": "Ansprechpartner (optional)"
         },
         "placeholders": {
             "name": "Musterverein",
             "legal_form": "z.B. e.V.",
             "email": "info@verein.de",
-            "address": "Strasse 1, 12345 Stadt"
+            "address": "Strasse 1, 12345 Stadt",
+            "my_function": "z.B. Vorsitz, Kassenwart"
         },
         "search": {
             "title": "Ähnliche Vereine",
@@ -263,6 +276,13 @@
         "errors": {
             "not_authenticated": "Nicht authentifiziert.",
             "create_failed": "Erstellen fehlgeschlagen. Bitte überprüfe deine Eingaben."
+        },
+        "info": {
+            "title": "Gut zu wissen",
+            "no_membership": "Mit dem Anlegen ist dein Verein noch kein Mitglied im DPV.",
+            "next_steps": "Danach kannst du die Angaben bearbeiten, weitere Personen als Vorstand oder Verwalter hinzufügen und die Mitgliedschaft im DPV beantragen.",
+            "delete": "Solange keine Mitgliedschaft besteht oder beantragt ist, kannst du deinen Verein auch wieder löschen.",
+            "contact": "Lässt du die Felder leer, bist du ({{name}}) Ansprechpartner des Vereins. Hat der Verein eine eigene E-Mail-Adresse oder liest jemand anderes die Vereinspost, trage hier die Vereins-E-Mail und die Ansprechperson ein."
         }
     },
     "profile": {
@@ -300,13 +320,13 @@
             "date_optional": "Datum (optional)",
             "date_hint_application": "Falls leer, wird das Datum aus dem Antrag übernommen ({{date}}).",
             "date_hint_today": "Falls leer, wird das heutige Datum verwendet.",
-            "cancel_info_prefix": "Wenn jetzt gekündigt wird, endet die Mitgliedschaft zum",
-            "withdraw_confirm": "Möchtest du deinen Antrag wirklich zurückziehen?",
             "cancelling": "Kündigung läuft",
             "cancel_admin": "Kündigen (Admin)",
-            "cancel_description_self": "Bitte wähle aus, zu wann du kündigen möchtest.",
             "apply_description_self": "Bitte wähle aus, ab wann du aktiv werden möchtest.",
-            "back_to_users": "Zurück zur Benutzerverwaltung"
+            "cancel_dialog_description_self": "Du bleibst bis zum Ende der Kündigungsfrist Mitglied im DPV.",
+            "cancel_dialog_description_other": "Die Person bleibt bis zum Ende der Kündigungsfrist Mitglied im DPV.",
+            "cancel_dialog_info": "Wird jetzt gekündigt, endet die Mitgliedschaft am <strong>{{date}}</strong>. Die Kündigung kann hier nicht zurückgenommen werden.",
+            "withdraw_dialog_description": "Dein Antrag auf Mitgliedschaft wird zurückgezogen. Du kannst später jederzeit einen neuen Antrag stellen."
         },
         "language_options": {
             "browser_default": "Browser Standard"
@@ -318,7 +338,8 @@
             "fee": "Aktueller Beitrag",
             "membership_type": "Art der Mitgliedschaft",
             "votes": "Stimmenanzahl",
-            "see_documents": "Siehe <statutes>Satzung</statutes> und <finances>Beitragsordnung</finances>"
+            "see_documents": "Siehe <statutes>Satzung</statutes> und <finances>Beitragsordnung</finances>",
+            "landesverband": "Landesverband"
         },
         "roles": {
             "title": "Rollenverwaltung",

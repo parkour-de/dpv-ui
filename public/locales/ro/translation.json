@@ -149,7 +149,9 @@
                 "consent_statutes": "Am citit și accept <1>statutul</1>.",
                 "consent_finances": "Am citit și accept <1>regulamentul de cotizații</1>.",
                 "apply_button": "Trimite cererea",
-                "cancel_button": "Reziliază"
+                "cancel_dialog_description": "Clubul tău rămâne membru DPV până la sfârșitul perioadei de preaviz.",
+                "cancel_dialog_info": "Dacă reziliezi acum, calitatea de membru se încheie la <strong>{{date}}</strong>. Rezilierea nu poate fi anulată aici.",
+                "withdraw_dialog_description": "Cererea de aderare a clubului va fi retrasă. Poți depune oricând o cerere nouă."
             }
         },
         "documents": {
@@ -157,7 +159,8 @@
             "description": "Încarcă aici documentele clubului.",
             "upload_label": "Încarcă document nou",
             "download_all": "Descarcă tot",
-            "empty": "Nu sunt documente disponibile."
+            "empty": "Nu sunt documente disponibile.",
+            "info": "Încărcați aici statutul și decizia de scutire fiscală (Freistellungsbescheid) a clubului, ca să putem verifica dacă poate deveni membru DPV."
         },
         "payment": {
             "title": "Detalii Plată",
@@ -174,7 +177,9 @@
             "placeholders": {
                 "account_holder": "Numele titularului contului"
             },
-            "admin_only": "Editabil doar de administratori."
+            "admin_only": "Editabil doar de administratori.",
+            "info_debit": "Introduceți aici datele bancare ale clubului. Dacă solicitați calitatea de membru, cotizațiile vor fi încasate din acest cont.",
+            "info_required": "Datele bancare trebuie completate înainte de a putea solicita calitatea de membru."
         },
         "owners": {
             "title": "Consiliu și Administratori",
@@ -183,7 +188,9 @@
             "add_placeholder": "Adaugă administrator nou prin e-mail",
             "labels": {
                 "authorizedRepresentative": "Reprezentant autorizat (§26 BGB)"
-            }
+            },
+            "info_who": "Adăugați persoanele care pot modifica datele clubului. Acestea trebuie să fie înregistrate în portalul de membri DPV.",
+            "info_26": "Cel puțin o persoană trebuie să aibă drept de reprezentare conform §26 BGB."
         },
         "census": {
             "title": "Raport de Recensământ",
@@ -199,7 +206,8 @@
                 "birthdate": "Data nașterii"
             },
             "empty": "Nu sunt disponibile rapoarte de recensământ.",
-            "confirm_overwrite": "Există deja un raport de recensământ pentru anul {{year}}. Doriți să îl suprascrieți?"
+            "confirm_overwrite": "Există deja un raport de recensământ pentru anul {{year}}. Doriți să îl suprascrieți?",
+            "info_required": "Înainte de a solicita calitatea de membru, trebuie depusă raportarea membrilor (Bestandsmeldung) pentru {{year}}."
         },
         "messages": {
             "load_error": "Nu s-a putut încărca clubul.",
@@ -241,13 +249,18 @@
             "name": "Numele Clubului",
             "legal_form": "Formă Juridică",
             "email_opt": "E-mail (opțional)",
-            "address_opt": "Adresă (opțional)"
+            "address_opt": "Adresă (opțional)",
+            "authorized_representative": "Am drept de reprezentare pentru acest club (§26 BGB)",
+            "my_function": "Funcția ta în club (opțional)",
+            "club_email_opt": "E-mail club (opțional)",
+            "contact_person_opt": "Persoană de contact (opțional)"
         },
         "placeholders": {
             "name": "Club Exemplu",
             "legal_form": "ex. e.V.",
             "email": "info@club.ro",
-            "address": "Strada 1, 12345 Oraș"
+            "address": "Strada 1, 12345 Oraș",
+            "my_function": "de ex. președinte, trezorier"
         },
         "search": {
             "title": "Cluburi similare",
@@ -263,6 +276,13 @@
         "errors": {
             "not_authenticated": "Neautentificat.",
             "create_failed": "Crearea a eșuat. Verificați datele introduse."
+        },
+        "info": {
+            "title": "Bine de știut",
+            "no_membership": "Crearea clubului nu îl face încă membru al DPV.",
+            "next_steps": "Apoi puteți edita datele, adăuga alte persoane în conducere sau ca administratori și solicita calitatea de membru DPV.",
+            "delete": "Cât timp nu există o calitate de membru sau o cerere în curs, puteți și șterge clubul.",
+            "contact": "Dacă lași aceste câmpuri goale, tu ({{name}}) vei fi persoana de contact a clubului. Dacă clubul are propria adresă de e-mail sau altcineva citește corespondența clubului, introdu aici e-mailul clubului și persoana de contact."
         }
     },
     "profile": {
@@ -300,13 +320,13 @@
             "date_optional": "Dată (opțional)",
             "date_hint_application": "Dacă este gol, se folosește data din cerere ({{date}}).",
             "date_hint_today": "Dacă este gol, se folosește data de azi.",
-            "cancel_info_prefix": "Dacă se reziliază acum, calitatea de membru se încheie la",
-            "withdraw_confirm": "Sigur vrei să retragi cererea?",
             "cancelling": "Reziliere în curs",
             "cancel_admin": "Reziliază (admin)",
-            "cancel_description_self": "Alege când vrei să reziliezi.",
             "apply_description_self": "Alege de când vrei să începi.",
-            "back_to_users": "Înapoi la gestionarea utilizatorilor"
+            "cancel_dialog_description_self": "Rămâi membru DPV până la sfârșitul perioadei de preaviz.",
+            "cancel_dialog_description_other": "Această persoană rămâne membru DPV până la sfârșitul perioadei de preaviz.",
+            "cancel_dialog_info": "Dacă se reziliază acum, calitatea de membru se încheie la <strong>{{date}}</strong>. Rezilierea nu poate fi anulată aici.",
+            "withdraw_dialog_description": "Cererea ta de aderare va fi retrasă. Poți depune oricând o cerere nouă."
         },
         "language_options": {
             "browser_default": "Implicit browser"
@@ -318,7 +338,8 @@
             "fee": "Taxă curentă",
             "membership_type": "Tipul calității de membru",
             "votes": "Număr de voturi",
-            "see_documents": "Vezi <statutes>statutul</statutes> și <finances>regulamentul cotizațiilor</finances>"
+            "see_documents": "Vezi <statutes>statutul</statutes> și <finances>regulamentul cotizațiilor</finances>",
+            "landesverband": "Federația regională"
         },
         "roles": {
             "title": "Gestionarea rolurilor",

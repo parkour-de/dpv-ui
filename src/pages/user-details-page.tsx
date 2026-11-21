@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { type TFunction } from "i18next";
 import { useAuth } from "@/context/auth-context-core";
@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowLeft, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { Loader2, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
 import { UserProfileForm } from "@/components/user-profile-form";
@@ -18,10 +18,11 @@ import { calculateCancellationDate, cn } from "@/lib/utils";
 import { useBreadcrumbLabel } from "@/context/breadcrumb-context";
 
 type MembershipAction = 'approve' | 'deny' | 'cancel' | 'apply';
+// Dialogs: the membership actions plus "withdraw", which confirms withdrawing an application (server action: cancel)
+type ModalType = MembershipAction | 'withdraw';
 
 export function UserDetailsPage() {
     const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
     const { t } = useTranslation();
     const { user: currentUser, token, apiUpdateUser, login } = useAuth();
     const { config } = useConfig();
@@ -37,7 +38,7 @@ export function UserDetailsPage() {
     const [error, setError] = useState<string | null>(null);
 
     // Membership action state
-    const [actionModal, setActionModal] = useState<'approve' | 'deny' | 'cancel' | 'apply' | null>(null);
+    const [actionModal, setActionModal] = useState<ModalType | null>(null);
     const [actionDate, setActionDate] = useState<string>(isSelfView ? new Date().toISOString().split('T')[0] : "");
 
     // Self-apply specific states
@@ -162,12 +163,6 @@ export function UserDetailsPage() {
     if (error || !targetUser) {
         return (
             <div className="space-y-6">
-                {!isSelfView && (
-                    <Button variant="ghost" className="mb-4" onClick={() => navigate('/users')}>
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        {t('dashboard.actions.back_to_overview')}
-                    </Button>
-                )}
                 <div className="bg-destructive/10 text-destructive p-4 rounded-md flex items-center gap-2">
                     <AlertCircle className="h-5 w-5" />
                     <p>{error || t('dashboard.admin.user_not_found')}</p>
@@ -183,11 +178,6 @@ export function UserDetailsPage() {
 
         return (
             <>
-                <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {t('profile.actions.back_to_users')}
-                </Button>
-
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">
@@ -356,13 +346,10 @@ export function UserDetailsPage() {
                                     {['active', 'requested', 'approved', 'cancelling'].includes(targetUser?.membership?.status || '') ? (
                                         <Button 
                                             size="sm" 
-                                            variant="outline" 
-                                            className="text-destructive hover:text-destructive" 
+                                            variant="destructive" 
                                             onClick={() => {
                                                 if (targetUser?.membership?.status === 'requested') {
-                                                    if (confirm(t('profile.actions.withdraw_confirm'))) {
-                                                        handleMembershipAction('cancel');
-                                                    }
+                                                    setActionModal('withdraw');
                                                 } else if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') {
                                                     setActionModal('cancel');
                                                 }
@@ -402,7 +389,7 @@ export function UserDetailsPage() {
                         )}
                         {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'active' && (
                             <CardFooter className="border-t pt-4">
-                                <Button variant="outline" className="w-full text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
+                                <Button variant="destructive" className="w-full" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
                                     {t('profile.actions.cancel_admin')}
                                 </Button>
                             </CardFooter>
@@ -511,8 +498,8 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
 }
 
 interface ActionModalProps {
-    actionModal: MembershipAction | null;
-    setActionModal: (val: MembershipAction | null) => void;
+    actionModal: ModalType | null;
+    setActionModal: (val: ModalType | null) => void;
     isSelfView: boolean;
     targetUser: User | null;
     actionDate: string;
@@ -547,6 +534,7 @@ function ActionModal({
     actionLoading,
     configLinks
 }: ActionModalProps) {
+    const { i18n } = useTranslation();
     if (!actionModal) return null;
 
     return (
@@ -559,16 +547,18 @@ function ActionModal({
                         {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership')}
                         {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_membership')}
                         {actionModal === 'apply' && t('profile.actions.apply_membership')}
+                        {actionModal === 'withdraw' && t('profile.actions.withdraw_application')}
                     </CardTitle>
                     <CardDescription>
                         {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
                         {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
-                        {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
-                        {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_description_self')}
+                        {(actionModal === 'cancel' && !isSelfView) && t('profile.actions.cancel_dialog_description_other')}
+                        {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_dialog_description_self')}
                         {actionModal === 'apply' && t('profile.actions.apply_description_self')}
+                        {actionModal === 'withdraw' && t('profile.actions.withdraw_dialog_description')}
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className={actionModal === 'withdraw' ? "hidden" : "space-y-4"}>
                     {actionModal === 'apply' && (
                         <ApplyForm
                             applyType={applyType}
@@ -584,9 +574,11 @@ function ActionModal({
                     {actionModal === 'cancel' && (
                         <div className="space-y-2 p-4 border rounded-md bg-muted/20">
                             <p className="text-sm">
-                                {t('profile.actions.cancel_info_prefix', { defaultValue: "Wenn jetzt gekündigt wird, endet die Mitgliedschaft zum" })}
-                                {" "}
-                                <strong>{calculateCancellationDate().toLocaleDateString('de-DE')}</strong>.
+                                <Trans
+                                    i18nKey="profile.actions.cancel_dialog_info"
+                                    values={{ date: calculateCancellationDate().toLocaleDateString(i18n.language) }}
+                                    components={{ strong: <strong /> }}
+                                />
                             </p>
                         </div>
                     )}
@@ -617,14 +609,15 @@ function ActionModal({
                         {t('club.details.actions.cancel')}
                     </Button>
                     <Button
-                        variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
-                        onClick={() => actionModal && handleMembershipAction(actionModal)}
+                        variant={actionModal === 'deny' || actionModal === 'cancel' || actionModal === 'withdraw' ? 'destructive' : 'default'}
+                        onClick={() => actionModal && handleMembershipAction(actionModal === 'withdraw' ? 'cancel' : actionModal)}
                         disabled={actionLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
                     >
                         {actionLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                         {(() => {
                             if (actionModal === 'apply') return t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' });
-                            if (actionModal === 'cancel' && isSelfView) return t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' });
+                            if (actionModal === 'cancel') return t('profile.actions.cancel_membership');
+                            if (actionModal === 'withdraw') return t('profile.actions.withdraw_application');
                             return t('club.details.membership.confirm');
                         })()}
                     </Button>

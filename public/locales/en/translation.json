@@ -149,7 +149,9 @@
                 "consent_statutes": "I have read and accept the <1>statutes</1>.",
                 "consent_finances": "I have read and accept the <1>contribution regulations</1>.",
                 "apply_button": "Submit application",
-                "cancel_button": "Cancel membership"
+                "cancel_dialog_description": "Your club remains a DPV member until the end of the notice period.",
+                "cancel_dialog_info": "If you cancel now, the membership ends on <strong>{{date}}</strong>. The cancellation cannot be undone here.",
+                "withdraw_dialog_description": "Your club's membership application will be withdrawn. You can submit a new application at any time."
             }
         },
         "documents": {
@@ -157,7 +159,8 @@
             "description": "Upload club documents here.",
             "upload_label": "Upload New Document",
             "download_all": "Download All",
-            "empty": "No documents available."
+            "empty": "No documents available.",
+            "info": "Upload your club's statutes and tax exemption notice (Freistellungsbescheid) here so we can check whether it is eligible for DPV membership."
         },
         "payment": {
             "title": "Payment Details",
@@ -174,7 +177,9 @@
             "placeholders": {
                 "account_holder": "Bank Account Holder Name"
             },
-            "admin_only": "Editable by administrators only."
+            "admin_only": "Editable by administrators only.",
+            "info_debit": "Enter your club's bank details here. If you apply for membership, membership fees will be collected from this account.",
+            "info_required": "Bank details must be filled in before you can apply for membership."
         },
         "owners": {
             "title": "Board & Managers",
@@ -183,7 +188,9 @@
             "add_placeholder": "Add new manager by email",
             "labels": {
                 "authorizedRepresentative": "Authorized Representative (§26 BGB)"
-            }
+            },
+            "info_who": "Add the people who may edit the club's information. They must be registered on the DPV member portal.",
+            "info_26": "At least one person must be authorized to represent the club under §26 BGB."
         },
         "census": {
             "title": "Census Report",
@@ -199,7 +206,8 @@
                 "birthdate": "Birth Date"
             },
             "empty": "No census reports available.",
-            "confirm_overwrite": "A census report for the year {{year}} already exists. Do you want to overwrite it?"
+            "confirm_overwrite": "A census report for the year {{year}} already exists. Do you want to overwrite it?",
+            "info_required": "A membership report (Bestandsmeldung) for {{year}} must be submitted before you can apply for membership."
         },
         "messages": {
             "load_error": "Could not load club.",
@@ -241,13 +249,18 @@
             "name": "Club Name",
             "legal_form": "Legal Form",
             "email_opt": "Email (optional)",
-            "address_opt": "Address (optional)"
+            "address_opt": "Address (optional)",
+            "authorized_representative": "I am authorized to represent this club (§26 BGB)",
+            "my_function": "Your role in the club (optional)",
+            "club_email_opt": "Club email (optional)",
+            "contact_person_opt": "Contact person (optional)"
         },
         "placeholders": {
             "name": "Sample Club",
             "legal_form": "e.g. e.V.",
             "email": "info@club.de",
-            "address": "Street 1, 12345 City"
+            "address": "Street 1, 12345 City",
+            "my_function": "e.g. chair, treasurer"
         },
         "search": {
             "title": "Similar Clubs",
@@ -263,6 +276,13 @@
         "errors": {
             "not_authenticated": "Not authenticated.",
             "create_failed": "Creation failed. Please check your inputs."
+        },
+        "info": {
+            "title": "Good to know",
+            "no_membership": "Creating your club does not make it a member of the DPV.",
+            "next_steps": "Afterwards you can edit the details, add other people as board members or administrators, and apply for DPV membership.",
+            "delete": "As long as there is no membership and no pending application, you can also delete your club again.",
+            "contact": "If you leave these fields empty, you ({{name}}) will be the club's contact person. If the club has its own email address or someone else reads the club's mail, enter the club email and contact person here."
         }
     },
     "profile": {
@@ -300,13 +320,13 @@
             "date_optional": "Date (optional)",
             "date_hint_application": "If left empty, the date from the application is used ({{date}}).",
             "date_hint_today": "If left empty, today's date is used.",
-            "cancel_info_prefix": "If cancelled now, the membership ends on",
-            "withdraw_confirm": "Do you really want to withdraw your application?",
             "cancelling": "Cancellation in progress",
             "cancel_admin": "Cancel (admin)",
-            "cancel_description_self": "Please choose when you want to cancel.",
             "apply_description_self": "Please choose when you want to start.",
-            "back_to_users": "Back to user management"
+            "cancel_dialog_description_self": "You remain a DPV member until the end of the notice period.",
+            "cancel_dialog_description_other": "This person remains a DPV member until the end of the notice period.",
+            "cancel_dialog_info": "If cancelled now, the membership ends on <strong>{{date}}</strong>. The cancellation cannot be undone here.",
+            "withdraw_dialog_description": "Your membership application will be withdrawn. You can submit a new application at any time."
         },
         "language_options": {
             "browser_default": "Browser Default"
@@ -318,7 +338,8 @@
             "fee": "Current Fee",
             "membership_type": "Membership type",
             "votes": "Number of votes",
-            "see_documents": "See <statutes>statutes</statutes> and <finances>fee regulations</finances>"
+            "see_documents": "See <statutes>statutes</statutes> and <finances>fee regulations</finances>",
+            "landesverband": "State association"
         },
         "roles": {
             "title": "Role management",
