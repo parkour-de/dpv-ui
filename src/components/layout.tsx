@@ -6,6 +6,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import logoBlack from "@/assets/logo-black.svg";
 import logoWhite from "@/assets/logo-white.svg";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export function Layout() {
     const { t } = useTranslation();
@@ -125,7 +126,9 @@ export function Layout() {
             </header>
 
             <main className="flex-1 mx-auto w-full max-w-screen-xl py-6 px-4 md:px-6">
-                <Outlet />
+                <Breadcrumbs>
+                    <Outlet />
+                </Breadcrumbs>
             </main>
 
             <footer className="border-t border-border/40 py-6 bg-muted/20">

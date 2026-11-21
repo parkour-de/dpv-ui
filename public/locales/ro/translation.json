@@ -58,7 +58,29 @@
             "deny_membership_desc": "Sunteți sigur că doriți să refuzați această solicitare?",
             "cancel_membership": "Anulați apartenența",
             "cancel_membership_desc": "Vă rugăm să selectați data anulării (sfârșitul perioadei active).",
-            "export_error": "Eroare la exportul datelor"
+            "export_error": "Eroare la exportul datelor",
+            "table": {
+                "type": "Tip",
+                "name": "Nume",
+                "email": "E-mail",
+                "status": "Stare",
+                "person": "Persoană",
+                "club": "Club",
+                "member_type": "Formă de membru",
+                "from_date": "din {{date}}",
+                "until_date": "până la {{date}}",
+                "all_types": "Toate tipurile"
+            },
+            "member_types": {
+                "all": "Toate formele de membru",
+                "ordinary": "Membru ordinar (de bază)",
+                "extraordinary": "Membru extraordinar",
+                "active": "Membru activ (persoană)",
+                "supporting": "Membru susținător",
+                "honorary": "Membru de onoare"
+            },
+            "export_users": "CSV utilizatori",
+            "export_clubs": "CSV cluburi"
         },
         "audit_page": {
             "title": "Jurnal de activitate",
@@ -75,7 +97,9 @@
             "no_actions": "Nu a fost înregistrată încă nicio acțiune.",
             "author_label": "Autor:",
             "unauthorized": "Nu aveți permisiunea de a vizualiza această pagină."
-        }
+        },
+        "welcome_back": "Bine ai revenit, {{firstname}}",
+        "intro": "Acesta este portalul cluburilor Asociației Germane de Parkour. Aici puteți crea calitatea de membru personală în asociație, precum și înregistra cluburi și companii, solicita și gestiona calitatea lor de membru."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Solicitat",
             "denied": "Respins",
             "cancelled": "Anulat",
-            "upcoming_membership": "Calitate de membru viitoare 🚀",
-            "pending_cancellation": "Anulare în așteptare ⏳"
+            "upcoming_membership": "Calitate de membru viitoare",
+            "pending_cancellation": "Anulare în așteptare"
         },
         "details": {
             "title": "Date Principale",
@@ -123,7 +147,9 @@
                 "consent_privacy": "Sunt de acord cu <1>politica de confidențialitate</1>.",
                 "consent_accuracy": "Confirm că datele mele sunt corecte.",
                 "consent_statutes": "Am citit și accept <1>statutul</1>.",
-                "consent_finances": "Am citit și accept <1>regulamentul de cotizații</1>."
+                "consent_finances": "Am citit și accept <1>regulamentul de cotizații</1>.",
+                "apply_button": "Trimite cererea",
+                "cancel_button": "Reziliază"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Numele titularului contului"
-            }
+            },
+            "admin_only": "Editabil doar de administratori."
         },
         "owners": {
             "title": "Consiliu și Administratori",
@@ -242,14 +269,19 @@
         "title": "Profilul Meu",
         "personal_data": {
             "title": "Date Personale",
-            "description": "Actualizați aici informațiile personale."
+            "description": "Actualizați aici informațiile personale.",
+            "admin_description": "Datele utilizatorului",
+            "admin_edit_description": "Editează datele utilizatorului"
         },
         "labels": {
             "firstname": "Prenume",
             "lastname": "Nume",
             "email": "E-mail",
             "language": "Limbă",
-            "yourClub": "Clubul tău"
+            "yourClub": "Clubul tău",
+            "address": "Adresă",
+            "dateOfBirth": "Data nașterii",
+            "address_placeholder": "Stradă, cod poștal, oraș"
         },
         "messages": {
             "success": "Profil actualizat.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Anulați apartenența",
             "withdraw_application": "Retrageți cererea",
             "reapply": "Aplicați din nou",
-            "apply_membership": "Aplicați pentru apartenență"
+            "apply_membership": "Aplicați pentru apartenență",
+            "date_optional": "Dată (opțional)",
+            "date_hint_application": "Dacă este gol, se folosește data din cerere ({{date}}).",
+            "date_hint_today": "Dacă este gol, se folosește data de azi.",
+            "cancel_info_prefix": "Dacă se reziliază acum, calitatea de membru se încheie la",
+            "withdraw_confirm": "Sigur vrei să retragi cererea?",
+            "cancelling": "Reziliere în curs",
+            "cancel_admin": "Reziliază (admin)",
+            "cancel_description_self": "Alege când vrei să reziliezi.",
+            "apply_description_self": "Alege de când vrei să începi.",
+            "back_to_users": "Înapoi la gestionarea utilizatorilor"
         },
         "language_options": {
             "browser_default": "Implicit browser"
@@ -273,7 +315,32 @@
             "title": "Datele asociației",
             "description": "Completat de asociație",
             "membership_number": "Număr de membru",
-            "fee": "Taxă curentă"
+            "fee": "Taxă curentă",
+            "membership_type": "Tipul calității de membru",
+            "votes": "Număr de voturi",
+            "see_documents": "Vezi <statutes>statutul</statutes> și <finances>regulamentul cotizațiilor</finances>"
+        },
+        "roles": {
+            "title": "Gestionarea rolurilor",
+            "description": "Atribuie permisiuni de sistem acestui utilizator",
+            "admin": "Administrator de sistem (admin)",
+            "aktivadmin": "Coordonator membri activi (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Calitatea de membru",
+            "title_other": "Starea calității de membru",
+            "description": "Gestionează-ți calitatea de membru DPV",
+            "none": "Nu există nicio cerere de aderare activă.",
+            "status": "Stare:",
+            "application_date": "Data cererii:",
+            "entry_date": "Data aderării:",
+            "immediately": "Imediat",
+            "end_date": "Data rezilierii:",
+            "membership_number": "Număr de membru:"
+        },
+        "apply": {
+            "active_option": "Membru activ (10 € / an)",
+            "custom_fee": "Cotizație dorită pe an (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Dacă reprezinți o companie de parkour, gestionează abonamentul la secțiunea companiei.",
             "button": "În curând"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Traseu de navigare",
+        "clubs": "Gestionarea cluburilor",
+        "club": "Club",
+        "user": "Utilizator",
+        "status": "Stare",
+        "settings": "Setări de sistem"
     }
 }

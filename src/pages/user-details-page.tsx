@@ -15,6 +15,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { MembershipStatus } from "@/components/membership-status";
 import { UserProfileForm } from "@/components/user-profile-form";
 import { calculateCancellationDate, cn } from "@/lib/utils";
+import { useBreadcrumbLabel } from "@/context/breadcrumb-context";
 
 type MembershipAction = 'approve' | 'deny' | 'cancel' | 'apply';
 
@@ -30,6 +31,7 @@ export function UserDetailsPage() {
     const targetUserId = id || currentUser?._key;
 
     const [targetUser, setTargetUser] = useState<User | null>(null);
+    useBreadcrumbLabel(targetUser ? `${targetUser.firstname} ${targetUser.lastname}` : undefined);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -67,7 +69,7 @@ export function UserDetailsPage() {
                     setLoading(false);
                 } else {
                     setLoading(false);
-                    setError("Du hast keine Berechtigung, diese Seite anzuzeigen.");
+                    setError(t('dashboard.audit_page.unauthorized'));
                 }
             } catch (err: unknown) {
                 console.error("Failed to fetch user", err);
@@ -159,7 +161,7 @@ export function UserDetailsPage() {
 
     if (error || !targetUser) {
         return (
-            <div className="space-y-6 max-w-2xl mx-auto">
+            <div className="space-y-6">
                 {!isSelfView && (
                     <Button variant="ghost" className="mb-4" onClick={() => navigate('/users')}>
                         <ArrowLeft className="mr-2 h-4 w-4" />
@@ -183,7 +185,7 @@ export function UserDetailsPage() {
             <>
                 <Button variant="ghost" onClick={() => navigate('/users')} className="-ml-4">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Zurück zur Benutzerverwaltung
+                    {t('profile.actions.back_to_users')}
                 </Button>
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -218,22 +220,22 @@ export function UserDetailsPage() {
                         <Input value={targetUser?.membership?.current_fee !== undefined ? `${targetUser.membership.current_fee.toFixed(2)} €` : ''} disabled />
                         {isSelfView && (
                             <p className="text-xs text-muted-foreground mt-1">
-                                Siehe <a href={config?.links?.statutes || "https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Satzung</a> und <a href={config?.links?.finances || "https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]">Beitragsordnung</a>
+                                <Trans i18nKey="profile.verband.see_documents" components={{ statutes: <a href={config?.links?.statutes || "https://parkour-deutschland.de/wp-content/uploads/2026/03/Satzung_DPV_Stand_2025.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" />, finances: <a href={config?.links?.finances || "https://parkour-deutschland.de/wp-content/uploads/2025/11/Beitragsordnung_DPV.pdf"} target="_blank" rel="noopener noreferrer" className="underline text-[#00b8b0]" /> }} />
                             </p>
                         )}
                     </div>
                     <div className="space-y-2">
-                        <Label>Art der Mitgliedschaft</Label>
+                        <Label>{t('profile.verband.membership_type')}</Label>
                         <Input value={(() => {
                             const mType = targetUser.membership?.type;
-                            if (mType === 'active') return 'Aktivmitgliedschaft';
-                            if (mType === 'supporting') return 'Fördernde Mitgliedschaft';
-                            if (mType === 'ordinary') return 'Ordentliche Mitgliedschaft';
+                            if (mType === 'active') return t('landing.active_membership.title');
+                            if (mType === 'supporting') return t('landing.supporting_membership.title');
+                            if (mType === 'ordinary') return t('landing.ordinary_membership.title');
                             return mType || '';
                         })()} disabled />
                     </div>
                     <div className="space-y-2">
-                        <Label>Stimmenanzahl</Label>
+                        <Label>{t('profile.verband.votes')}</Label>
                         <Input value={targetUser.membership?.current_votes?.toString() ?? '0'} disabled />
                     </div>
                 </div>
@@ -243,7 +245,7 @@ export function UserDetailsPage() {
 
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto pb-12">
+        <div className="space-y-6 pb-12">
             {renderHeader()}
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -259,8 +261,8 @@ export function UserDetailsPage() {
                     {currentUser?.roles?.includes('admin') && (
                         <Card>
                             <CardHeader>
-                                <CardTitle>Rollenverwaltung</CardTitle>
-                                <CardDescription>Systemberechtigungen für diesen Benutzer zuweisen</CardDescription>
+                                <CardTitle>{t('profile.roles.title')}</CardTitle>
+                                <CardDescription>{t('profile.roles.description')}</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <div className="flex flex-col gap-2">
@@ -293,7 +295,7 @@ export function UserDetailsPage() {
                                                 disabled={actionLoading}
                                                 className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                                             />
-                                            <span>Systemadministrator (admin)</span>
+                                            <span>{t('profile.roles.admin')}</span>
                                         </Label>
                                         {(() => {
                                             const isAktivAdmin = targetUser.roles?.includes('aktivadmin') || false;
@@ -323,7 +325,7 @@ export function UserDetailsPage() {
                                                         disabled={actionLoading || aktivAdminDisabled}
                                                         className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                                                     />
-                                                    <span>Aktivenbetreuer (aktivadmin)</span>
+                                                    <span>{t('profile.roles.aktivadmin')}</span>
                                                 </Label>
                                             );
                                         })()}
@@ -337,8 +339,8 @@ export function UserDetailsPage() {
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Mitgliedschafts{isSelfView ? '' : 'status'}</CardTitle>
-                            {isSelfView && <CardDescription>Verwalte deine Mitgliedschaft im DPV</CardDescription>}
+                            <CardTitle>{isSelfView ? t('profile.membership.title_self') : t('profile.membership.title_other')}</CardTitle>
+                            {isSelfView && <CardDescription>{t('profile.membership.description')}</CardDescription>}
                         </CardHeader>
                         <CardContent className="space-y-4">
                             {isSelfView ? (
@@ -358,7 +360,7 @@ export function UserDetailsPage() {
                                             className="text-destructive hover:text-destructive" 
                                             onClick={() => {
                                                 if (targetUser?.membership?.status === 'requested') {
-                                                    if (confirm("Möchtest du deinen Antrag wirklich zurückziehen?")) {
+                                                    if (confirm(t('profile.actions.withdraw_confirm'))) {
                                                         handleMembershipAction('cancel');
                                                     }
                                                 } else if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') {
@@ -371,7 +373,7 @@ export function UserDetailsPage() {
                                             {(() => {
                                                 if (targetUser?.membership?.status === 'active' || targetUser?.membership?.status === 'approved') return t('profile.actions.cancel_membership');
                                                 if (targetUser?.membership?.status === 'requested') return t('profile.actions.withdraw_application');
-                                                return 'Kündigung läuft';
+                                                return t('profile.actions.cancelling');
                                             })()}
                                         </Button>
                                     ) : (
@@ -390,18 +392,18 @@ export function UserDetailsPage() {
                             <CardFooter className="flex flex-col sm:flex-row gap-2 border-t pt-4">
                                 <Button className="w-full bg-green-600 hover:bg-green-700" onClick={() => setActionModal('approve')} disabled={actionLoading}>
                                     <CheckCircle className="mr-2 h-4 w-4" />
-                                    Genehmigen
+                                    {t('club.details.membership.approve')}
                                 </Button>
                                 <Button variant="destructive" className="w-full" onClick={() => setActionModal('deny')} disabled={actionLoading}>
                                     <XCircle className="mr-2 h-4 w-4" />
-                                    Ablehnen
+                                    {t('club.details.membership.deny')}
                                 </Button>
                             </CardFooter>
                         )}
                         {(!isSelfView || currentUser?.roles?.includes('admin')) && targetUser.membership?.status === 'active' && (
                             <CardFooter className="border-t pt-4">
                                 <Button variant="outline" className="w-full text-destructive hover:text-destructive" onClick={() => setActionModal('cancel')} disabled={actionLoading}>
-                                    Kündigen (Admin)
+                                    {t('profile.actions.cancel_admin')}
                                 </Button>
                             </CardFooter>
                         )}
@@ -450,21 +452,21 @@ function ApplyForm({ applyType, setApplyType, applyFee, setApplyFee, consents, s
     return (
         <div className="space-y-4 pt-2">
             <div className="space-y-2 border-b pb-4">
-                <Label>Art der Mitgliedschaft</Label>
+                <Label>{t('profile.verband.membership_type')}</Label>
                 <div className="flex flex-col gap-2">
                     <Label className="flex items-center gap-2 cursor-pointer font-normal">
                         <input type="radio" value="active" checked={applyType === 'active'} onChange={() => setApplyType('active')} />
-                        <span>Aktivmitgliedschaft (10 € / Jahr)</span>
+                        <span>{t('profile.apply.active_option')}</span>
                     </Label>
                     <Label className="flex items-center gap-2 cursor-pointer font-normal">
                         <input type="radio" value="supporting" checked={applyType === 'supporting'} onChange={() => setApplyType('supporting')} />
-                        <span>Fördernde Mitgliedschaft</span>
+                        <span>{t('landing.supporting_membership.title')}</span>
                     </Label>
                 </div>
             </div>
             {applyType === 'supporting' && (
                 <div className="space-y-2 animate-in fade-in pb-2">
-                    <Label htmlFor="customFee">Wunschbeitrag pro Jahr (€)</Label>
+                    <Label htmlFor="customFee">{t('profile.apply.custom_fee')}</Label>
                     <Input
                         id="customFee"
                         type="number"
@@ -562,8 +564,8 @@ function ActionModal({
                         {actionModal === 'approve' && t('dashboard.admin.approve_membership_desc')}
                         {actionModal === 'deny' && t('dashboard.admin.deny_membership_desc')}
                         {(actionModal === 'cancel' && !isSelfView) && t('dashboard.admin.cancel_membership_desc')}
-                        {(actionModal === 'cancel' && isSelfView) && 'Bitte wähle aus, zu wann du kündigen möchtest.'}
-                        {actionModal === 'apply' && 'Bitte wähle aus, ab wann du aktiv werden möchtest.'}
+                        {(actionModal === 'cancel' && isSelfView) && t('profile.actions.cancel_description_self')}
+                        {actionModal === 'apply' && t('profile.actions.apply_description_self')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -590,7 +592,7 @@ function ActionModal({
                     )}
                     {actionModal === 'approve' && (
                         <div className="space-y-2">
-                            <Label htmlFor="actionDate">Datum (Optional)</Label>
+                            <Label htmlFor="actionDate">{t('profile.actions.date_optional')}</Label>
                             <Input
                                 id="actionDate"
                                 type="date"
@@ -601,7 +603,7 @@ function ActionModal({
                                 {(() => {
                                     const mDate = targetUser?.membership?.application_date;
                                     const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
-                                    return `Falls leer, wird das Datum ${mDate ? ` aus dem Antrag übernommen (${dateStr})` : ` von heute verwendet`} .`;
+                                    return mDate ? t('profile.actions.date_hint_application', { date: dateStr }) : t('profile.actions.date_hint_today');
                                 })()}
                             </p>
                         </div>
@@ -612,7 +614,7 @@ function ActionModal({
                         setActionModal(null);
                         setActionDate(isSelfView ? new Date().toISOString().split('T')[0] : "");
                     }} disabled={actionLoading}>
-                        {isSelfView ? t('club.details.actions.cancel', { defaultValue: 'Abbrechen' }) : 'Abbrechen'}
+                        {t('club.details.actions.cancel')}
                     </Button>
                     <Button
                         variant={actionModal === 'deny' || actionModal === 'cancel' ? 'destructive' : 'default'}
@@ -623,7 +625,7 @@ function ActionModal({
                         {(() => {
                             if (actionModal === 'apply') return t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' });
                             if (actionModal === 'cancel' && isSelfView) return t('club.details.membership.cancel_button', { defaultValue: 'Kündigen' });
-                            return 'Bestätigen';
+                            return t('club.details.membership.confirm');
                         })()}
                     </Button>
                 </CardFooter>

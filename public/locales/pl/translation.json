@@ -58,7 +58,29 @@
             "deny_membership_desc": "Czy na pewno chcesz odrzucić ten wniosek?",
             "cancel_membership": "Anuluj członkostwo",
             "cancel_membership_desc": "Wybierz datę anulowania (koniec aktywnego okresu).",
-            "export_error": "Błąd podczas eksportowania danych"
+            "export_error": "Błąd podczas eksportowania danych",
+            "table": {
+                "type": "Typ",
+                "name": "Nazwa",
+                "email": "E-mail",
+                "status": "Status",
+                "person": "Osoba",
+                "club": "Klub",
+                "member_type": "Forma członkostwa",
+                "from_date": "od {{date}}",
+                "until_date": "do {{date}}",
+                "all_types": "Wszystkie typy"
+            },
+            "member_types": {
+                "all": "Wszystkie formy członkostwa",
+                "ordinary": "Członek zwyczajny (podstawowy)",
+                "extraordinary": "Członek nadzwyczajny",
+                "active": "Członek aktywny (osoba)",
+                "supporting": "Członek wspierający",
+                "honorary": "Członek honorowy"
+            },
+            "export_users": "CSV użytkowników",
+            "export_clubs": "CSV klubów"
         },
         "audit_page": {
             "title": "Dziennik aktywności",
@@ -75,7 +97,9 @@
             "no_actions": "Nie zarejestrowano jeszcze żadnych akcji.",
             "author_label": "Autor:",
             "unauthorized": "Nie masz uprawnień do przeglądania tej strony."
-        }
+        },
+        "welcome_back": "Witaj ponownie, {{firstname}}",
+        "intro": "To jest portal klubowy Niemieckiego Stowarzyszenia Parkour. Możesz tutaj założyć swoje osobiste członkostwo w stowarzyszeniu, a także rejestrować kluby i firmy oraz składać wnioski o ich członkostwo i nim zarządzać."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Zgłoszony",
             "denied": "Odrzucony",
             "cancelled": "Anulowany",
-            "upcoming_membership": "Nadchodzące członkostwo 🚀",
-            "pending_cancellation": "Oczekiwanie na anulowanie ⏳"
+            "upcoming_membership": "Nadchodzące członkostwo",
+            "pending_cancellation": "Oczekiwanie na anulowanie"
         },
         "details": {
             "title": "Dane Główne",
@@ -123,7 +147,9 @@
                 "consent_privacy": "Akceptuję <1>politykę prywatności</1>.",
                 "consent_accuracy": "Potwierdzam, że moje dane są prawdziwe.",
                 "consent_statutes": "Zapoznałem/am się ze <1>statutem</1> i akceptuję go.",
-                "consent_finances": "Zapoznałem/am się z <1>regulaminem składek</1> i akceptuję go."
+                "consent_finances": "Zapoznałem/am się z <1>regulaminem składek</1> i akceptuję go.",
+                "apply_button": "Złóż wniosek",
+                "cancel_button": "Wypowiedz"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Imię i nazwisko właściciela konta"
-            }
+            },
+            "admin_only": "Edytowalne tylko przez administratorów."
         },
         "owners": {
             "title": "Zarząd i Administratorzy",
@@ -242,14 +269,19 @@
         "title": "Mój Profil",
         "personal_data": {
             "title": "Dane Osobowe",
-            "description": "Zaktualizuj tutaj swoje dane osobowe."
+            "description": "Zaktualizuj tutaj swoje dane osobowe.",
+            "admin_description": "Dane użytkownika",
+            "admin_edit_description": "Edytuj dane użytkownika"
         },
         "labels": {
             "firstname": "Imię",
             "lastname": "Nazwisko",
             "email": "E-mail",
             "language": "Język",
-            "yourClub": "Twój Klub"
+            "yourClub": "Twój Klub",
+            "address": "Adres",
+            "dateOfBirth": "Data urodzenia",
+            "address_placeholder": "Ulica, kod pocztowy, miasto"
         },
         "messages": {
             "success": "Profil zaktualizowany.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Anuluj członkostwo",
             "withdraw_application": "Wycofaj wniosek",
             "reapply": "Złóż wniosek ponownie",
-            "apply_membership": "Złóż wniosek o członkostwo"
+            "apply_membership": "Złóż wniosek o członkostwo",
+            "date_optional": "Data (opcjonalnie)",
+            "date_hint_application": "Jeśli puste, zostanie użyta data z wniosku ({{date}}).",
+            "date_hint_today": "Jeśli puste, zostanie użyta dzisiejsza data.",
+            "cancel_info_prefix": "W przypadku wypowiedzenia teraz członkostwo kończy się",
+            "withdraw_confirm": "Czy na pewno chcesz wycofać swój wniosek?",
+            "cancelling": "Wypowiedzenie w toku",
+            "cancel_admin": "Wypowiedz (admin)",
+            "cancel_description_self": "Wybierz, kiedy chcesz wypowiedzieć członkostwo.",
+            "apply_description_self": "Wybierz, od kiedy chcesz rozpocząć.",
+            "back_to_users": "Powrót do zarządzania użytkownikami"
         },
         "language_options": {
             "browser_default": "Domyślny przeglądarki"
@@ -273,7 +315,32 @@
             "title": "Dane stowarzyszenia",
             "description": "Wypełniane przez stowarzyszenie",
             "membership_number": "Numer członkowski",
-            "fee": "Aktualna opłata"
+            "fee": "Aktualna opłata",
+            "membership_type": "Rodzaj członkostwa",
+            "votes": "Liczba głosów",
+            "see_documents": "Zobacz <statutes>statut</statutes> i <finances>regulamin składek</finances>"
+        },
+        "roles": {
+            "title": "Zarządzanie rolami",
+            "description": "Przypisz uprawnienia systemowe temu użytkownikowi",
+            "admin": "Administrator systemu (admin)",
+            "aktivadmin": "Opiekun członków aktywnych (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Członkostwo",
+            "title_other": "Status członkostwa",
+            "description": "Zarządzaj swoim członkostwem w DPV",
+            "none": "Brak aktywnego wniosku o członkostwo.",
+            "status": "Status:",
+            "application_date": "Data wniosku:",
+            "entry_date": "Data przystąpienia:",
+            "immediately": "Natychmiast",
+            "end_date": "Data wypowiedzenia:",
+            "membership_number": "Numer członkowski:"
+        },
+        "apply": {
+            "active_option": "Członkostwo aktywne (10 € / rok)",
+            "custom_fee": "Wybrana składka roczna (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Jeśli reprezentujesz firmę związaną z parkourem, zarządzaj członkostwem za pośrednictwem panelu firmy.",
             "button": "Wkrótce"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Ścieżka nawigacji",
+        "clubs": "Zarządzanie klubami",
+        "club": "Klub",
+        "user": "Użytkownik",
+        "status": "Status",
+        "settings": "Ustawienia systemu"
     }
 }

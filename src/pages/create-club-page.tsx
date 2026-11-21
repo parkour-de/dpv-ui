@@ -75,7 +75,7 @@ export function CreateClubPage() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6 pb-12">
+        <div className="space-y-6 pb-12">
             <div className="flex items-center gap-2">
                 <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
                     <ArrowLeft className="h-4 w-4" />

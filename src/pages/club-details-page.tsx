@@ -4,7 +4,7 @@ import { useTranslation, Trans } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { useConfig } from "@/hooks/use-config";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, GERMAN_STATES, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff, Section } from "lucide-react";
 import { cn, calculateCancellationDate } from "@/lib/utils";
 import { PaymentDetails } from "@/components/payment-details";
+import { useBreadcrumbLabel } from "@/context/breadcrumb-context";
 
 export function ClubDetailsPage() {
     const { t } = useTranslation();
@@ -20,6 +21,7 @@ export function ClubDetailsPage() {
     const { user, token } = useAuth();
     const { config } = useConfig();
     const [club, setClub] = useState<Club | null>(null);
+    useBreadcrumbLabel(club?.name);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -1189,7 +1191,7 @@ export function ClubDetailsPage() {
     if (!club) return <div className="text-center py-12">{t('club.messages.not_found')}</div>;
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="space-y-6">
             {renderHeader()}
 
             {error && (
@@ -1235,13 +1237,28 @@ export function ClubDetailsPage() {
                                         {t(field.label)}
                                         {field.locked && <span className="ml-2 text-xs">(Gesperrt)</span>}
                                     </Label>
-                                    <Input
-                                        id={field.id}
-                                        value={formData[field.id as keyof typeof formData] || ''}
-                                        onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
-                                        disabled={!isEditing || field.locked}
-                                        placeholder={field.placeholder}
-                                    />
+                                    {field.id === 'state' ? (
+                                        <select
+                                            id="state"
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            value={formData.state || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, state: e.target.value }))}
+                                            disabled={!isEditing || field.locked}
+                                        >
+                                            <option value="">–</option>
+                                            {/* Keep an older free-text value selectable until it is replaced */}
+                                            {formData.state && !GERMAN_STATES.includes(formData.state) && <option value={formData.state}>{formData.state}</option>}
+                                            {GERMAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                                        </select>
+                                    ) : (
+                                        <Input
+                                            id={field.id}
+                                            value={formData[field.id as keyof typeof formData] || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
+                                            disabled={!isEditing || field.locked}
+                                            placeholder={field.placeholder}
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>

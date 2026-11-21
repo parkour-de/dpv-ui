@@ -58,7 +58,29 @@
             "deny_membership_desc": "¿Realmente quieres denegar esta solicitud?",
             "cancel_membership": "Cancelar membresía",
             "cancel_membership_desc": "Selecciona la fecha de cancelación (fin del período activo).",
-            "export_error": "Error al exportar datos"
+            "export_error": "Error al exportar datos",
+            "table": {
+                "type": "Tipo",
+                "name": "Nombre",
+                "email": "Correo electrónico",
+                "status": "Estado",
+                "person": "Persona",
+                "club": "Club",
+                "member_type": "Tipo de membresía",
+                "from_date": "desde {{date}}",
+                "until_date": "hasta {{date}}",
+                "all_types": "Todos los tipos"
+            },
+            "member_types": {
+                "all": "Todas las formas de membresía",
+                "ordinary": "Miembro ordinario (base)",
+                "extraordinary": "Miembro extraordinario",
+                "active": "Miembro activo (persona)",
+                "supporting": "Miembro de apoyo",
+                "honorary": "Miembro honorario"
+            },
+            "export_users": "CSV de usuarios",
+            "export_clubs": "CSV de clubes"
         },
         "audit_page": {
             "title": "Registro de actividades",
@@ -75,7 +97,9 @@
             "no_actions": "Aún no se han registrado acciones.",
             "author_label": "Autor:",
             "unauthorized": "No tiene permiso para ver esta página."
-        }
+        },
+        "welcome_back": "Bienvenido de nuevo, {{firstname}}",
+        "intro": "Este es el portal de clubes de la Asociación Alemana de Parkour. Aquí puedes crear tu membresía personal en la asociación, así como registrar clubes y empresas y solicitar y gestionar sus membresías."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Solicitado",
             "denied": "Denegado",
             "cancelled": "Cancelado",
-            "upcoming_membership": "Membresía futura 🚀",
-            "pending_cancellation": "Cancelación pendiente ⏳"
+            "upcoming_membership": "Membresía futura",
+            "pending_cancellation": "Cancelación pendiente"
         },
         "details": {
             "title": "Datos Principales",
@@ -123,7 +147,9 @@
                 "consent_privacy": "Acepto la <1>política de privacidad</1>.",
                 "consent_accuracy": "Confirmo que mis datos son verídicos.",
                 "consent_statutes": "He leído y acepto los <1>estatutos</1>.",
-                "consent_finances": "He leído y acepto el <1>reglamento de cuotas</1>."
+                "consent_finances": "He leído y acepto el <1>reglamento de cuotas</1>.",
+                "apply_button": "Enviar solicitud",
+                "cancel_button": "Cancelar membresía"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Nombre del titular de la cuenta"
-            }
+            },
+            "admin_only": "Solo editable por administradores."
         },
         "owners": {
             "title": "Junta y Administradores",
@@ -242,14 +269,19 @@
         "title": "Mi Perfil",
         "personal_data": {
             "title": "Datos Personales",
-            "description": "Actualiza aquí tu información personal."
+            "description": "Actualiza aquí tu información personal.",
+            "admin_description": "Datos del usuario",
+            "admin_edit_description": "Editar datos del usuario"
         },
         "labels": {
             "firstname": "Nombre",
             "lastname": "Apellido",
             "email": "Correo electrónico",
             "language": "Idioma",
-            "yourClub": "Tu Club"
+            "yourClub": "Tu Club",
+            "address": "Dirección",
+            "dateOfBirth": "Fecha de nacimiento",
+            "address_placeholder": "Calle, código postal, ciudad"
         },
         "messages": {
             "success": "Perfil actualizado.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Cancelar membresía",
             "withdraw_application": "Retirar solicitud",
             "reapply": "Volver a solicitar",
-            "apply_membership": "Solicitar membresía"
+            "apply_membership": "Solicitar membresía",
+            "date_optional": "Fecha (opcional)",
+            "date_hint_application": "Si se deja vacío, se usará la fecha de la solicitud ({{date}}).",
+            "date_hint_today": "Si se deja vacío, se usará la fecha de hoy.",
+            "cancel_info_prefix": "Si se cancela ahora, la membresía termina el",
+            "withdraw_confirm": "¿Seguro que quieres retirar tu solicitud?",
+            "cancelling": "Baja en curso",
+            "cancel_admin": "Dar de baja (admin)",
+            "cancel_description_self": "Elige cuándo quieres darte de baja.",
+            "apply_description_self": "Elige a partir de cuándo quieres empezar.",
+            "back_to_users": "Volver a la gestión de usuarios"
         },
         "language_options": {
             "browser_default": "Predeterminado del navegador"
@@ -273,7 +315,32 @@
             "title": "Datos de la asociación",
             "description": "Rellenado por la asociación",
             "membership_number": "Número de miembro",
-            "fee": "Cuota actual"
+            "fee": "Cuota actual",
+            "membership_type": "Tipo de membresía",
+            "votes": "Número de votos",
+            "see_documents": "Ver <statutes>estatutos</statutes> y <finances>reglamento de cuotas</finances>"
+        },
+        "roles": {
+            "title": "Gestión de roles",
+            "description": "Asignar permisos del sistema a este usuario",
+            "admin": "Administrador del sistema (admin)",
+            "aktivadmin": "Coordinador de miembros activos (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Membresía",
+            "title_other": "Estado de la membresía",
+            "description": "Gestiona tu membresía en la DPV",
+            "none": "No hay ninguna solicitud de membresía activa.",
+            "status": "Estado:",
+            "application_date": "Fecha de solicitud:",
+            "entry_date": "Fecha de alta:",
+            "immediately": "Inmediatamente",
+            "end_date": "Fecha de baja:",
+            "membership_number": "Número de socio:"
+        },
+        "apply": {
+            "active_option": "Membresía activa (10 € / año)",
+            "custom_fee": "Cuota deseada por año (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Si representas a una empresa de parkour y deseas afiliarla, gestiona la membresía en la administración de empresas.",
             "button": "Próximamente"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Ruta de navegación",
+        "clubs": "Gestión de clubes",
+        "club": "Club",
+        "user": "Usuario",
+        "status": "Estado",
+        "settings": "Configuración del sistema"
     }
 }

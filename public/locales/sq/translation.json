@@ -58,7 +58,29 @@
             "deny_membership_desc": "Vërtet dëshironi ta refuzoni këtë kërkesë?",
             "cancel_membership": "Anulo anëtarësimin",
             "cancel_membership_desc": "Ju lutemi zgjidhni datën e anulimit (fundi i periudhës aktive).",
-            "export_error": "Gabim gjatë eksportimit të të dhënave"
+            "export_error": "Gabim gjatë eksportimit të të dhënave",
+            "table": {
+                "type": "Lloji",
+                "name": "Emri",
+                "email": "Email",
+                "status": "Statusi",
+                "person": "Person",
+                "club": "Klub",
+                "member_type": "Forma e anëtarësimit",
+                "from_date": "nga {{date}}",
+                "until_date": "deri më {{date}}",
+                "all_types": "Të gjitha llojet"
+            },
+            "member_types": {
+                "all": "Të gjitha format e anëtarësimit",
+                "ordinary": "Anëtar i rregullt (bazë)",
+                "extraordinary": "Anëtar i jashtëzakonshëm",
+                "active": "Anëtar aktiv (person)",
+                "supporting": "Anëtar mbështetës",
+                "honorary": "Anëtar nderi"
+            },
+            "export_users": "CSV e përdoruesve",
+            "export_clubs": "CSV e klubeve"
         },
         "audit_page": {
             "title": "Regjistri i aktiviteteve",
@@ -75,7 +97,9 @@
             "no_actions": "Nuk është regjistruar ende asnjë veprim.",
             "author_label": "Autori:",
             "unauthorized": "Nuk keni leje për të parë këtë faqe."
-        }
+        },
+        "welcome_back": "Mirë se u kthyet, {{firstname}}",
+        "intro": "Ky është portali i klubeve i Shoqatës Gjermane të Parkourit. Këtu mund të krijoni anëtarësimin tuaj personal në shoqatë, si dhe të regjistroni klube dhe kompani dhe të aplikoni për anëtarësimet e tyre dhe t'i menaxhoni ato."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Kërkuar",
             "denied": "Refuzuar",
             "cancelled": "Anuluar",
-            "upcoming_membership": "Anëtarësimi i ardhshëm 🚀",
-            "pending_cancellation": "Anulimi në pritje ⏳"
+            "upcoming_membership": "Anëtarësimi i ardhshëm",
+            "pending_cancellation": "Anulimi në pritje"
         },
         "details": {
             "title": "Të Dhënat Kryesore",
@@ -123,7 +147,9 @@
                 "consent_privacy": "Pranoj <1>politikën e privatësisë</1>.",
                 "consent_accuracy": "Konfirmoj që të dhënat e mia janë të sakta.",
                 "consent_statutes": "Kam lexuar dhe pranoj <1>statutin</1>.",
-                "consent_finances": "Kam lexuar dhe pranoj <1>rregulloren e kontributeve</1>."
+                "consent_finances": "Kam lexuar dhe pranoj <1>rregulloren e kontributeve</1>.",
+                "apply_button": "Dërgo kërkesën",
+                "cancel_button": "Anulo anëtarësimin"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Emri i mbajtësit të llogarisë"
-            }
+            },
+            "admin_only": "E redaktueshme vetëm nga administratorët."
         },
         "owners": {
             "title": "Bordi dhe Administratorët",
@@ -242,14 +269,19 @@
         "title": "Profili Im",
         "personal_data": {
             "title": "Të Dhënat Personale",
-            "description": "Përditësoni informacionin tuaj personal këtu."
+            "description": "Përditësoni informacionin tuaj personal këtu.",
+            "admin_description": "Të dhënat e përdoruesit",
+            "admin_edit_description": "Ndrysho të dhënat e përdoruesit"
         },
         "labels": {
             "firstname": "Emri",
             "lastname": "Mbiemri",
             "email": "Email",
             "language": "Gjuha",
-            "yourClub": "Klubi yt"
+            "yourClub": "Klubi yt",
+            "address": "Adresa",
+            "dateOfBirth": "Data e lindjes",
+            "address_placeholder": "Rruga, kodi postar, qyteti"
         },
         "messages": {
             "success": "Profili u përditësua.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Anulo anëtarësimin",
             "withdraw_application": "Tërhiq aplikimin",
             "reapply": "Apliko përsëri",
-            "apply_membership": "Apliko për anëtarësim"
+            "apply_membership": "Apliko për anëtarësim",
+            "date_optional": "Data (opsionale)",
+            "date_hint_application": "Nëse lihet bosh, përdoret data nga kërkesa ({{date}}).",
+            "date_hint_today": "Nëse lihet bosh, përdoret data e sotme.",
+            "cancel_info_prefix": "Nëse anulohet tani, anëtarësimi përfundon më",
+            "withdraw_confirm": "A dëshiron vërtet ta tërheqësh kërkesën?",
+            "cancelling": "Ndërprerja në proces",
+            "cancel_admin": "Anulo (admin)",
+            "cancel_description_self": "Zgjidh kur dëshiron ta ndërpresësh.",
+            "apply_description_self": "Zgjidh nga kur dëshiron të fillosh.",
+            "back_to_users": "Kthehu te menaxhimi i përdoruesve"
         },
         "language_options": {
             "browser_default": "Parazgjedhja e shfletuesit"
@@ -273,7 +315,32 @@
             "title": "Të dhënat e shoqatës",
             "description": "Plotësohet nga shoqata",
             "membership_number": "Numri i anëtarësisë",
-            "fee": "Tarifa aktuale"
+            "fee": "Tarifa aktuale",
+            "membership_type": "Lloji i anëtarësimit",
+            "votes": "Numri i votave",
+            "see_documents": "Shih <statutes>statutin</statutes> dhe <finances>rregulloren e kuotave</finances>"
+        },
+        "roles": {
+            "title": "Menaxhimi i roleve",
+            "description": "Cakto lejet e sistemit për këtë përdorues",
+            "admin": "Administrator i sistemit (admin)",
+            "aktivadmin": "Koordinator i anëtarëve aktivë (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Anëtarësimi",
+            "title_other": "Statusi i anëtarësimit",
+            "description": "Menaxho anëtarësimin tënd në DPV",
+            "none": "Nuk ka asnjë kërkesë aktive për anëtarësim.",
+            "status": "Statusi:",
+            "application_date": "Data e kërkesës:",
+            "entry_date": "Data e anëtarësimit:",
+            "immediately": "Menjëherë",
+            "end_date": "Data e ndërprerjes:",
+            "membership_number": "Numri i anëtarit:"
+        },
+        "apply": {
+            "active_option": "Anëtarësim aktiv (10 € / vit)",
+            "custom_fee": "Kuota e dëshiruar në vit (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Për kompanitë që merren me parkour që dëshirojnë t'i bashkohen shoqatës.",
             "button": "Së shpejti"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Shtegu i navigimit",
+        "clubs": "Menaxhimi i klubeve",
+        "club": "Klubi",
+        "user": "Përdoruesi",
+        "status": "Statusi",
+        "settings": "Cilësimet e sistemit"
     }
 }

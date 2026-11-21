@@ -58,7 +58,29 @@
             "deny_membership_desc": "Möchtest du diesen Antrag wirklich ablehnen?",
             "cancel_membership": "Mitgliedschaft kündigen",
             "cancel_membership_desc": "Bitte wähle das Kündigungsdatum (Ende der aktiven Zeit).",
-            "export_error": "Fehler beim Exportieren der Daten"
+            "export_error": "Fehler beim Exportieren der Daten",
+            "table": {
+                "type": "Typ",
+                "name": "Name",
+                "email": "E-Mail",
+                "status": "Status",
+                "person": "Person",
+                "club": "Verein",
+                "member_type": "Mitgliedsform",
+                "from_date": "ab {{date}}",
+                "until_date": "bis {{date}}",
+                "all_types": "Alle Typen"
+            },
+            "member_types": {
+                "all": "Alle Mitgliedsformen",
+                "ordinary": "Ordentliches Mitglied (Stamm)",
+                "extraordinary": "Außerordentliches Mitglied",
+                "active": "Aktives Mitglied (Person)",
+                "supporting": "Förderndes Mitglied",
+                "honorary": "Ehrenmitglied"
+            },
+            "export_users": "Nutzer CSV",
+            "export_clubs": "Vereine CSV"
         },
         "audit_page": {
             "title": "Aktivitätsprotokoll",
@@ -75,7 +97,9 @@
             "no_actions": "Es wurden noch keine Aktionen protokolliert.",
             "author_label": "Autor:",
             "unauthorized": "Du hast keine Berechtigung, diese Seite anzuzeigen."
-        }
+        },
+        "welcome_back": "Willkommen zurück, {{firstname}}",
+        "intro": "Das ist das Vereinsportal des Deutschen Parkourverbands. Hier kannst du deine persönliche Mitgliedschaft im Verband, sowie Vereine und Unternehmen anlegen und deren Mitgliedschaften beantragen und verwalten."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Beantragt",
             "denied": "Abgelehnt",
             "cancelled": "Gekündigt",
-            "upcoming_membership": "Zukünftiges Mitglied 🚀",
-            "pending_cancellation": "Kündigung vorgemerkt ⏳"
+            "upcoming_membership": "Zukünftiges Mitglied",
+            "pending_cancellation": "Kündigung vorgemerkt"
         },
         "details": {
             "title": "Stammdaten",
@@ -123,7 +147,9 @@
                 "consent_privacy": "Ich stimme der <1>Datenschutzerklärung</1> zu.",
                 "consent_accuracy": "Ich versichere, dass meine Angaben der Wahrheit entsprechen.",
                 "consent_statutes": "Ich habe die <1>Satzung</1> gelesen und erkenne sie an.",
-                "consent_finances": "Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an."
+                "consent_finances": "Ich habe die <1>Beitragsordnung</1> gelesen und erkenne sie an.",
+                "apply_button": "Antrag stellen",
+                "cancel_button": "Kündigen"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Name des Kontoinhabers"
-            }
+            },
+            "admin_only": "Nur für Administratoren editierbar."
         },
         "owners": {
             "title": "Vorstand & Verwalter",
@@ -242,14 +269,19 @@
         "title": "Mein Profil",
         "personal_data": {
             "title": "Persönliche Daten",
-            "description": "Aktualisiere hier deine persönlichen Informationen."
+            "description": "Aktualisiere hier deine persönlichen Informationen.",
+            "admin_description": "Benutzerdaten",
+            "admin_edit_description": "Benutzerdaten bearbeiten"
         },
         "labels": {
             "firstname": "Vorname",
             "lastname": "Nachname",
             "email": "E-Mail",
             "language": "Sprache",
-            "yourClub": "Dein Verein"
+            "yourClub": "Dein Verein",
+            "address": "Adresse",
+            "dateOfBirth": "Geburtsdatum",
+            "address_placeholder": "Straße, PLZ, Ort"
         },
         "messages": {
             "success": "Profil aktualisiert.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Mitgliedschaft kündigen",
             "withdraw_application": "Antrag zurückziehen",
             "reapply": "Erneut beantragen",
-            "apply_membership": "Mitgliedschaft beantragen"
+            "apply_membership": "Mitgliedschaft beantragen",
+            "date_optional": "Datum (optional)",
+            "date_hint_application": "Falls leer, wird das Datum aus dem Antrag übernommen ({{date}}).",
+            "date_hint_today": "Falls leer, wird das heutige Datum verwendet.",
+            "cancel_info_prefix": "Wenn jetzt gekündigt wird, endet die Mitgliedschaft zum",
+            "withdraw_confirm": "Möchtest du deinen Antrag wirklich zurückziehen?",
+            "cancelling": "Kündigung läuft",
+            "cancel_admin": "Kündigen (Admin)",
+            "cancel_description_self": "Bitte wähle aus, zu wann du kündigen möchtest.",
+            "apply_description_self": "Bitte wähle aus, ab wann du aktiv werden möchtest.",
+            "back_to_users": "Zurück zur Benutzerverwaltung"
         },
         "language_options": {
             "browser_default": "Browser Standard"
@@ -273,7 +315,32 @@
             "title": "Verbandsdaten",
             "description": "Wird vom Verband ausgefüllt",
             "membership_number": "Mitgliedsnummer",
-            "fee": "Aktueller Beitrag"
+            "fee": "Aktueller Beitrag",
+            "membership_type": "Art der Mitgliedschaft",
+            "votes": "Stimmenanzahl",
+            "see_documents": "Siehe <statutes>Satzung</statutes> und <finances>Beitragsordnung</finances>"
+        },
+        "roles": {
+            "title": "Rollenverwaltung",
+            "description": "Systemberechtigungen für diesen Benutzer zuweisen",
+            "admin": "Systemadministrator (admin)",
+            "aktivadmin": "Aktivenbetreuer (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Mitgliedschaft",
+            "title_other": "Mitgliedschaftsstatus",
+            "description": "Verwalte deine Mitgliedschaft im DPV",
+            "none": "Kein aktiver Aufnahmeantrag vorhanden.",
+            "status": "Status:",
+            "application_date": "Antragsdatum:",
+            "entry_date": "Eintrittsdatum:",
+            "immediately": "Sofort",
+            "end_date": "Kündigungsdatum:",
+            "membership_number": "Mitgliedsnummer:"
+        },
+        "apply": {
+            "active_option": "Aktivmitgliedschaft (10 € / Jahr)",
+            "custom_fee": "Wunschbeitrag pro Jahr (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Wenn du ein Unternehmen vertrittst, das im Bereich Parkour agiert und mit diesem Mitglied im Deutschen Parkourverband werden möchtest, dann verwalte deine Mitgliedschaft über die Unternehmensverwaltung.",
             "button": "Coming soon"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Navigationspfad",
+        "clubs": "Vereinsverwaltung",
+        "club": "Verein",
+        "user": "Benutzer",
+        "status": "Status",
+        "settings": "Systemeinstellungen"
     }
 }

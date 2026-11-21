@@ -58,7 +58,29 @@
             "deny_membership_desc": "هل تريد حقًا رفض هذا الطلب؟",
             "cancel_membership": "إلغاء العضوية",
             "cancel_membership_desc": "يرجى تحديد تاريخ الإلغاء (نهاية الفترة النشطة).",
-            "export_error": "خطأ في تصدير البيانات"
+            "export_error": "خطأ في تصدير البيانات",
+            "table": {
+                "type": "النوع",
+                "name": "الاسم",
+                "email": "البريد الإلكتروني",
+                "status": "الحالة",
+                "person": "شخص",
+                "club": "نادٍ",
+                "member_type": "شكل العضوية",
+                "from_date": "اعتباراً من {{date}}",
+                "until_date": "حتى {{date}}",
+                "all_types": "جميع الأنواع"
+            },
+            "member_types": {
+                "all": "جميع أشكال العضوية",
+                "ordinary": "عضو عادي (أساسي)",
+                "extraordinary": "عضو استثنائي",
+                "active": "عضو نشط (فرد)",
+                "supporting": "عضو داعم",
+                "honorary": "عضو فخري"
+            },
+            "export_users": "CSV المستخدمين",
+            "export_clubs": "CSV الأندية"
         },
         "audit_page": {
             "title": "سجل النشاط",
@@ -75,7 +97,9 @@
             "no_actions": "لم يتم تسجيل أي إجراءات حتى الآن.",
             "author_label": "المؤلف:",
             "unauthorized": "ليس لديك إذن لعرض هذه الصفحة."
-        }
+        },
+        "welcome_back": "مرحباً بعودتك، {{firstname}}",
+        "intro": "هذه بوابة الأندية التابعة للجمعية الألمانية للباركور. يمكنك هنا إنشاء عضويتك الشخصية في الجمعية، بالإضافة إلى تسجيل الأندية والشركات وتقديم طلبات عضويتها وإدارتها."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "مطلوب",
             "denied": "مرفوض",
             "cancelled": "ملغى",
-            "upcoming_membership": "عضوية قادمة 🚀",
-            "pending_cancellation": "إلغاء معلق ⏳"
+            "upcoming_membership": "عضوية قادمة",
+            "pending_cancellation": "إلغاء معلق"
         },
         "details": {
             "title": "البيانات الرئيسية",
@@ -123,7 +147,9 @@
                 "consent_privacy": "أوافق على <1>سياسة الخصوصية</1>.",
                 "consent_accuracy": "أؤكد أن بياناتي صحيحة.",
                 "consent_statutes": "لقد قرأت <1>النظام الأساسي</1> وأوافق عليه.",
-                "consent_finances": "لقد قرأت <1>نظام الاشتراكات</1> وأوافق عليه."
+                "consent_finances": "لقد قرأت <1>نظام الاشتراكات</1> وأوافق عليه.",
+                "apply_button": "إرسال الطلب",
+                "cancel_button": "إلغاء العضوية"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "اسم صاحب الحساب البنكي"
-            }
+            },
+            "admin_only": "قابل للتعديل من قبل المسؤولين فقط."
         },
         "owners": {
             "title": "مجلس الإدارة والمديرون",
@@ -242,14 +269,19 @@
         "title": "ملفي الشخصي",
         "personal_data": {
             "title": "البيانات الشخصية",
-            "description": "حدث معلوماتك الشخصية هنا."
+            "description": "حدث معلوماتك الشخصية هنا.",
+            "admin_description": "بيانات المستخدم",
+            "admin_edit_description": "تعديل بيانات المستخدم"
         },
         "labels": {
             "firstname": "الاسم الأول",
             "lastname": "اسم العائلة",
             "email": "البريد الإلكتروني",
             "language": "اللغة",
-            "yourClub": "ناديك"
+            "yourClub": "ناديك",
+            "address": "العنوان",
+            "dateOfBirth": "تاريخ الميلاد",
+            "address_placeholder": "الشارع، الرمز البريدي، المدينة"
         },
         "messages": {
             "success": "تم تحديث الملف الشخصي.",
@@ -264,7 +296,17 @@
             "cancel_membership": "إلغاء العضوية",
             "withdraw_application": "سحب الطلب",
             "reapply": "إعادة التقديم",
-            "apply_membership": "تقدم بطلب العضوية"
+            "apply_membership": "تقدم بطلب العضوية",
+            "date_optional": "التاريخ (اختياري)",
+            "date_hint_application": "إذا تُرك فارغاً، يُستخدم تاريخ الطلب ({{date}}).",
+            "date_hint_today": "إذا تُرك فارغاً، يُستخدم تاريخ اليوم.",
+            "cancel_info_prefix": "عند الإلغاء الآن، تنتهي العضوية في",
+            "withdraw_confirm": "هل تريد حقاً سحب طلبك؟",
+            "cancelling": "الإلغاء قيد التنفيذ",
+            "cancel_admin": "إلغاء (المسؤول)",
+            "cancel_description_self": "يرجى اختيار موعد الإلغاء.",
+            "apply_description_self": "يرجى اختيار موعد البدء.",
+            "back_to_users": "العودة إلى إدارة المستخدمين"
         },
         "language_options": {
             "browser_default": "الافتراضي للمتصفح"
@@ -273,7 +315,32 @@
             "title": "بيانات الجمعية",
             "description": "يتم ملؤها من قبل الجمعية",
             "membership_number": "رقم العضوية",
-            "fee": "الرسوم الحالية"
+            "fee": "الرسوم الحالية",
+            "membership_type": "نوع العضوية",
+            "votes": "عدد الأصوات",
+            "see_documents": "راجع <statutes>النظام الأساسي</statutes> و<finances>لائحة الرسوم</finances>"
+        },
+        "roles": {
+            "title": "إدارة الأدوار",
+            "description": "تعيين صلاحيات النظام لهذا المستخدم",
+            "admin": "مسؤول النظام (admin)",
+            "aktivadmin": "منسق الأعضاء النشطين (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "العضوية",
+            "title_other": "حالة العضوية",
+            "description": "إدارة عضويتك في DPV",
+            "none": "لا يوجد طلب عضوية نشط.",
+            "status": "الحالة:",
+            "application_date": "تاريخ الطلب:",
+            "entry_date": "تاريخ الانضمام:",
+            "immediately": "فوراً",
+            "end_date": "تاريخ الإلغاء:",
+            "membership_number": "رقم العضوية:"
+        },
+        "apply": {
+            "active_option": "عضوية نشطة (10 € / سنة)",
+            "custom_fee": "الرسوم السنوية المرغوبة (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "إذا كنت تمثل شركة تعمل في الباركور، فقم بإدارتها من خلال إدارة الشركة.",
             "button": "قريباً"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "مسار التنقل",
+        "clubs": "إدارة الأندية",
+        "club": "نادٍ",
+        "user": "مستخدم",
+        "status": "الحالة",
+        "settings": "إعدادات النظام"
     }
 }

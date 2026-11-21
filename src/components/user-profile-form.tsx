@@ -150,7 +150,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <div>
                     <CardTitle>{t('profile.personal_data.title')}</CardTitle>
-                    <CardDescription>{isAdminView ? "Benutzerdaten" : t('profile.personal_data.description')}</CardDescription>
+                    <CardDescription>{isAdminView ? t('profile.personal_data.admin_description') : t('profile.personal_data.description')}</CardDescription>
                 </div>
                 <Button variant="outline" size="sm" onClick={() => { setIsEditing(true); setMessage(null); setError(null); }}>
                     {t('club.details.actions.edit', { defaultValue: 'Bearbeiten' })}
@@ -172,11 +172,11 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
                         <p>{user.lastname}</p>
                     </div>
                     <div className="space-y-1">
-                        <p className="text-sm font-medium text-muted-foreground">Adresse</p>
+                        <p className="text-sm font-medium text-muted-foreground">{t('profile.labels.address')}</p>
                         <p className="whitespace-pre-wrap">{user.membership?.address || '-'}</p>
                     </div>
                     <div className="space-y-1">
-                        <p className="text-sm font-medium text-muted-foreground">Geburtsdatum</p>
+                        <p className="text-sm font-medium text-muted-foreground">{t('profile.labels.dateOfBirth')}</p>
                         <p>{user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString('de-DE') : '-'}</p>
                     </div>
                     <div className="space-y-1">
@@ -201,7 +201,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
             <Card>
                 <CardHeader>
                     <CardTitle>{t('profile.personal_data.title')}</CardTitle>
-                    <CardDescription>{isAdminView ? "Benutzerdaten bearbeiten" : "Aktualisiere hier deine persönlichen Informationen."}</CardDescription>
+                    <CardDescription>{isAdminView ? t('profile.personal_data.admin_edit_description') : t('profile.personal_data.description')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {error && (
@@ -223,11 +223,11 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
 
                     <div className="grid md:grid-cols-2 gap-4 mb-4">
                         <div className="space-y-2">
-                            <Label htmlFor="address">Adresse</Label>
-                            <Input id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Straße, PLZ, Ort" />
+                            <Label htmlFor="address">{t('profile.labels.address')}</Label>
+                            <Input id="address" name="address" value={formData.address} onChange={handleChange} placeholder={t('profile.labels.address_placeholder')} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="dateOfBirth">Geburtsdatum</Label>
+                            <Label htmlFor="dateOfBirth">{t('profile.labels.dateOfBirth')}</Label>
                             <DobInput id="dateOfBirth" value={formData.dateOfBirth} onChangeValue={(val) => setFormData(p => ({ ...p, dateOfBirth: val }))} />
                         </div>
                     </div>

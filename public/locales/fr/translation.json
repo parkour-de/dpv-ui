@@ -58,7 +58,29 @@
             "deny_membership_desc": "Voulez-vous vraiment refuser cette demande ?",
             "cancel_membership": "Annuler l'adhésion",
             "cancel_membership_desc": "Veuillez sélectionner la date d'annulation (fin de la période active).",
-            "export_error": "Erreur lors de l'exportation des données"
+            "export_error": "Erreur lors de l'exportation des données",
+            "table": {
+                "type": "Type",
+                "name": "Nom",
+                "email": "E-mail",
+                "status": "Statut",
+                "person": "Personne",
+                "club": "Club",
+                "member_type": "Type d'adhésion",
+                "from_date": "à partir du {{date}}",
+                "until_date": "jusqu'au {{date}}",
+                "all_types": "Tous les types"
+            },
+            "member_types": {
+                "all": "Toutes les formes d'adhésion",
+                "ordinary": "Membre ordinaire (de base)",
+                "extraordinary": "Membre extraordinaire",
+                "active": "Membre actif (personne)",
+                "supporting": "Membre bienfaiteur",
+                "honorary": "Membre d'honneur"
+            },
+            "export_users": "CSV des utilisateurs",
+            "export_clubs": "CSV des clubs"
         },
         "audit_page": {
             "title": "Journal d'activité",
@@ -75,7 +97,9 @@
             "no_actions": "Aucune action n'a encore été enregistrée.",
             "author_label": "Auteur:",
             "unauthorized": "Vous n'êtes pas autorisé à afficher cette page."
-        }
+        },
+        "welcome_back": "Bon retour, {{firstname}}",
+        "intro": "Voici le portail des clubs de l'Association Allemande de Parkour. Vous pouvez y créer votre adhésion personnelle à l'association, ainsi qu'enregistrer des clubs et des entreprises, puis demander et gérer leurs adhésions."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Demandé",
             "denied": "Demandé",
             "cancelled": "Annulé",
-            "upcoming_membership": "Futur Membre 🚀",
-            "pending_cancellation": "Résiliation en attente ⏳"
+            "upcoming_membership": "Futur Membre",
+            "pending_cancellation": "Résiliation en attente"
         },
         "details": {
             "title": "Données Principales",
@@ -123,7 +147,9 @@
                 "consent_privacy": "J'accepte la <1>politique de confidentialité</1>.",
                 "consent_accuracy": "Je confirme que mes informations sont véridiques.",
                 "consent_statutes": "J'ai lu et j'accepte les <1>statuts</1>.",
-                "consent_finances": "J'ai lu et j'accepte le <1>règlement des cotisations</1>."
+                "consent_finances": "J'ai lu et j'accepte le <1>règlement des cotisations</1>.",
+                "apply_button": "Envoyer la demande",
+                "cancel_button": "Résilier"
             }
         },
         "documents": {
@@ -147,7 +173,8 @@
             },
             "placeholders": {
                 "account_holder": "Nom du titulaire du compte"
-            }
+            },
+            "admin_only": "Modifiable uniquement par les administrateurs."
         },
         "owners": {
             "title": "Conseil et Gestionnaires",
@@ -242,14 +269,19 @@
         "title": "Mon Profil",
         "personal_data": {
             "title": "Données Personnelles",
-            "description": "Mettez à jour vos informations personnelles ici."
+            "description": "Mettez à jour vos informations personnelles ici.",
+            "admin_description": "Données de l'utilisateur",
+            "admin_edit_description": "Modifier les données de l'utilisateur"
         },
         "labels": {
             "firstname": "Prénom",
             "lastname": "Nom",
             "email": "E-mail",
             "language": "Langue",
-            "yourClub": "Ton Club"
+            "yourClub": "Ton Club",
+            "address": "Adresse",
+            "dateOfBirth": "Date de naissance",
+            "address_placeholder": "Rue, code postal, ville"
         },
         "messages": {
             "success": "Profil mis à jour.",
@@ -264,7 +296,17 @@
             "cancel_membership": "Annuler l'adhésion",
             "withdraw_application": "Retirer la demande",
             "reapply": "Postuler à nouveau",
-            "apply_membership": "Demander l'adhésion"
+            "apply_membership": "Demander l'adhésion",
+            "date_optional": "Date (facultatif)",
+            "date_hint_application": "Si vide, la date de la demande sera utilisée ({{date}}).",
+            "date_hint_today": "Si vide, la date du jour sera utilisée.",
+            "cancel_info_prefix": "En cas de résiliation maintenant, l'adhésion prend fin le",
+            "withdraw_confirm": "Voulez-vous vraiment retirer votre demande ?",
+            "cancelling": "Résiliation en cours",
+            "cancel_admin": "Résilier (admin)",
+            "cancel_description_self": "Veuillez choisir quand vous souhaitez résilier.",
+            "apply_description_self": "Veuillez choisir à partir de quand vous souhaitez commencer.",
+            "back_to_users": "Retour à la gestion des utilisateurs"
         },
         "language_options": {
             "browser_default": "Par défaut du navigateur"
@@ -273,7 +315,32 @@
             "title": "Données de l'association",
             "description": "Rempli par l'association",
             "membership_number": "Numéro d'adhérent",
-            "fee": "Cotisation actuelle"
+            "fee": "Cotisation actuelle",
+            "membership_type": "Type d'adhésion",
+            "votes": "Nombre de voix",
+            "see_documents": "Voir les <statutes>statuts</statutes> et le <finances>règlement des cotisations</finances>"
+        },
+        "roles": {
+            "title": "Gestion des rôles",
+            "description": "Attribuer des autorisations système à cet utilisateur",
+            "admin": "Administrateur système (admin)",
+            "aktivadmin": "Responsable des membres actifs (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Adhésion",
+            "title_other": "Statut de l'adhésion",
+            "description": "Gérez votre adhésion à la DPV",
+            "none": "Aucune demande d'adhésion active.",
+            "status": "Statut :",
+            "application_date": "Date de demande :",
+            "entry_date": "Date d'entrée :",
+            "immediately": "Immédiatement",
+            "end_date": "Date de résiliation :",
+            "membership_number": "Numéro de membre :"
+        },
+        "apply": {
+            "active_option": "Adhésion active (10 € / an)",
+            "custom_fee": "Cotisation souhaitée par an (€)"
         }
     },
     "auth": {
@@ -425,5 +492,13 @@
             "description": "Si vous représentez une entreprise de parkour qui souhaite adhérer, gérez cela depuis l'administration de l'entreprise.",
             "button": "Bientôt disponible"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Fil d'Ariane",
+        "clubs": "Gestion des clubs",
+        "club": "Club",
+        "user": "Utilisateur",
+        "status": "Statut",
+        "settings": "Paramètres système"
     }
 }
