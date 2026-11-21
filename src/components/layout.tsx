@@ -27,18 +27,18 @@ export function Layout() {
                     className={cn("absolute top-0 left-0 w-full h-[3px]", !isTestEnv && "bg-primary")}
                     style={isTestEnv ? { backgroundColor: "color(display-p3 1 0 0)" } : undefined}
                 ></div>
-                <div className="container flex h-14 max-w-screen-2xl items-center justify-between px-4">
+                <div className="mx-auto w-full flex h-14 max-w-screen-xl items-center justify-between px-4 md:px-6">
                     <div className="flex items-center gap-4">
-                        <Link to="/" className="relative flex items-center h-14 w-[280px] sm:w-[310px] group translate-y-[8px]">
+                        <Link to="/dashboard" className="flex items-center h-14 group">
                             <img
                                 src={logoBlack}
                                 alt="Deutscher Parkourverband"
-                                className="dark:hidden h-[58px] sm:h-[62px] max-w-none absolute left-0 top-1/2 -translate-y-1/2 transition-transform duration-200 group-hover:scale-[1.02]"
+                                className="dark:hidden h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
                             />
                             <img
                                 src={logoWhite}
                                 alt="Deutscher Parkourverband"
-                                className="hidden dark:block h-[58px] sm:h-[62px] max-w-none absolute left-0 top-1/2 -translate-y-1/2 transition-transform duration-200 group-hover:scale-[1.02]"
+                                className="hidden dark:block h-10 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
                             />
                         </Link>
                         {isTestEnv ? (
@@ -124,12 +124,12 @@ export function Layout() {
                 )}
             </header>
 
-            <main className="flex-1 container max-w-screen-xl py-6 px-4 md:px-6">
+            <main className="flex-1 mx-auto w-full max-w-screen-xl py-6 px-4 md:px-6">
                 <Outlet />
             </main>
 
-            <footer className="border-t border-border/40 py-6 md:px-8 bg-muted/20">
-                <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
+            <footer className="border-t border-border/40 py-6 bg-muted/20">
+                <div className="mx-auto w-full max-w-screen-xl px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-xs text-muted-foreground text-center md:text-left">
                         &copy; {new Date().getFullYear()} {t('app.copyright')}
                     </p>

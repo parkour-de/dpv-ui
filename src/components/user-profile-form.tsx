@@ -201,7 +201,7 @@ export function UserProfileForm({ user, token, isAdminView = false, onSaveSucces
             <Card>
                 <CardHeader>
                     <CardTitle>{t('profile.personal_data.title')}</CardTitle>
-                    <CardDescription>{isAdminView ? "Benutzerdaten bearbeiten" : "Aktualisieren Sie hier Ihre persönlichen Informationen."}</CardDescription>
+                    <CardDescription>{isAdminView ? "Benutzerdaten bearbeiten" : "Aktualisiere hier deine persönlichen Informationen."}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {error && (

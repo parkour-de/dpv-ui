@@ -22,14 +22,14 @@ export function PageWrapper({ children, title }: LayoutWrapperProps) {
     return (
         <div className="min-h-screen bg-background font-sans flex flex-col">
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <div className="container flex h-14 max-w-screen-2xl items-center gap-4 px-4">
+                <div className="mx-auto w-full flex h-14 max-w-screen-md items-center gap-4 px-4 md:px-6">
                     <button onClick={handleBack} className="text-muted-foreground hover:text-foreground">
                         <ArrowLeft className="h-5 w-5" />
                     </button>
                     <h1 className="text-xl font-bold">{title}</h1>
                 </div>
             </header>
-            <main className="flex-1 container max-w-screen-md py-6 px-4 md:px-8">
+            <main className="flex-1 mx-auto w-full max-w-screen-md py-6 px-4 md:px-6">
                 {children}
             </main>
         </div>

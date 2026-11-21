@@ -1131,7 +1131,7 @@ export function ClubDetailsPage() {
                         ) : actionModal === 'cancel' ? (
                             <div className="space-y-2 p-4 border rounded-md bg-muted/20">
                                 <p className="text-sm">
-                                    {t('club.details.membership.cancel_info_prefix', { defaultValue: "Wenn Sie jetzt kündigen, endet die Mitgliedschaft zum" })}
+                                    {t('club.details.membership.cancel_info_prefix', { defaultValue: "Wenn du jetzt kündigst, endet die Mitgliedschaft zum" })}
                                     {" "}
                                     <strong>{calculateCancellationDate().toLocaleDateString('de-DE')}</strong>.
                                 </p>

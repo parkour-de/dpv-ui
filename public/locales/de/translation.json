@@ -22,7 +22,7 @@
     },
     "dashboard": {
         "title": "Übersicht",
-        "welcome": "Willkommen zurück, {{firstname}}. Hier sind Ihre Vereine.",
+        "welcome": "Willkommen zurück, {{firstname}}. Hier sind deine Vereine.",
         "status": {
             "title": "System-Status",
             "description": "Versionen und Konfiguration",
@@ -40,7 +40,7 @@
         },
         "empty": {
             "title": "Keine Vereine gefunden",
-            "description": "Starten Sie, indem Sie einen neuen Verein anlegen."
+            "description": "Starte, indem du einen neuen Verein anlegst."
         },
         "loading": "Lade Vereine...",
         "club_card": {
@@ -74,7 +74,7 @@
             "no_entries": "Keine Einträge gefunden",
             "no_actions": "Es wurden noch keine Aktionen protokolliert.",
             "author_label": "Autor:",
-            "unauthorized": "Sie haben keine Berechtigung, diese Seite anzuzeigen."
+            "unauthorized": "Du hast keine Berechtigung, diese Seite anzuzeigen."
         }
     },
     "club": {
@@ -115,8 +115,8 @@
                 "withdraw": "Antrag zurückziehen",
                 "approve": "Genehmigen",
                 "deny": "Ablehnen",
-                "apply_description": "Geben Sie an, ab wann die Mitgliedschaft beginnen soll (optional):",
-                "cancel_description": "Geben Sie an, zu wann die Mitgliedschaft enden soll (optional):",
+                "apply_description": "Gib an, ab wann die Mitgliedschaft beginnen soll (optional):",
+                "cancel_description": "Gib an, zu wann die Mitgliedschaft enden soll (optional):",
                 "confirm": "Bestätigen",
                 "date_label": "Datum",
                 "date_format_hint": "Format: Tag.Monat.Jahr (Standard ist heute)",
@@ -128,7 +128,7 @@
         },
         "documents": {
             "title": "Dokumente",
-            "description": "Laden Sie hier Vereinsdokumente hoch.",
+            "description": "Lade hier Vereinsdokumente hoch.",
             "upload_label": "Neues Dokument hochladen",
             "download_all": "Alle herunterladen",
             "empty": "Keine Dokumente vorhanden."
@@ -172,7 +172,7 @@
                 "birthdate": "Geburtsdatum"
             },
             "empty": "Keine Bestandsmeldungen vorhanden.",
-            "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchten Sie diese überschreiben?"
+            "confirm_overwrite": "Es liegt für das Jahr {{year}} bereits eine Bestandmeldung vor. Möchtest du diese überschreiben?"
         },
         "messages": {
             "load_error": "Verein konnte nicht geladen werden.",
@@ -181,7 +181,7 @@
             "download_error": "Download fehlgeschlagen.",
             "action_error": "Aktion fehlgeschlagen.",
             "save_error": "Speichern fehlgeschlagen.",
-            "delete_confirm": "Sind Sie sicher, dass Sie diesen Verein löschen möchten?",
+            "delete_confirm": "Bist du sicher, dass du diesen Verein löschen möchtest?",
             "remove_owner_confirm": "Diesen Nutzer wirklich als Verwalter entfernen?",
             "loading": "Lade Details...",
             "loading_payment": "Lade Zahlungsdetails...",
@@ -208,7 +208,7 @@
         "title": "Neuen Verein anlegen",
         "card": {
             "title": "Vereinsdaten",
-            "description": "Tragen Sie die Basisdaten Ihres Vereins ein."
+            "description": "Trage die Basisdaten deines Vereins ein."
         },
         "labels": {
             "name": "Name des Vereins",
@@ -224,7 +224,7 @@
         },
         "search": {
             "title": "Ähnliche Vereine",
-            "description": "Um Dubletten zu vermeiden, prüfen Sie bitte, ob Ihr Verein bereits existiert:",
+            "description": "Um Dubletten zu vermeiden, prüfe bitte, ob dein Verein bereits existiert:",
             "found_matches": "Wir haben folgende ähnliche Vereine gefunden:",
             "no_matches": "Keine ähnlichen Vereine gefunden."
         },
@@ -235,14 +235,14 @@
         },
         "errors": {
             "not_authenticated": "Nicht authentifiziert.",
-            "create_failed": "Erstellen fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben."
+            "create_failed": "Erstellen fehlgeschlagen. Bitte überprüfe deine Eingaben."
         }
     },
     "profile": {
         "title": "Mein Profil",
         "personal_data": {
             "title": "Persönliche Daten",
-            "description": "Aktualisieren Sie hier Ihre persönlichen Informationen."
+            "description": "Aktualisiere hier deine persönlichen Informationen."
         },
         "labels": {
             "firstname": "Vorname",
@@ -279,10 +279,10 @@
     "auth": {
         "login": {
             "title": "Anmelden",
-            "description": "Geben Sie Ihre Zugangsdaten ein, um fortzufahren.",
+            "description": "Gib deine Zugangsdaten ein, um fortzufahren.",
             "submit": "Anmelden",
             "submit_loading": "Anmelden...",
-            "error_generic": "Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben."
+            "error_generic": "Anmeldung fehlgeschlagen. Bitte überprüfe deine Eingaben."
         },
         "fields": {
             "email": "E-Mail",
@@ -293,16 +293,16 @@
         },
         "register": {
             "title": "Registrieren",
-            "description": "Erstellen Sie ein neues Konto beim DPV.",
+            "description": "Erstelle ein neues Konto beim DPV.",
             "submit": "Registrieren",
             "submit_loading": "Registrieren...",
             "password_hint": "Mindestens 10 Zeichen und 8 verschiedene Zeichentypen.",
             "success": {
                 "title": "Registrierung erfolgreich!",
-                "description": "Ihr Konto wurde erstellt. Sie können sich ab sofort mit Ihrer E-Mail-Adresse anmelden. Wir haben Ihnen eine Bestätigungs-E-Mail gesendet.",
+                "description": "Dein Konto wurde erstellt. Du kannst dich ab sofort mit deiner E-Mail-Adresse anmelden. Wir haben dir eine Bestätigungs-E-Mail gesendet.",
                 "action": "Zur Anmeldung"
             },
-            "error_generic": "Registrierung fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+            "error_generic": "Registrierung fehlgeschlagen. Bitte versuche es später erneut.",
             "question": "Noch kein Konto?",
             "action": "Registrieren",
             "login_question": "Bereits ein Konto?",
@@ -311,16 +311,16 @@
         "reset_password": {
             "request": {
                 "title": "Passwort vergessen",
-                "description": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten.",
+                "description": "Gib deine E-Mail-Adresse ein, um einen Link zum Zurücksetzen des Passworts zu erhalten.",
                 "submit": "Link anfordern",
                 "success": {
                     "title": "E-Mail gesendet",
-                    "description": "Falls ein Konto mit dieser E-Mail existiert, haben wir Ihnen einen Link zum Zurücksetzen gesendet."
+                    "description": "Falls ein Konto mit dieser E-Mail existiert, haben wir dir einen Link zum Zurücksetzen gesendet."
                 }
             },
             "confirm": {
                 "title": "Passwort neu setzen",
-                "description": "Bitte geben Sie ein neues Passwort ein.",
+                "description": "Bitte gib ein neues Passwort ein.",
                 "labels": {
                     "new_password": "Neues Passwort",
                     "confirm_password": "Passwort bestätigen"
@@ -328,7 +328,7 @@
                 "submit": "Passwort speichern",
                 "success": {
                     "title": "Passwort geändert",
-                    "description": "Ihr Passwort wurde erfolgreich geändert. Sie können sich nun anmelden."
+                    "description": "Dein Passwort wurde erfolgreich geändert. Du kannst dich nun anmelden."
                 }
             },
             "actions": {
@@ -351,7 +351,7 @@
         "message": "Das hätte nicht passieren sollen.",
         "not_found": {
             "title": "Seite nicht gefunden (404)",
-            "message": "Die von Ihnen aufgerufene Seite existiert nicht oder wurde verschoben."
+            "message": "Die von dir aufgerufene Seite existiert nicht oder wurde verschoben."
         },
         "actions": {
             "back": "Zurück",
@@ -363,15 +363,15 @@
         "faq": {
             "create_club": {
                 "question": "Wie lege ich einen Verein an?",
-                "answer": "Um einen neuen Verein beim DPV anzumelden, müssen Sie registriert und angemeldet sein. Klicken Sie im Dashboard auf \"Neuen Verein anlegen\" und füllen Sie das Formular aus. Ihr Antrag wird anschließend von einem Administrator geprüft."
+                "answer": "Um einen neuen Verein beim DPV anzumelden, musst du registriert und angemeldet sein. Klicke im Dashboard auf \"Neuen Verein anlegen\" und fülle das Formular aus. Dein Antrag wird anschließend von einem Administrator geprüft."
             },
             "after_registration": {
                 "question": "Was passiert nach der Registrierung?",
-                "answer": "Nach der Registrierung erhalten Sie eine E-Mail zur Bestätigung Ihrer Adresse. Anschließend können Sie sich anmelden und Vereine verwalten oder anlegen."
+                "answer": "Nach der Registrierung erhältst du eine E-Mail zur Bestätigung deiner Adresse. Anschließend kannst du dich anmelden und Vereine verwalten oder anlegen."
             },
             "reset_password": {
                 "question": "Wie kann ich mein Passwort ändern?",
-                "answer": "Wenn Sie Ihr Passwort vergessen haben, nutzen Sie die \"Passwort vergessen\"-Funktion auf der Anmeldeseite. Sie erhalten dann einen Link zum Zurücksetzen."
+                "answer": "Wenn du dein Passwort vergessen hast, nutze die \"Passwort vergessen\"-Funktion auf der Anmeldeseite. Du erhältst dann einen Link zum Zurücksetzen."
             }
         }
     },

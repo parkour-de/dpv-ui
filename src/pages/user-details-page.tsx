@@ -67,7 +67,7 @@ export function UserDetailsPage() {
                     setLoading(false);
                 } else {
                     setLoading(false);
-                    setError("Sie haben keine Berechtigung, diese Seite anzuzeigen.");
+                    setError("Du hast keine Berechtigung, diese Seite anzuzeigen.");
                 }
             } catch (err: unknown) {
                 console.error("Failed to fetch user", err);

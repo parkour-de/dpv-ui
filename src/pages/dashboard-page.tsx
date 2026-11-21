@@ -12,6 +12,7 @@ export function DashboardPage() {
         <div className="space-y-6 max-w-4xl mx-auto">
             <div className="space-y-4">
                 <h1 className="text-3xl font-bold tracking-tight">{t('dashboard.title')}</h1>
+                <p className="text-muted-foreground">{t('landing.welcome')}</p>
                 <p className="text-muted-foreground">
                     {t('dashboard.welcome', { firstname: user?.firstname })}
                 </p>

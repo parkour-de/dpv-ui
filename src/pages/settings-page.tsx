@@ -78,7 +78,7 @@ export function SettingsPage() {
                     <CardHeader>
                         <CardTitle>Dokumenten-Links</CardTitle>
                         <CardDescription>
-                            Konfigurieren Sie hier die URLs zu wichtigen Dokumenten, die bei der Registrierung und Mitgliedschaft angezeigt werden.
+                            Konfiguriere hier die URLs zu wichtigen Dokumenten, die bei der Registrierung und Mitgliedschaft angezeigt werden.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
