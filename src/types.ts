@@ -20,6 +20,16 @@ export const CLUB_STATUS_COLORS: Record<ClubStatus, string> = {
     cancelling: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-400',
 };
 
+// Former members ("cancelled") are shown exactly like people/clubs without a membership ("inactive")
+export const displayStatus = (status?: string): ClubStatus =>
+    (status === 'cancelled' ? 'inactive' : status) as ClubStatus;
+
+// The 16 German federal states (official names), used for a club's "Bundesland"
+export const GERMAN_STATES = [
+    'Baden-Württemberg', 'Bayern', 'Berlin', 'Brandenburg', 'Bremen', 'Hamburg', 'Hessen', 'Mecklenburg-Vorpommern',
+    'Niedersachsen', 'Nordrhein-Westfalen', 'Rheinland-Pfalz', 'Saarland', 'Sachsen', 'Sachsen-Anhalt', 'Schleswig-Holstein', 'Thüringen',
+];
+
 export interface Membership {
     status: ClubStatus;
     contribution?: number;

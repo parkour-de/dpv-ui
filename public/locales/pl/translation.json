@@ -58,7 +58,29 @@
             "deny_membership_desc": "Czy na pewno chcesz odrzucić ten wniosek?",
             "cancel_membership": "Anuluj członkostwo",
             "cancel_membership_desc": "Wybierz datę anulowania (koniec aktywnego okresu).",
-            "export_error": "Błąd podczas eksportowania danych"
+            "export_error": "Błąd podczas eksportowania danych",
+            "table": {
+                "type": "Typ",
+                "name": "Nazwa",
+                "email": "E-mail",
+                "status": "Status",
+                "person": "Osoba",
+                "club": "Klub",
+                "member_type": "Forma członkostwa",
+                "from_date": "od {{date}}",
+                "until_date": "do {{date}}",
+                "all_types": "Wszystkie typy"
+            },
+            "member_types": {
+                "all": "Wszystkie formy członkostwa",
+                "ordinary": "Członek zwyczajny (podstawowy)",
+                "extraordinary": "Członek nadzwyczajny",
+                "active": "Członek aktywny (osoba)",
+                "supporting": "Członek wspierający",
+                "honorary": "Członek honorowy"
+            },
+            "export_users": "CSV użytkowników",
+            "export_clubs": "CSV klubów"
         },
         "audit_page": {
             "title": "Dziennik aktywności",
@@ -75,7 +97,9 @@
             "no_actions": "Nie zarejestrowano jeszcze żadnych akcji.",
             "author_label": "Autor:",
             "unauthorized": "Nie masz uprawnień do przeglądania tej strony."
-        }
+        },
+        "welcome_back": "Witaj ponownie, {{firstname}}",
+        "intro": "To jest portal klubowy Niemieckiego Stowarzyszenia Parkour. Możesz tutaj założyć swoje osobiste członkostwo w stowarzyszeniu, a także rejestrować kluby i firmy oraz składać wnioski o ich członkostwo i nim zarządzać."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Zgłoszony",
             "denied": "Odrzucony",
             "cancelled": "Anulowany",
-            "upcoming_membership": "Nadchodzące członkostwo 🚀",
-            "pending_cancellation": "Oczekiwanie na anulowanie ⏳"
+            "upcoming_membership": "Nadchodzące członkostwo",
+            "pending_cancellation": "Oczekiwanie na anulowanie"
         },
         "details": {
             "title": "Dane Główne",
@@ -123,7 +147,11 @@
                 "consent_privacy": "Akceptuję <1>politykę prywatności</1>.",
                 "consent_accuracy": "Potwierdzam, że moje dane są prawdziwe.",
                 "consent_statutes": "Zapoznałem/am się ze <1>statutem</1> i akceptuję go.",
-                "consent_finances": "Zapoznałem/am się z <1>regulaminem składek</1> i akceptuję go."
+                "consent_finances": "Zapoznałem/am się z <1>regulaminem składek</1> i akceptuję go.",
+                "apply_button": "Złóż wniosek",
+                "cancel_dialog_description": "Twój klub pozostaje członkiem DPV do końca okresu wypowiedzenia.",
+                "cancel_dialog_info": "Jeśli wypowiesz teraz, członkostwo kończy się <strong>{{date}}</strong>. Wypowiedzenia nie można tutaj cofnąć.",
+                "withdraw_dialog_description": "Wniosek klubu o członkostwo zostanie wycofany. W każdej chwili możesz złożyć nowy wniosek."
             }
         },
         "documents": {
@@ -131,7 +159,8 @@
             "description": "Prześlij tutaj dokumenty klubu.",
             "upload_label": "Prześlij nowy dokument",
             "download_all": "Pobierz wszystko",
-            "empty": "Brak dostępnych dokumentów."
+            "empty": "Brak dostępnych dokumentów.",
+            "info": "Prześlij tutaj statut i decyzję o zwolnieniu podatkowym (Freistellungsbescheid) klubu, abyśmy mogli sprawdzić, czy może zostać członkiem DPV."
         },
         "payment": {
             "title": "Dane Płatności",
@@ -147,7 +176,10 @@
             },
             "placeholders": {
                 "account_holder": "Imię i nazwisko właściciela konta"
-            }
+            },
+            "admin_only": "Edytowalne tylko przez administratorów.",
+            "info_debit": "Podaj tutaj dane bankowe klubu. Jeśli złożycie wniosek o członkostwo, składki będą pobierane z tego konta.",
+            "info_required": "Dane bankowe muszą być uzupełnione, zanim będzie można złożyć wniosek o członkostwo."
         },
         "owners": {
             "title": "Zarząd i Administratorzy",
@@ -156,7 +188,9 @@
             "add_placeholder": "Dodaj nowego administratora przez e-mail",
             "labels": {
                 "authorizedRepresentative": "Upoważniony przedstawiciel (§26 BGB)"
-            }
+            },
+            "info_who": "Dodaj osoby, które mogą edytować dane klubu. Muszą być zarejestrowane w portalu członkowskim DPV.",
+            "info_26": "Co najmniej jedna osoba musi być uprawniona do reprezentacji zgodnie z §26 BGB."
         },
         "census": {
             "title": "Raport Spisowy",
@@ -172,7 +206,8 @@
                 "birthdate": "Data urodzenia"
             },
             "empty": "Brak dostępnych raportów spisowych.",
-            "confirm_overwrite": "Raport spisowy dla roku {{year}} już istnieje. Czy chcesz go nadpisać?"
+            "confirm_overwrite": "Raport spisowy dla roku {{year}} już istnieje. Czy chcesz go nadpisać?",
+            "info_required": "Przed złożeniem wniosku o członkostwo musi zostać złożone zgłoszenie stanu członków (Bestandsmeldung) za {{year}}."
         },
         "messages": {
             "load_error": "Nie udało się załadować klubu.",
@@ -214,13 +249,18 @@
             "name": "Nazwa Klubu",
             "legal_form": "Forma Prawna",
             "email_opt": "E-mail (opcjonalnie)",
-            "address_opt": "Adres (opcjonalnie)"
+            "address_opt": "Adres (opcjonalnie)",
+            "authorized_representative": "Jestem uprawniony/uprawniona do reprezentowania tego klubu (§26 BGB)",
+            "my_function": "Twoja funkcja w klubie (opcjonalnie)",
+            "club_email_opt": "E-mail klubu (opcjonalnie)",
+            "contact_person_opt": "Osoba kontaktowa (opcjonalnie)"
         },
         "placeholders": {
             "name": "Przykładowy Klub",
             "legal_form": "np. e.V.",
             "email": "info@klub.pl",
-            "address": "Ulica 1, 12345 Miasto"
+            "address": "Ulica 1, 12345 Miasto",
+            "my_function": "np. prezes, skarbnik"
         },
         "search": {
             "title": "Podobne kluby",
@@ -236,20 +276,32 @@
         "errors": {
             "not_authenticated": "Niezalogowany.",
             "create_failed": "Tworzenie nie powiodło się. Sprawdź wprowadzone dane."
+        },
+        "info": {
+            "title": "Warto wiedzieć",
+            "no_membership": "Utworzenie klubu nie oznacza jeszcze członkostwa w DPV.",
+            "next_steps": "Następnie możesz edytować dane, dodać inne osoby jako zarząd lub administratorów i złożyć wniosek o członkostwo w DPV.",
+            "delete": "Dopóki nie ma członkostwa ani złożonego wniosku, możesz też usunąć swój klub.",
+            "contact": "Jeśli zostawisz te pola puste, to ty ({{name}}) będziesz osobą kontaktową klubu. Jeśli klub ma własny adres e-mail lub pocztę klubu czyta ktoś inny, wpisz tutaj e-mail klubu i osobę kontaktową."
         }
     },
     "profile": {
         "title": "Mój Profil",
         "personal_data": {
             "title": "Dane Osobowe",
-            "description": "Zaktualizuj tutaj swoje dane osobowe."
+            "description": "Zaktualizuj tutaj swoje dane osobowe.",
+            "admin_description": "Dane użytkownika",
+            "admin_edit_description": "Edytuj dane użytkownika"
         },
         "labels": {
             "firstname": "Imię",
             "lastname": "Nazwisko",
             "email": "E-mail",
             "language": "Język",
-            "yourClub": "Twój Klub"
+            "yourClub": "Twój Klub",
+            "address": "Adres",
+            "dateOfBirth": "Data urodzenia",
+            "address_placeholder": "Ulica, kod pocztowy, miasto"
         },
         "messages": {
             "success": "Profil zaktualizowany.",
@@ -264,7 +316,18 @@
             "cancel_membership": "Anuluj członkostwo",
             "withdraw_application": "Wycofaj wniosek",
             "reapply": "Złóż wniosek ponownie",
-            "apply_membership": "Złóż wniosek o członkostwo"
+            "apply_membership": "Złóż wniosek o członkostwo",
+            "date_optional": "Data (opcjonalnie)",
+            "date_hint_application": "Jeśli puste, zostanie użyta data z wniosku ({{date}}).",
+            "date_hint_today": "Jeśli puste, zostanie użyta dzisiejsza data.",
+            "cancelling": "Wypowiedzenie w toku",
+            "cancel_admin": "Wypowiedz (admin)",
+            "apply_description_self": "Twoje członkostwo zaczyna się w dniu złożenia wniosku, gdy tylko DPV go zatwierdzi.",
+            "cancel_dialog_description_self": "Pozostajesz członkiem DPV do końca okresu wypowiedzenia.",
+            "cancel_dialog_description_other": "Ta osoba pozostaje członkiem DPV do końca okresu wypowiedzenia.",
+            "cancel_dialog_info": "W przypadku wypowiedzenia teraz członkostwo kończy się <strong>{{date}}</strong>. Wypowiedzenia nie można tutaj cofnąć.",
+            "withdraw_dialog_description": "Twój wniosek o członkostwo zostanie wycofany. W każdej chwili możesz złożyć nowy wniosek.",
+            "apply_needs_bank": "Najpierw podaj dane bankowe w sekcji „Dane Płatności”, aby móc złożyć wniosek o członkostwo."
         },
         "language_options": {
             "browser_default": "Domyślny przeglądarki"
@@ -273,7 +336,36 @@
             "title": "Dane stowarzyszenia",
             "description": "Wypełniane przez stowarzyszenie",
             "membership_number": "Numer członkowski",
-            "fee": "Aktualna opłata"
+            "fee": "Aktualna opłata",
+            "membership_type": "Rodzaj członkostwa",
+            "votes": "Liczba głosów",
+            "see_documents": "Zobacz <statutes>statut</statutes> i <finances>regulamin składek</finances>",
+            "landesverband": "Związek regionalny",
+            "begin_date": "Początek członkostwa"
+        },
+        "roles": {
+            "title": "Zarządzanie rolami",
+            "description": "Przypisz uprawnienia systemowe temu użytkownikowi",
+            "admin": "Administrator systemu (admin)",
+            "aktivadmin": "Opiekun członków aktywnych (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Członkostwo",
+            "title_other": "Status członkostwa",
+            "description": "Zarządzaj swoim członkostwem w DPV",
+            "none": "Brak aktywnego wniosku o członkostwo.",
+            "status": "Status:",
+            "application_date": "Data wniosku:",
+            "entry_date": "Data przystąpienia:",
+            "immediately": "Natychmiast",
+            "end_date": "Data wypowiedzenia:",
+            "membership_number": "Numer członkowski:",
+            "planned_begin": "Planowany początek:",
+            "after_approval": "po zatwierdzeniu"
+        },
+        "apply": {
+            "active_option": "Członkostwo aktywne (10 € / rok)",
+            "custom_fee": "Wybrana składka roczna (€)"
         }
     },
     "auth": {
@@ -425,5 +517,13 @@
             "description": "Jeśli reprezentujesz firmę związaną z parkourem, zarządzaj członkostwem za pośrednictwem panelu firmy.",
             "button": "Wkrótce"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Ścieżka nawigacji",
+        "clubs": "Zarządzanie klubami",
+        "club": "Klub",
+        "user": "Użytkownik",
+        "status": "Status",
+        "settings": "Ustawienia systemu"
     }
 }

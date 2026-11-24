@@ -67,7 +67,7 @@ export function SettingsPage() {
     };
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto pb-12">
+        <div className="space-y-6 pb-12">
             <div className="flex items-center gap-2">
                 <Settings className="h-6 w-6 text-primary" />
                 <h1 className="text-2xl font-bold tracking-tight">Systemeinstellungen</h1>
@@ -78,7 +78,7 @@ export function SettingsPage() {
                     <CardHeader>
                         <CardTitle>Dokumenten-Links</CardTitle>
                         <CardDescription>
-                            Konfigurieren Sie hier die URLs zu wichtigen Dokumenten, die bei der Registrierung und Mitgliedschaft angezeigt werden.
+                            Konfiguriere hier die URLs zu wichtigen Dokumenten, die bei der Registrierung und Mitgliedschaft angezeigt werden.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">

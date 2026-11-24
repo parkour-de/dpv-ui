@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, getErrorMessage } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, type ClubStatus } from "@/types";
+import { type Club, CLUB_STATUS_COLORS, type ClubStatus, displayStatus } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Filter, Plus, AlertCircle } from "lucide-react";
@@ -36,16 +36,15 @@ export function ClubsPage() {
             setError(null);
             try {
                 let query = `?limit=${LIMIT}&skip=${page * LIMIT}`;
-                if (statusFilter) {
-                    query += `&status=${statusFilter}`;
-                }
                 if (missingCensusYear > 0) {
                     query += `&missing_census_year=${missingCensusYear}`;
                 }
+                // "Inaktiv" also covers former members ("cancelled"); the server filters one status at a time
+                const statuses = statusFilter === 'inactive' ? ['inactive', 'cancelled'] : [statusFilter];
 
                 if (token) {
-                    const data = await api.get<Club[]>(`/clubs${query}`, token);
-                    setClubs(data || []);
+                    const results = await Promise.all(statuses.map(s => api.get<Club[]>(`/clubs${query}` + (s ? `&status=${s}` : ''), token)));
+                    setClubs(results.flatMap(data => data || []));
                 }
             } catch (err: unknown) {
                 console.error("Failed to fetch clubs", err);
@@ -55,11 +54,11 @@ export function ClubsPage() {
             }
         };
 
-        fetchClubs();
+        void fetchClubs();
     }, [token, statusFilter, missingCensusYear, page, t]);
 
     const clubsByStatus = clubs.reduce((acc, club) => {
-        const status = club.membership.status;
+        const status = displayStatus(club.membership.status);
         if (!acc[status]) acc[status] = [];
         acc[status].push(club);
         return acc;
@@ -102,7 +101,7 @@ export function ClubsPage() {
                             onChange={(e) => setStatusFilter(e.target.value as ClubStatus | "")}
                         >
                             <option value="">{t('dashboard.filter.all_status')}</option>
-                            {['active', 'inactive', 'requested', 'denied', 'cancelled'].map((key) => (
+                            {['active', 'inactive', 'requested', 'denied'].map((key) => (
                                 <option key={key} value={key}>{t(`club.status.${key}`)}</option>
                             ))}
                         </select>

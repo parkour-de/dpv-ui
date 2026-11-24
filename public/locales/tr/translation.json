@@ -58,7 +58,29 @@
             "deny_membership_desc": "Bu talebi gerçekten reddetmek istiyor musunuz?",
             "cancel_membership": "Üyeliği iptal et",
             "cancel_membership_desc": "Lütfen iptal tarihini seçin (aktif dönemin sonu).",
-            "export_error": "Verileri dışa aktarırken hata"
+            "export_error": "Verileri dışa aktarırken hata",
+            "table": {
+                "type": "Tür",
+                "name": "Ad",
+                "email": "E-posta",
+                "status": "Durum",
+                "person": "Kişi",
+                "club": "Kulüp",
+                "member_type": "Üyelik türü",
+                "from_date": "{{date}} itibarıyla",
+                "until_date": "{{date}} tarihine kadar",
+                "all_types": "Tüm türler"
+            },
+            "member_types": {
+                "all": "Tüm üyelik türleri",
+                "ordinary": "Asil üye (temel)",
+                "extraordinary": "Olağanüstü üye",
+                "active": "Aktif üye (kişi)",
+                "supporting": "Destekçi üye",
+                "honorary": "Onursal üye"
+            },
+            "export_users": "Kullanıcılar CSV",
+            "export_clubs": "Kulüpler CSV"
         },
         "audit_page": {
             "title": "Aktivite günlüğü",
@@ -75,7 +97,9 @@
             "no_actions": "Henüz hiçbir eylem kaydedilmedi.",
             "author_label": "Yazar:",
             "unauthorized": "Bu sayfayı görüntüleme izniniz yok."
-        }
+        },
+        "welcome_back": "Tekrar hoş geldiniz, {{firstname}}",
+        "intro": "Burası Alman Parkour Federasyonu'nun kulüp portalıdır. Burada federasyondaki kişisel üyeliğinizi oluşturabilir, ayrıca kulüp ve şirketleri kaydedip üyeliklerine başvurabilir ve bunları yönetebilirsiniz."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Talep edildi",
             "denied": "Reddedildi",
             "cancelled": "İptal edildi",
-            "upcoming_membership": "Gelecek Üyelik 🚀",
-            "pending_cancellation": "İptal Bekliyor ⏳"
+            "upcoming_membership": "Gelecek Üyelik",
+            "pending_cancellation": "İptal Bekliyor"
         },
         "details": {
             "title": "Ana Veriler",
@@ -123,7 +147,11 @@
                 "consent_privacy": "<1>Gizlilik politikasını</1> kabul ediyorum.",
                 "consent_accuracy": "Bilgilerimin doğru olduğunu onaylıyorum.",
                 "consent_statutes": "<1>Tüzüğü</1> okudum ve kabul ediyorum.",
-                "consent_finances": "<1>Aidat yönetmeliğini</1> okudum ve kabul ediyorum."
+                "consent_finances": "<1>Aidat yönetmeliğini</1> okudum ve kabul ediyorum.",
+                "apply_button": "Başvuruyu gönder",
+                "cancel_dialog_description": "Kulübünüz fesih süresinin sonuna kadar DPV üyesi olmaya devam eder.",
+                "cancel_dialog_info": "Şimdi feshederseniz üyelik <strong>{{date}}</strong> tarihinde sona erer. Fesih burada geri alınamaz.",
+                "withdraw_dialog_description": "Kulübünüzün üyelik başvurusu geri çekilecek. İstediğiniz zaman yeni bir başvuru yapabilirsiniz."
             }
         },
         "documents": {
@@ -131,7 +159,8 @@
             "description": "Kulüp belgelerini buraya yükleyin.",
             "upload_label": "Yeni belge yükle",
             "download_all": "Tümünü indir",
-            "empty": "Belge bulunmuyor."
+            "empty": "Belge bulunmuyor.",
+            "info": "Kulübünüzün DPV üyeliğine uygun olup olmadığını kontrol edebilmemiz için tüzüğü ve vergi muafiyeti belgesini (Freistellungsbescheid) buraya yükleyin."
         },
         "payment": {
             "title": "Ödeme Bilgileri",
@@ -147,7 +176,10 @@
             },
             "placeholders": {
                 "account_holder": "Banka Hesap Sahibi Adı"
-            }
+            },
+            "admin_only": "Yalnızca yöneticiler tarafından düzenlenebilir.",
+            "info_debit": "Kulübünüzün banka bilgilerini buraya girin. Üyelik başvurusunda bulunursanız aidatlar bu hesaptan tahsil edilir.",
+            "info_required": "Üyelik başvurusu yapabilmek için banka bilgilerinin doldurulmuş olması gerekir."
         },
         "owners": {
             "title": "Yönetim ve Yöneticiler",
@@ -156,7 +188,9 @@
             "add_placeholder": "E-posta ile yeni yönetici ekle",
             "labels": {
                 "authorizedRepresentative": "Yetkili Temsilci (§26 BGB)"
-            }
+            },
+            "info_who": "Kulüp bilgilerini düzenleyebilecek kişileri ekleyin. Bu kişilerin DPV üye portalına kayıtlı olması gerekir.",
+            "info_26": "En az bir kişinin §26 BGB'ye göre temsil yetkisi olmalıdır."
         },
         "census": {
             "title": "Nüfus Sayımı Raporu",
@@ -172,7 +206,8 @@
                 "birthdate": "Doğum Tarihi"
             },
             "empty": "Nüfus sayımı raporu bulunmuyor.",
-            "confirm_overwrite": "{{year}} yılı için zaten bir nüfus sayımı raporu var. Üzerine yazmak istiyor musunuz?"
+            "confirm_overwrite": "{{year}} yılı için zaten bir nüfus sayımı raporu var. Üzerine yazmak istiyor musunuz?",
+            "info_required": "Üyelik başvurusu yapabilmek için {{year}} yılına ait üye bildirimi (Bestandsmeldung) yapılmış olmalıdır."
         },
         "messages": {
             "load_error": "Kulüp yüklenemedi.",
@@ -214,13 +249,18 @@
             "name": "Kulüp Adı",
             "legal_form": "Hukuki Şekil",
             "email_opt": "E-posta (isteğe bağlı)",
-            "address_opt": "Adres (isteğe bağlı)"
+            "address_opt": "Adres (isteğe bağlı)",
+            "authorized_representative": "Bu kulübü temsil etmeye yetkiliyim (§26 BGB)",
+            "my_function": "Kulüpteki göreviniz (isteğe bağlı)",
+            "club_email_opt": "Kulüp e-postası (isteğe bağlı)",
+            "contact_person_opt": "İletişim kişisi (isteğe bağlı)"
         },
         "placeholders": {
             "name": "Örnek Kulüp",
             "legal_form": "örn. e.V.",
             "email": "info@kulup.de",
-            "address": "Cadde 1, 12345 Şehir"
+            "address": "Cadde 1, 12345 Şehir",
+            "my_function": "örn. başkan, sayman"
         },
         "search": {
             "title": "Benzer Kulüpler",
@@ -236,20 +276,32 @@
         "errors": {
             "not_authenticated": "Kimlik doğrulanmadı.",
             "create_failed": "Oluşturma başarısız. Girişlerinizi kontrol edin."
+        },
+        "info": {
+            "title": "Bilmekte fayda var",
+            "no_membership": "Kulübünüzü oluşturmak onu henüz DPV üyesi yapmaz.",
+            "next_steps": "Ardından bilgileri düzenleyebilir, başka kişileri yönetim kurulu üyesi veya yönetici olarak ekleyebilir ve DPV üyeliğine başvurabilirsiniz.",
+            "delete": "Üyelik veya bekleyen bir başvuru olmadığı sürece kulübünüzü yeniden silebilirsiniz.",
+            "contact": "Bu alanları boş bırakırsanız kulübün iletişim kişisi siz ({{name}}) olursunuz. Kulübün kendi e-posta adresi varsa veya kulüp postasını başka biri okuyorsa, kulüp e-postasını ve iletişim kişisini buraya girin."
         }
     },
     "profile": {
         "title": "Profilim",
         "personal_data": {
             "title": "Kişisel Bilgiler",
-            "description": "Kişisel bilgilerinizi buradan güncelleyin."
+            "description": "Kişisel bilgilerinizi buradan güncelleyin.",
+            "admin_description": "Kullanıcı verileri",
+            "admin_edit_description": "Kullanıcı verilerini düzenle"
         },
         "labels": {
             "firstname": "Ad",
             "lastname": "Soyad",
             "email": "E-posta",
             "language": "Dil",
-            "yourClub": "Kulübünüz"
+            "yourClub": "Kulübünüz",
+            "address": "Adres",
+            "dateOfBirth": "Doğum tarihi",
+            "address_placeholder": "Sokak, posta kodu, şehir"
         },
         "messages": {
             "success": "Profil güncellendi.",
@@ -264,7 +316,18 @@
             "cancel_membership": "Üyeliği iptal et",
             "withdraw_application": "Başvuruyu geri çek",
             "reapply": "Yeniden başvur",
-            "apply_membership": "Üyelik için başvur"
+            "apply_membership": "Üyelik için başvur",
+            "date_optional": "Tarih (isteğe bağlı)",
+            "date_hint_application": "Boş bırakılırsa başvurudaki tarih kullanılır ({{date}}).",
+            "date_hint_today": "Boş bırakılırsa bugünün tarihi kullanılır.",
+            "cancelling": "Fesih işlemde",
+            "cancel_admin": "Feshet (yönetici)",
+            "apply_description_self": "Üyeliğiniz, DPV başvurunuzu onayladığında başvuru tarihinizden itibaren başlar.",
+            "cancel_dialog_description_self": "Fesih süresinin sonuna kadar DPV üyesi olmaya devam edersiniz.",
+            "cancel_dialog_description_other": "Bu kişi fesih süresinin sonuna kadar DPV üyesi olmaya devam eder.",
+            "cancel_dialog_info": "Şimdi feshedilirse üyelik <strong>{{date}}</strong> tarihinde sona erer. Fesih burada geri alınamaz.",
+            "withdraw_dialog_description": "Üyelik başvurunuz geri çekilecek. İstediğiniz zaman yeni bir başvuru yapabilirsiniz.",
+            "apply_needs_bank": "Üyelik başvurusu yapabilmek için önce \"Ödeme Bilgileri\" bölümüne banka bilgilerinizi girin."
         },
         "language_options": {
             "browser_default": "Tarayıcı Varsayılanı"
@@ -273,7 +336,36 @@
             "title": "Dernek Verileri",
             "description": "Dernek tarafından doldurulur",
             "membership_number": "Üyelik Numarası",
-            "fee": "Güncel Ücret"
+            "fee": "Güncel Ücret",
+            "membership_type": "Üyelik türü",
+            "votes": "Oy sayısı",
+            "see_documents": "Bkz. <statutes>tüzük</statutes> ve <finances>aidat yönetmeliği</finances>",
+            "landesverband": "Eyalet federasyonu",
+            "begin_date": "Üyelik başlangıcı"
+        },
+        "roles": {
+            "title": "Rol yönetimi",
+            "description": "Bu kullanıcıya sistem yetkileri ata",
+            "admin": "Sistem yöneticisi (admin)",
+            "aktivadmin": "Aktif üye sorumlusu (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Üyelik",
+            "title_other": "Üyelik durumu",
+            "description": "DPV üyeliğini yönet",
+            "none": "Aktif üyelik başvurusu yok.",
+            "status": "Durum:",
+            "application_date": "Başvuru tarihi:",
+            "entry_date": "Giriş tarihi:",
+            "immediately": "Hemen",
+            "end_date": "Fesih tarihi:",
+            "membership_number": "Üye numarası:",
+            "planned_begin": "Planlanan başlangıç:",
+            "after_approval": "onaydan sonra"
+        },
+        "apply": {
+            "active_option": "Aktif üyelik (yılda 10 €)",
+            "custom_fee": "Yıllık istenen aidat (€)"
         }
     },
     "auth": {
@@ -425,5 +517,13 @@
             "description": "Parkour alanında faaliyet gösteren bir şirketi temsil ediyorsanız, şirket yönetimi kısmından işlem yapın.",
             "button": "Yakında"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Gezinme yolu",
+        "clubs": "Kulüp yönetimi",
+        "club": "Kulüp",
+        "user": "Kullanıcı",
+        "status": "Durum",
+        "settings": "Sistem ayarları"
     }
 }

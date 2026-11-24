@@ -58,7 +58,29 @@
             "deny_membership_desc": "Vërtet dëshironi ta refuzoni këtë kërkesë?",
             "cancel_membership": "Anulo anëtarësimin",
             "cancel_membership_desc": "Ju lutemi zgjidhni datën e anulimit (fundi i periudhës aktive).",
-            "export_error": "Gabim gjatë eksportimit të të dhënave"
+            "export_error": "Gabim gjatë eksportimit të të dhënave",
+            "table": {
+                "type": "Lloji",
+                "name": "Emri",
+                "email": "Email",
+                "status": "Statusi",
+                "person": "Person",
+                "club": "Klub",
+                "member_type": "Forma e anëtarësimit",
+                "from_date": "nga {{date}}",
+                "until_date": "deri më {{date}}",
+                "all_types": "Të gjitha llojet"
+            },
+            "member_types": {
+                "all": "Të gjitha format e anëtarësimit",
+                "ordinary": "Anëtar i rregullt (bazë)",
+                "extraordinary": "Anëtar i jashtëzakonshëm",
+                "active": "Anëtar aktiv (person)",
+                "supporting": "Anëtar mbështetës",
+                "honorary": "Anëtar nderi"
+            },
+            "export_users": "CSV e përdoruesve",
+            "export_clubs": "CSV e klubeve"
         },
         "audit_page": {
             "title": "Regjistri i aktiviteteve",
@@ -75,7 +97,9 @@
             "no_actions": "Nuk është regjistruar ende asnjë veprim.",
             "author_label": "Autori:",
             "unauthorized": "Nuk keni leje për të parë këtë faqe."
-        }
+        },
+        "welcome_back": "Mirë se u kthyet, {{firstname}}",
+        "intro": "Ky është portali i klubeve i Shoqatës Gjermane të Parkourit. Këtu mund të krijoni anëtarësimin tuaj personal në shoqatë, si dhe të regjistroni klube dhe kompani dhe të aplikoni për anëtarësimet e tyre dhe t'i menaxhoni ato."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Kërkuar",
             "denied": "Refuzuar",
             "cancelled": "Anuluar",
-            "upcoming_membership": "Anëtarësimi i ardhshëm 🚀",
-            "pending_cancellation": "Anulimi në pritje ⏳"
+            "upcoming_membership": "Anëtarësimi i ardhshëm",
+            "pending_cancellation": "Anulimi në pritje"
         },
         "details": {
             "title": "Të Dhënat Kryesore",
@@ -123,7 +147,11 @@
                 "consent_privacy": "Pranoj <1>politikën e privatësisë</1>.",
                 "consent_accuracy": "Konfirmoj që të dhënat e mia janë të sakta.",
                 "consent_statutes": "Kam lexuar dhe pranoj <1>statutin</1>.",
-                "consent_finances": "Kam lexuar dhe pranoj <1>rregulloren e kontributeve</1>."
+                "consent_finances": "Kam lexuar dhe pranoj <1>rregulloren e kontributeve</1>.",
+                "apply_button": "Dërgo kërkesën",
+                "cancel_dialog_description": "Klubi yt mbetet anëtar i DPV deri në fund të afatit të njoftimit.",
+                "cancel_dialog_info": "Nëse anulon tani, anëtarësimi përfundon më <strong>{{date}}</strong>. Anulimi nuk mund të zhbëhet këtu.",
+                "withdraw_dialog_description": "Kërkesa e klubit për anëtarësim do të tërhiqet. Mund të bësh një kërkesë të re në çdo kohë."
             }
         },
         "documents": {
@@ -131,7 +159,8 @@
             "description": "Ngarkoni dokumentet e klubit këtu.",
             "upload_label": "Ngarko dokument të ri",
             "download_all": "Shkarko të gjitha",
-            "empty": "Nuk ka dokumente."
+            "empty": "Nuk ka dokumente.",
+            "info": "Ngarkoni këtu statutin dhe vendimin e përjashtimit nga tatimet (Freistellungsbescheid) të klubit, që të verifikojmë nëse mund të bëhet anëtar i DPV."
         },
         "payment": {
             "title": "Detajet e Pagesës",
@@ -147,7 +176,10 @@
             },
             "placeholders": {
                 "account_holder": "Emri i mbajtësit të llogarisë"
-            }
+            },
+            "admin_only": "E redaktueshme vetëm nga administratorët.",
+            "info_debit": "Vendosni këtu të dhënat bankare të klubit. Nëse aplikoni për anëtarësim, kuotat do të tërhiqen nga kjo llogari.",
+            "info_required": "Të dhënat bankare duhet të plotësohen para se të aplikoni për anëtarësim."
         },
         "owners": {
             "title": "Bordi dhe Administratorët",
@@ -156,7 +188,9 @@
             "add_placeholder": "Shto administrator të ri me email",
             "labels": {
                 "authorizedRepresentative": "Përfaqësuesi i autorizuar (§26 BGB)"
-            }
+            },
+            "info_who": "Shtoni personat që mund të ndryshojnë të dhënat e klubit. Ata duhet të jenë të regjistruar në portalin e anëtarëve të DPV.",
+            "info_26": "Të paktën një person duhet të ketë të drejtë përfaqësimi sipas §26 BGB."
         },
         "census": {
             "title": "Raporti i Regjistrimit",
@@ -172,7 +206,8 @@
                 "birthdate": "Data e lindjes"
             },
             "empty": "Nuk ka raporte regjistrimi të disponueshme.",
-            "confirm_overwrite": "Ekziston tashmë një raport regjistrimi për vitin {{year}}. Dëshironi ta mbishkruani?"
+            "confirm_overwrite": "Ekziston tashmë një raport regjistrimi për vitin {{year}}. Dëshironi ta mbishkruani?",
+            "info_required": "Para se të aplikoni për anëtarësim, duhet të dorëzohet raporti i anëtarëve (Bestandsmeldung) për vitin {{year}}."
         },
         "messages": {
             "load_error": "Nuk u ngarkua klubi.",
@@ -214,13 +249,18 @@
             "name": "Emri i Klubit",
             "legal_form": "Forma Ligjore",
             "email_opt": "Email (opsionale)",
-            "address_opt": "Adresa (opsionale)"
+            "address_opt": "Adresa (opsionale)",
+            "authorized_representative": "Kam të drejtë ta përfaqësoj këtë klub (§26 BGB)",
+            "my_function": "Funksioni yt në klub (opsionale)",
+            "club_email_opt": "Email-i i klubit (opsionale)",
+            "contact_person_opt": "Personi i kontaktit (opsionale)"
         },
         "placeholders": {
             "name": "Klub Shembull",
             "legal_form": "p.sh. e.V.",
             "email": "info@klub.al",
-            "address": "Rruga 1, 12345 Qytet"
+            "address": "Rruga 1, 12345 Qytet",
+            "my_function": "p.sh. kryetar, arkëtar"
         },
         "search": {
             "title": "Klube të ngjashme",
@@ -236,20 +276,32 @@
         "errors": {
             "not_authenticated": "Jo i autentifikuar.",
             "create_failed": "Dështoi krijimi. Kontrolloni të dhënat."
+        },
+        "info": {
+            "title": "Mirë të dihet",
+            "no_membership": "Krijimi i klubit nuk e bën atë ende anëtar të DPV.",
+            "next_steps": "Më pas mund të ndryshoni të dhënat, të shtoni persona të tjerë në drejtim ose si administratorë dhe të aplikoni për anëtarësim në DPV.",
+            "delete": "Për sa kohë nuk ka anëtarësim ose kërkesë në pritje, mund ta fshini edhe klubin tuaj.",
+            "contact": "Nëse i lë bosh këto fusha, ti ({{name}}) do të jesh personi i kontaktit i klubit. Nëse klubi ka adresën e vet të email-it ose dikush tjetër lexon postën e klubit, shkruaj këtu email-in e klubit dhe personin e kontaktit."
         }
     },
     "profile": {
         "title": "Profili Im",
         "personal_data": {
             "title": "Të Dhënat Personale",
-            "description": "Përditësoni informacionin tuaj personal këtu."
+            "description": "Përditësoni informacionin tuaj personal këtu.",
+            "admin_description": "Të dhënat e përdoruesit",
+            "admin_edit_description": "Ndrysho të dhënat e përdoruesit"
         },
         "labels": {
             "firstname": "Emri",
             "lastname": "Mbiemri",
             "email": "Email",
             "language": "Gjuha",
-            "yourClub": "Klubi yt"
+            "yourClub": "Klubi yt",
+            "address": "Adresa",
+            "dateOfBirth": "Data e lindjes",
+            "address_placeholder": "Rruga, kodi postar, qyteti"
         },
         "messages": {
             "success": "Profili u përditësua.",
@@ -264,7 +316,18 @@
             "cancel_membership": "Anulo anëtarësimin",
             "withdraw_application": "Tërhiq aplikimin",
             "reapply": "Apliko përsëri",
-            "apply_membership": "Apliko për anëtarësim"
+            "apply_membership": "Apliko për anëtarësim",
+            "date_optional": "Data (opsionale)",
+            "date_hint_application": "Nëse lihet bosh, përdoret data nga kërkesa ({{date}}).",
+            "date_hint_today": "Nëse lihet bosh, përdoret data e sotme.",
+            "cancelling": "Ndërprerja në proces",
+            "cancel_admin": "Anulo (admin)",
+            "apply_description_self": "Anëtarësimi yt fillon në ditën e kërkesës, sapo DPV ta miratojë.",
+            "cancel_dialog_description_self": "Mbetesh anëtar i DPV deri në fund të afatit të njoftimit.",
+            "cancel_dialog_description_other": "Ky person mbetet anëtar i DPV deri në fund të afatit të njoftimit.",
+            "cancel_dialog_info": "Nëse anulohet tani, anëtarësimi përfundon më <strong>{{date}}</strong>. Anulimi nuk mund të zhbëhet këtu.",
+            "withdraw_dialog_description": "Kërkesa jote për anëtarësim do të tërhiqet. Mund të bësh një kërkesë të re në çdo kohë.",
+            "apply_needs_bank": "Shto fillimisht të dhënat bankare te \"Detajet e Pagesës\" që të mund të aplikosh për anëtarësim."
         },
         "language_options": {
             "browser_default": "Parazgjedhja e shfletuesit"
@@ -273,7 +336,36 @@
             "title": "Të dhënat e shoqatës",
             "description": "Plotësohet nga shoqata",
             "membership_number": "Numri i anëtarësisë",
-            "fee": "Tarifa aktuale"
+            "fee": "Tarifa aktuale",
+            "membership_type": "Lloji i anëtarësimit",
+            "votes": "Numri i votave",
+            "see_documents": "Shih <statutes>statutin</statutes> dhe <finances>rregulloren e kuotave</finances>",
+            "landesverband": "Federata rajonale",
+            "begin_date": "Fillimi i anëtarësimit"
+        },
+        "roles": {
+            "title": "Menaxhimi i roleve",
+            "description": "Cakto lejet e sistemit për këtë përdorues",
+            "admin": "Administrator i sistemit (admin)",
+            "aktivadmin": "Koordinator i anëtarëve aktivë (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Anëtarësimi",
+            "title_other": "Statusi i anëtarësimit",
+            "description": "Menaxho anëtarësimin tënd në DPV",
+            "none": "Nuk ka asnjë kërkesë aktive për anëtarësim.",
+            "status": "Statusi:",
+            "application_date": "Data e kërkesës:",
+            "entry_date": "Data e anëtarësimit:",
+            "immediately": "Menjëherë",
+            "end_date": "Data e ndërprerjes:",
+            "membership_number": "Numri i anëtarit:",
+            "planned_begin": "Fillimi i planifikuar:",
+            "after_approval": "pas miratimit"
+        },
+        "apply": {
+            "active_option": "Anëtarësim aktiv (10 € / vit)",
+            "custom_fee": "Kuota e dëshiruar në vit (€)"
         }
     },
     "auth": {
@@ -425,5 +517,13 @@
             "description": "Për kompanitë që merren me parkour që dëshirojnë t'i bashkohen shoqatës.",
             "button": "Së shpejti"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Shtegu i navigimit",
+        "clubs": "Menaxhimi i klubeve",
+        "club": "Klubi",
+        "user": "Përdoruesi",
+        "status": "Statusi",
+        "settings": "Cilësimet e sistemit"
     }
 }

@@ -4,22 +4,26 @@ import { useTranslation, Trans } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { useConfig } from "@/hooks/use-config";
 import { api, ApiError } from "@/lib/api";
-import { type Club, CLUB_STATUS_COLORS, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
+import { type Club, GERMAN_STATES, type VorstandUser, type Census, type ActiveMembersResponse, type ActiveMemberMatch } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff, Section } from "lucide-react";
-import { cn, calculateCancellationDate } from "@/lib/utils";
+import { Check, X, Trash2, AlertCircle, Save, FileText, Upload, Download, Loader2, UserPlus, UserMinus, User, UserKey, PenLine, PenOff, Section } from "lucide-react";
+import { calculateCancellationDate } from "@/lib/utils";
 import { PaymentDetails } from "@/components/payment-details";
+import { InfoBox } from "@/components/info-box";
+import { StatusBadge } from "@/components/status-badge";
+import { useBreadcrumbLabel } from "@/context/breadcrumb-context";
 
 export function ClubDetailsPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { user, token } = useAuth();
     const { config } = useConfig();
     const [club, setClub] = useState<Club | null>(null);
+    useBreadcrumbLabel(club?.name);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [formError, setFormError] = useState<string | null>(null);
@@ -64,7 +68,7 @@ export function ClubDetailsPage() {
     const [editedFunction, setEditedFunction] = useState<Record<string, string>>({});
 
     // Modal state for Apply/Cancel/Approve with dates
-    const [actionModal, setActionModal] = useState<'apply' | 'cancel' | 'approve' | null>(null);
+    const [actionModal, setActionModal] = useState<'apply' | 'cancel' | 'withdraw' | 'approve' | null>(null);
     const [actionDate, setActionDate] = useState<string>('');
     const [consents, setConsents] = useState({
         privacy: false,
@@ -129,7 +133,7 @@ export function ClubDetailsPage() {
         };
 
         fetchClub();
-        fetchDocuments();
+        void fetchDocuments();
     }, [id, token, fetchClub]);
 
     const fetchActiveMembers = async () => {
@@ -274,14 +278,15 @@ export function ClubDetailsPage() {
         if (!actionModal) return;
 
         if (actionModal === 'apply') {
-            handleAction('apply', {
+            void handleAction('apply', {
                 consent_privacy: consents.privacy,
                 consent_accuracy: consents.accuracy,
                 consent_statutes: consents.statutes,
                 consent_finances: consents.finances
             });
-        } else if (actionModal === 'cancel') {
-            handleAction('cancel');
+        } else if (actionModal === 'cancel' || actionModal === 'withdraw') {
+            // Withdrawing an application uses the same server action as cancelling
+            void handleAction('cancel');
         } else if (actionModal === 'approve') {
             const extraData: Record<string, unknown> = {};
             if (actionDate) {
@@ -290,8 +295,11 @@ export function ClubDetailsPage() {
                     const date = new Date(Date.UTC(Number.parseInt(parts[0]), Number.parseInt(parts[1]) - 1, Number.parseInt(parts[2])));
                     extraData.begin_date = Math.floor(date.getTime() / 1000);
                 }
+            } else if (club?.membership.application_date) {
+                // No date chosen: the membership begins on the application date (the server would otherwise use today)
+                extraData.begin_date = club.membership.application_date;
             }
-            handleAction('approve', extraData);
+            void handleAction('approve', extraData);
         }
     };
 
@@ -411,28 +419,13 @@ export function ClubDetailsPage() {
     const renderHeader = () => {
         if (!club) return null;
 
-        const { status, begin_date, end_date } = club.membership;
-        const now = Math.floor(Date.now() / 1000);
-        let labelKey = `club.status.${status}`;
-        if (status === 'active' && begin_date && begin_date > now) {
-            labelKey = 'club.status.upcoming_membership';
-        } else if (status === 'cancelled' && end_date && end_date > now) {
-            labelKey = 'club.status.pending_cancellation';
-        }
-
         return (
             <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
-                        <Link to="/dashboard" className="text-muted-foreground hover:text-foreground">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Link>
                         <h1 className="text-2xl font-bold tracking-tight">{club.name}</h1>
-                        <span className={cn("px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap", CLUB_STATUS_COLORS[club.membership.status])}>
-                            {t(labelKey)}
-                        </span>
                     </div>
-                    <div className="text-xs text-muted-foreground flex gap-3 ml-6 font-mono">
+                    <div className="text-xs text-muted-foreground flex gap-3 font-mono">
                         {club.membership.begin_date ? (
                             <span>{t('club.status.active')} seit {new Date(club.membership.begin_date * 1000).toLocaleDateString()}</span>
                         ) : null}
@@ -445,9 +438,9 @@ export function ClubDetailsPage() {
                     {!isEditing && (
                         <>
                             {['active', 'requested', 'approved', 'cancelling'].includes(club.membership.status || '') ? (
-                                <Button size="sm" variant="outline" className="text-destructive hover:text-destructive" onClick={() => {
+                                <Button size="sm" variant="destructive" onClick={() => {
                                     if (club.membership.status === 'requested') {
-                                        handleAction('cancel');
+                                        setActionModal('withdraw');
                                     } else if (club.membership.status === 'active' || club.membership.status === 'approved') {
                                         setActionModal('cancel');
                                     }
@@ -466,7 +459,7 @@ export function ClubDetailsPage() {
                                     }
                                     setActionModal('apply');
                                 }} disabled={formLoading}>
-                                    {(club.membership.status === 'cancelled' || club.membership.status === 'denied')
+                                    {club.membership.status === 'denied'
                                         ? t('club.details.membership.reapply')
                                         : t('club.details.membership.apply')}
                                 </Button>
@@ -481,12 +474,6 @@ export function ClubDetailsPage() {
                                     </Button>
                                 </div>
                             )}
-                            <Button size="sm" variant="outline" onClick={() => {
-                                setIsEditing(true);
-                                setFormError(null);
-                            }}>
-                                {t('club.details.actions.edit')}
-                            </Button>
                             {!(club.membership.status === 'active' || club.membership.status === 'requested' || club.membership.status === 'cancelling' || club.membership.status === 'approved') && (
                                 <Button size="sm" variant="destructive" onClick={handleDelete} disabled={formLoading}>
                                     <Trash2 className="h-4 w-4" />
@@ -515,6 +502,7 @@ export function ClubDetailsPage() {
                     )}
                 </CardHeader>
                 <CardContent className="space-y-6">
+                    <InfoBox items={[t('club.documents.info')]} />
                     {uploadError && (
                         <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
                             <AlertCircle className="h-4 w-4" />
@@ -577,41 +565,17 @@ export function ClubDetailsPage() {
         );
     };
 
-    const renderVerbandData = () => {
-        if (!club || !isAdmin) return null;
-        return (
-            <Card>
-                <CardHeader>
-                    <CardTitle>Verbandsdaten</CardTitle>
-                    <CardDescription>Diese Informationen können nur von Administratoren eingesehen werden.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label>Landesverband</Label>
-                            <Input value={club.state || ''} disabled />
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Registernummer</Label>
-                            <Input value={club.registerNumber || ''} disabled />
-                        </div>
-                        <div className="space-y-2">
-                            <Label>Gemeinnützigkeit gültig bis</Label>
-                            <Input value={club.exemptionValidity || ''} disabled />
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-        );
-    };
-
     const renderMembershipDetailsCard = () => {
-        if (!club) return null;
+        // Only members have association data: active, accepted (starting later) or in their notice period
+        if (!club || !['active', 'approved', 'cancelling'].includes(club.membership.status)) return null;
         return (
             <Card>
-                <CardHeader>
-                    <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
-                    <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>
+                <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+                    <div className="space-y-1.5">
+                        <CardTitle>{t('profile.verband.title', { defaultValue: 'Verbandsdaten' })}</CardTitle>
+                        <CardDescription>{t('profile.verband.description', { defaultValue: 'Wird vom Verband ausgefüllt' })}</CardDescription>
+                    </div>
+                    <StatusBadge membership={club.membership} />
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
@@ -637,6 +601,11 @@ export function ClubDetailsPage() {
                             <Label>Stimmenanzahl</Label>
                             <Input value={club.membership?.current_votes?.toString() ?? '0'} disabled />
                         </div>
+                        <div className="space-y-2">
+                            <Label>{t('profile.verband.landesverband')}</Label>
+                            {/* For now the Landesverband follows the club's Bundesland */}
+                            <Input value={club.state || ''} disabled />
+                        </div>
                     </div>
                 </CardContent>
             </Card>
@@ -652,6 +621,7 @@ export function ClubDetailsPage() {
                     <CardDescription>{t('club.owners.description')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                    <InfoBox items={[t('club.owners.info_who'), t('club.owners.info_26')]} />
                     {ownerError && (
                         <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
                             <AlertCircle className="h-4 w-4" />
@@ -788,7 +758,7 @@ export function ClubDetailsPage() {
                             className="max-w-[150px]"
                             value={newOwnerFunction}
                             onChange={(e) => setNewOwnerFunction(e.target.value)}
-                            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOwner(); } }}
+                            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void handleAddOwner(); } }}
                         />
                         <label className="flex items-center gap-2 text-sm cursor-pointer ml-2">
                             <input
@@ -825,6 +795,7 @@ export function ClubDetailsPage() {
                     </Button>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                    <InfoBox items={[t('club.census.info_required', { year: new Date().getFullYear() })]} />
                     {censusError && (
                         <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md">
                             <AlertCircle className="h-4 w-4" />
@@ -1095,23 +1066,39 @@ export function ClubDetailsPage() {
 
     const renderActionModal = () => {
         if (!actionModal) return null;
+        // Title, description and confirm label per dialog type
+        const texts = {
+            apply: {
+                title: t('club.details.membership.apply'),
+                description: t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." }),
+                confirm: t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }),
+            },
+            cancel: {
+                title: t('club.details.membership.cancel'),
+                description: t('club.details.membership.cancel_dialog_description'),
+                confirm: t('club.details.membership.cancel'),
+            },
+            withdraw: {
+                title: t('club.details.membership.withdraw'),
+                description: t('club.details.membership.withdraw_dialog_description'),
+                confirm: t('club.details.membership.withdraw'),
+            },
+            approve: {
+                title: t('club.details.membership.approve'),
+                description: t('club.details.membership.approve_description', { defaultValue: "Specify the start date (optional):" }),
+                confirm: t('club.details.membership.confirm', { defaultValue: "Confirm" }),
+            },
+        }[actionModal];
         return (
             <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                 <Card className="w-full max-w-md shadow-2xl">
                     <CardHeader>
-                        <CardTitle>
-                            {actionModal === 'apply' ? t('club.details.membership.apply') : actionModal === 'cancel' ? t('club.details.membership.cancel') : t('club.details.membership.approve')}
-                        </CardTitle>
-                        <CardDescription>
-                            {actionModal === 'apply'
-                                ? t('club.details.membership.apply_description', { defaultValue: "Please select if you want to become a member." })
-                                : actionModal === 'cancel'
-                                    ? t('profile.actions.cancel_info_prefix', { defaultValue: "Cancel membership:" })
-                                    : t('club.details.membership.approve_description', { defaultValue: "Specify the start date (optional):" })}
-                        </CardDescription>
+                        <CardTitle>{texts.title}</CardTitle>
+                        <CardDescription>{texts.description}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        {actionModal === 'approve' ? (
+                    {/* The withdraw dialog has no content beyond its description */}
+                    <CardContent className={actionModal === 'withdraw' ? "hidden" : "space-y-4"}>
+                        {actionModal === 'approve' && (
                             <div className="space-y-2">
                                 <Label htmlFor="actionDate">{t('club.details.membership.date_label', { defaultValue: "Date (Optional)" })}</Label>
                                 <Input
@@ -1123,20 +1110,24 @@ export function ClubDetailsPage() {
                                 <p className="text-xs text-muted-foreground pt-1">
                                     {(() => {
                                         const mDate = club?.membership?.application_date;
-                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString() : "";
+                                        const dateStr = mDate ? new Date(mDate * 1000).toLocaleDateString(i18n.language) : "";
                                         return `Falls leer, wird das Datum ${mDate ? ` aus dem Antrag übernommen (${dateStr})` : ` von heute verwendet`} .`;
                                     })()}
                                 </p>
                             </div>
-                        ) : actionModal === 'cancel' ? (
+                        )}
+                        {actionModal === 'cancel' && (
                             <div className="space-y-2 p-4 border rounded-md bg-muted/20">
                                 <p className="text-sm">
-                                    {t('club.details.membership.cancel_info_prefix', { defaultValue: "Wenn Sie jetzt kündigen, endet die Mitgliedschaft zum" })}
-                                    {" "}
-                                    <strong>{calculateCancellationDate().toLocaleDateString('de-DE')}</strong>.
+                                    <Trans
+                                        i18nKey="club.details.membership.cancel_dialog_info"
+                                        values={{ date: calculateCancellationDate().toLocaleDateString(i18n.language) }}
+                                        components={{ strong: <strong /> }}
+                                    />
                                 </p>
                             </div>
-                        ) : (
+                        )}
+                        {actionModal === 'apply' && (
                             <div className="space-y-3 pt-2">
                                 {[
                                     { id: 'privacy', key: 'club.details.membership.consent_privacy', def: 'Ich stimme der <1>Datenschutzerklärung</1> zu.', href: config?.links?.privacy || 'https://parkour-deutschland.de/datenschutzerklaerung/' },
@@ -1173,11 +1164,12 @@ export function ClubDetailsPage() {
                             {t('club.details.actions.cancel')}
                         </Button>
                         <Button
+                            variant={actionModal === 'cancel' || actionModal === 'withdraw' ? 'destructive' : 'default'}
                             onClick={handleActionWithDate}
                             disabled={formLoading || (actionModal === 'apply' && (!consents.privacy || !consents.accuracy || !consents.statutes || !consents.finances))}
                         >
                             {formLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                            {actionModal === 'apply' ? t('club.details.membership.apply_button', { defaultValue: 'Antrag stellen' }) : t('club.details.membership.confirm', { defaultValue: "Confirm" })}
+                            {texts.confirm}
                         </Button>
                     </CardFooter>
                 </Card>
@@ -1189,7 +1181,7 @@ export function ClubDetailsPage() {
     if (!club) return <div className="text-center py-12">{t('club.messages.not_found')}</div>;
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="space-y-6">
             {renderHeader()}
 
             {error && (
@@ -1206,11 +1198,23 @@ export function ClubDetailsPage() {
                 </div>
             )}
 
+            {renderMembershipDetailsCard()}
+
             <form onSubmit={handleSave}>
                 <Card>
-                    <CardHeader>
-                        <CardTitle>{t('club.details.title')}</CardTitle>
-                        <CardDescription>{t('club.details.description')}</CardDescription>
+                    <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+                        <div className="space-y-1.5">
+                            <CardTitle>{t('club.details.title')}</CardTitle>
+                            <CardDescription>{t('club.details.description')}</CardDescription>
+                        </div>
+                        {!isEditing && (
+                            <Button type="button" size="sm" variant="outline" onClick={() => {
+                                setIsEditing(true);
+                                setFormError(null);
+                            }}>
+                                {t('club.details.actions.edit')}
+                            </Button>
+                        )}
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {formError && (
@@ -1235,13 +1239,28 @@ export function ClubDetailsPage() {
                                         {t(field.label)}
                                         {field.locked && <span className="ml-2 text-xs">(Gesperrt)</span>}
                                     </Label>
-                                    <Input
-                                        id={field.id}
-                                        value={formData[field.id as keyof typeof formData] || ''}
-                                        onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
-                                        disabled={!isEditing || field.locked}
-                                        placeholder={field.placeholder}
-                                    />
+                                    {field.id === 'state' ? (
+                                        <select
+                                            id="state"
+                                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            value={formData.state || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, state: e.target.value }))}
+                                            disabled={!isEditing || field.locked}
+                                        >
+                                            <option value="">–</option>
+                                            {/* Keep an older free-text value selectable until it is replaced */}
+                                            {formData.state && !GERMAN_STATES.includes(formData.state) && <option value={formData.state}>{formData.state}</option>}
+                                            {GERMAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                                        </select>
+                                    ) : (
+                                        <Input
+                                            id={field.id}
+                                            value={formData[field.id as keyof typeof formData] || ''}
+                                            onChange={(e) => setFormData(p => ({ ...p, [field.id]: e.target.value }))}
+                                            disabled={!isEditing || field.locked}
+                                            placeholder={field.placeholder}
+                                        />
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -1275,6 +1294,7 @@ export function ClubDetailsPage() {
 
             {!isEditing && (
                 <>
+                    {renderVorstandManagement()}
                     {renderDocuments()}
                     <div className="mt-6 mb-6">
                         <PaymentDetails
@@ -1283,12 +1303,10 @@ export function ClubDetailsPage() {
                             patchUrl={`/club/${id}`}
                             isAdmin={isAdmin}
                             canEdit={true}
-                            alwaysOpen={false}
+                            alwaysOpen={true}
+                            hint={<InfoBox items={[t('club.payment.info_debit'), t('club.payment.info_required')]} />}
                         />
                     </div>
-                    {renderMembershipDetailsCard()}
-                    {renderVerbandData()}
-                    {renderVorstandManagement()}
                     {renderCensusSection()}
                     {renderActiveMembersReview()}
                 </>

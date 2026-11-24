@@ -58,7 +58,29 @@
             "deny_membership_desc": "Voulez-vous vraiment refuser cette demande ?",
             "cancel_membership": "Annuler l'adhésion",
             "cancel_membership_desc": "Veuillez sélectionner la date d'annulation (fin de la période active).",
-            "export_error": "Erreur lors de l'exportation des données"
+            "export_error": "Erreur lors de l'exportation des données",
+            "table": {
+                "type": "Type",
+                "name": "Nom",
+                "email": "E-mail",
+                "status": "Statut",
+                "person": "Personne",
+                "club": "Club",
+                "member_type": "Type d'adhésion",
+                "from_date": "à partir du {{date}}",
+                "until_date": "jusqu'au {{date}}",
+                "all_types": "Tous les types"
+            },
+            "member_types": {
+                "all": "Toutes les formes d'adhésion",
+                "ordinary": "Membre ordinaire (de base)",
+                "extraordinary": "Membre extraordinaire",
+                "active": "Membre actif (personne)",
+                "supporting": "Membre bienfaiteur",
+                "honorary": "Membre d'honneur"
+            },
+            "export_users": "CSV des utilisateurs",
+            "export_clubs": "CSV des clubs"
         },
         "audit_page": {
             "title": "Journal d'activité",
@@ -75,7 +97,9 @@
             "no_actions": "Aucune action n'a encore été enregistrée.",
             "author_label": "Auteur:",
             "unauthorized": "Vous n'êtes pas autorisé à afficher cette page."
-        }
+        },
+        "welcome_back": "Bon retour, {{firstname}}",
+        "intro": "Voici le portail des clubs de l'Association Allemande de Parkour. Vous pouvez y créer votre adhésion personnelle à l'association, ainsi qu'enregistrer des clubs et des entreprises, puis demander et gérer leurs adhésions."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Demandé",
             "denied": "Demandé",
             "cancelled": "Annulé",
-            "upcoming_membership": "Futur Membre 🚀",
-            "pending_cancellation": "Résiliation en attente ⏳"
+            "upcoming_membership": "Futur Membre",
+            "pending_cancellation": "Résiliation en attente"
         },
         "details": {
             "title": "Données Principales",
@@ -123,7 +147,11 @@
                 "consent_privacy": "J'accepte la <1>politique de confidentialité</1>.",
                 "consent_accuracy": "Je confirme que mes informations sont véridiques.",
                 "consent_statutes": "J'ai lu et j'accepte les <1>statuts</1>.",
-                "consent_finances": "J'ai lu et j'accepte le <1>règlement des cotisations</1>."
+                "consent_finances": "J'ai lu et j'accepte le <1>règlement des cotisations</1>.",
+                "apply_button": "Envoyer la demande",
+                "cancel_dialog_description": "Votre club reste membre de la DPV jusqu'à la fin du préavis.",
+                "cancel_dialog_info": "Si vous résiliez maintenant, l'adhésion prend fin le <strong>{{date}}</strong>. La résiliation ne peut pas être annulée ici.",
+                "withdraw_dialog_description": "La demande d'adhésion de votre club sera retirée. Vous pourrez déposer une nouvelle demande à tout moment."
             }
         },
         "documents": {
@@ -131,7 +159,8 @@
             "description": "Téléchargez ici les documents du club.",
             "upload_label": "Télécharger un nouveau document",
             "download_all": "Tout télécharger",
-            "empty": "Aucun document disponible."
+            "empty": "Aucun document disponible.",
+            "info": "Téléversez ici les statuts et l'avis d'exonération fiscale (Freistellungsbescheid) de votre club afin que nous puissions vérifier son éligibilité à l'adhésion à la DPV."
         },
         "payment": {
             "title": "Détails de Paiement",
@@ -147,7 +176,10 @@
             },
             "placeholders": {
                 "account_holder": "Nom du titulaire du compte"
-            }
+            },
+            "admin_only": "Modifiable uniquement par les administrateurs.",
+            "info_debit": "Saisissez ici les coordonnées bancaires de votre club. En cas de demande d'adhésion, les cotisations seront prélevées sur ce compte.",
+            "info_required": "Les coordonnées bancaires doivent être renseignées avant de pouvoir demander l'adhésion."
         },
         "owners": {
             "title": "Conseil et Gestionnaires",
@@ -156,7 +188,9 @@
             "add_placeholder": "Ajouter un nouveau gestionnaire par e-mail",
             "labels": {
                 "authorizedRepresentative": "Représentant autorisé (§26 BGB)"
-            }
+            },
+            "info_who": "Ajoutez les personnes autorisées à modifier les informations du club. Elles doivent être inscrites sur le portail des membres de la DPV.",
+            "info_26": "Au moins une personne doit être habilitée à représenter le club selon le §26 BGB."
         },
         "census": {
             "title": "Rapport de Recensement",
@@ -172,7 +206,8 @@
                 "birthdate": "Date de naissance"
             },
             "empty": "Aucun rapport de recensement disponible.",
-            "confirm_overwrite": "Un rapport de recensement pour l'année {{year}} existe déjà. Voulez-vous le remplacer ?"
+            "confirm_overwrite": "Un rapport de recensement pour l'année {{year}} existe déjà. Voulez-vous le remplacer ?",
+            "info_required": "Un recensement des membres (Bestandsmeldung) pour {{year}} doit être déposé avant de pouvoir demander l'adhésion."
         },
         "messages": {
             "load_error": "Impossible de charger le club.",
@@ -214,13 +249,18 @@
             "name": "Nom du Club",
             "legal_form": "Forme Juridique",
             "email_opt": "E-mail (optionnel)",
-            "address_opt": "Adresse (optionnel)"
+            "address_opt": "Adresse (optionnel)",
+            "authorized_representative": "Je suis habilité(e) à représenter ce club (§26 BGB)",
+            "my_function": "Votre fonction dans le club (facultatif)",
+            "club_email_opt": "E-mail du club (facultatif)",
+            "contact_person_opt": "Personne de contact (facultatif)"
         },
         "placeholders": {
             "name": "Club exemple",
             "legal_form": "ex. e.V.",
             "email": "info@club.de",
-            "address": "Rue 1, 12345 Ville"
+            "address": "Rue 1, 12345 Ville",
+            "my_function": "p. ex. présidence, trésorerie"
         },
         "search": {
             "title": "Clubs similaires",
@@ -236,20 +276,32 @@
         "errors": {
             "not_authenticated": "Non authentifié.",
             "create_failed": "Échec de la création. Veuillez vérifier vos entrées."
+        },
+        "info": {
+            "title": "Bon à savoir",
+            "no_membership": "La création de votre club n'en fait pas encore un membre de la DPV.",
+            "next_steps": "Ensuite, vous pourrez modifier les informations, ajouter d'autres personnes comme membres du bureau ou administrateurs et demander l'adhésion à la DPV.",
+            "delete": "Tant qu'il n'y a ni adhésion ni demande en cours, vous pouvez aussi supprimer votre club.",
+            "contact": "Si vous laissez ces champs vides, vous ({{name}}) serez la personne de contact du club. Si le club a sa propre adresse e-mail ou si quelqu'un d'autre lit le courrier du club, saisissez ici l'e-mail du club et la personne de contact."
         }
     },
     "profile": {
         "title": "Mon Profil",
         "personal_data": {
             "title": "Données Personnelles",
-            "description": "Mettez à jour vos informations personnelles ici."
+            "description": "Mettez à jour vos informations personnelles ici.",
+            "admin_description": "Données de l'utilisateur",
+            "admin_edit_description": "Modifier les données de l'utilisateur"
         },
         "labels": {
             "firstname": "Prénom",
             "lastname": "Nom",
             "email": "E-mail",
             "language": "Langue",
-            "yourClub": "Ton Club"
+            "yourClub": "Ton Club",
+            "address": "Adresse",
+            "dateOfBirth": "Date de naissance",
+            "address_placeholder": "Rue, code postal, ville"
         },
         "messages": {
             "success": "Profil mis à jour.",
@@ -264,7 +316,18 @@
             "cancel_membership": "Annuler l'adhésion",
             "withdraw_application": "Retirer la demande",
             "reapply": "Postuler à nouveau",
-            "apply_membership": "Demander l'adhésion"
+            "apply_membership": "Demander l'adhésion",
+            "date_optional": "Date (facultatif)",
+            "date_hint_application": "Si vide, la date de la demande sera utilisée ({{date}}).",
+            "date_hint_today": "Si vide, la date du jour sera utilisée.",
+            "cancelling": "Résiliation en cours",
+            "cancel_admin": "Résilier (admin)",
+            "apply_description_self": "Votre adhésion commence le jour de votre demande, dès que la DPV l'a validée.",
+            "cancel_dialog_description_self": "Vous restez membre de la DPV jusqu'à la fin du préavis.",
+            "cancel_dialog_description_other": "Cette personne reste membre de la DPV jusqu'à la fin du préavis.",
+            "cancel_dialog_info": "En cas de résiliation maintenant, l'adhésion prend fin le <strong>{{date}}</strong>. La résiliation ne peut pas être annulée ici.",
+            "withdraw_dialog_description": "Votre demande d'adhésion sera retirée. Vous pourrez déposer une nouvelle demande à tout moment.",
+            "apply_needs_bank": "Renseignez d'abord vos coordonnées bancaires dans « Détails de Paiement » pour pouvoir demander l'adhésion."
         },
         "language_options": {
             "browser_default": "Par défaut du navigateur"
@@ -273,7 +336,36 @@
             "title": "Données de l'association",
             "description": "Rempli par l'association",
             "membership_number": "Numéro d'adhérent",
-            "fee": "Cotisation actuelle"
+            "fee": "Cotisation actuelle",
+            "membership_type": "Type d'adhésion",
+            "votes": "Nombre de voix",
+            "see_documents": "Voir les <statutes>statuts</statutes> et le <finances>règlement des cotisations</finances>",
+            "landesverband": "Fédération régionale",
+            "begin_date": "Début de l'adhésion"
+        },
+        "roles": {
+            "title": "Gestion des rôles",
+            "description": "Attribuer des autorisations système à cet utilisateur",
+            "admin": "Administrateur système (admin)",
+            "aktivadmin": "Responsable des membres actifs (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Adhésion",
+            "title_other": "Statut de l'adhésion",
+            "description": "Gérez votre adhésion à la DPV",
+            "none": "Aucune demande d'adhésion active.",
+            "status": "Statut :",
+            "application_date": "Date de demande :",
+            "entry_date": "Date d'entrée :",
+            "immediately": "Immédiatement",
+            "end_date": "Date de résiliation :",
+            "membership_number": "Numéro de membre :",
+            "planned_begin": "Début prévu :",
+            "after_approval": "après validation"
+        },
+        "apply": {
+            "active_option": "Adhésion active (10 € / an)",
+            "custom_fee": "Cotisation souhaitée par an (€)"
         }
     },
     "auth": {
@@ -425,5 +517,13 @@
             "description": "Si vous représentez une entreprise de parkour qui souhaite adhérer, gérez cela depuis l'administration de l'entreprise.",
             "button": "Bientôt disponible"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Fil d'Ariane",
+        "clubs": "Gestion des clubs",
+        "club": "Club",
+        "user": "Utilisateur",
+        "status": "Statut",
+        "settings": "Paramètres système"
     }
 }

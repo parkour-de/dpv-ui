@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/context/auth-context-core";
 import { api, API_BASE, getErrorMessage } from "@/lib/api";
-import { type User, type Club, type ClubStatus, type Membership } from "@/types";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { type User, type Club, type ClubStatus, type Membership, displayStatus } from "@/types";
+import { Card, CardContent } from "@/components/ui/card";
 import { Filter, AlertCircle, Search, Users, Building2, Download } from "lucide-react";
 import { StatusBadge } from "@/components/status-badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+// "Aktiv" in the status filter also covers memberships that start later or are being cancelled
+const ACTIVE_STATUSES = new Set(['active', 'approved', 'cancelling']);
 
 type UnifiedMember = {
     _key: string;
@@ -17,19 +20,23 @@ type UnifiedMember = {
     email?: string;
     initials: string;
     membership?: Membership;
+    state?: string;
 };
 
 export function UsersPage() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user, token } = useAuth();
+    const navigate = useNavigate();
+    const [now] = useState(() => Math.floor(Date.now() / 1000));
     const [members, setMembers] = useState<UnifiedMember[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     // Filters
-    const [statusFilter, setStatusFilter] = useState<ClubStatus | "">("");
+    const [statusFilter, setStatusFilter] = useState<ClubStatus | "">("active");
     const [searchQuery, setSearchQuery] = useState("");
     const [typeFilter, setTypeFilter] = useState<string>("");
+    const [kindFilter, setKindFilter] = useState<"" | "user" | "club">("");
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -57,7 +64,8 @@ export function UsersPage() {
                             name: c.name,
                             email: c.email || '', // fallback
                             initials: c.name ? c.name.substring(0, 2).toUpperCase() : '??',
-                            membership: c.membership
+                            membership: c.membership,
+                            state: c.state
                         }))
                     ];
 
@@ -72,7 +80,7 @@ export function UsersPage() {
         };
 
         if (user?.roles?.includes('admin')) {
-            fetchMembers();
+            void fetchMembers();
         } else {
             setLoading(false);
         }
@@ -110,7 +118,10 @@ export function UsersPage() {
 
     const matchesFilter = (m: UnifiedMember) => {
         // Status filter
-        if (statusFilter && m.membership?.status !== statusFilter) return false;
+        if (statusFilter === 'active' ? !ACTIVE_STATUSES.has(m.membership?.status || '') : statusFilter && displayStatus(m.membership?.status) !== statusFilter) return false;
+
+        // Person / Verein filter
+        if (kindFilter && m._internal_type !== kindFilter) return false;
 
         // Type filter
         if (typeFilter) {
@@ -136,6 +147,34 @@ export function UsersPage() {
 
     const filteredMembers = members.filter(matchesFilter);
 
+    // Start date for upcoming memberships, end date for pending cancellations (same conditions as StatusBadge)
+    const statusDate = (ms?: Membership) => {
+        if (!ms) return null;
+        const formatDate = (ts: number) => new Date(ts * 1000).toLocaleDateString(i18n.language);
+        if (ms.begin_date && (ms.status === 'approved' || (ms.status === 'active' && ms.begin_date > now))) {
+            return t('dashboard.admin.table.from_date', { date: formatDate(ms.begin_date) });
+        }
+        if (ms.end_date && ms.status === 'cancelling') {
+            return t('dashboard.admin.table.until_date', { date: formatDate(ms.end_date) });
+        }
+        return null;
+    };
+
+    // Same categories as the "Mitgliedsform" filter above; no category without a membership
+    const memberTypeLabel = (m: UnifiedMember) => {
+        // Only current members and applicants have a membership type; former or rejected ones show "–"
+        const status = m.membership?.status || '';
+        if (!ACTIVE_STATUSES.has(status) && status !== 'requested') return '–';
+        const memType = m.membership?.type || 'active';
+        if (m._internal_type === 'club') {
+            if (memType === 'extraordinary') return t('dashboard.admin.member_types.extraordinary');
+            if (memType === 'ordinary' || memType === 'active') return t('dashboard.admin.member_types.ordinary');
+        } else if (['active', 'supporting', 'honorary'].includes(memType)) {
+            return t(`dashboard.admin.member_types.${memType}`);
+        }
+        return memType;
+    };
+
     if (!user?.roles?.includes('admin')) {
         return (
             <div className="text-center py-12 text-muted-foreground">
@@ -156,11 +195,11 @@ export function UsersPage() {
                 <div className="flex gap-2">
                     <Button variant="outline" onClick={() => handleExport('users')} size="sm">
                         <Download className="h-4 w-4 mr-2" />
-                        Nutzer CSV
+                        {t('dashboard.admin.export_users')}
                     </Button>
                     <Button variant="outline" onClick={() => handleExport('clubs')} size="sm">
                         <Download className="h-4 w-4 mr-2" />
-                        Clubs CSV
+                        {t('dashboard.admin.export_clubs')}
                     </Button>
                 </div>
             </div>
@@ -190,16 +229,26 @@ export function UsersPage() {
                     </div>
 
                     <select
+                        className="h-10 w-full md:w-[160px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        value={kindFilter}
+                        onChange={(e) => setKindFilter(e.target.value as "" | "user" | "club")}
+                    >
+                        <option value="">{t('dashboard.admin.table.all_types')}</option>
+                        <option value="user">{t('dashboard.admin.table.person')}</option>
+                        <option value="club">{t('dashboard.admin.table.club')}</option>
+                    </select>
+
+                    <select
                         className="h-10 w-full md:w-[220px] rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
                     >
-                        <option value="">Alle Mitgliedsformen</option>
-                        <option value="ordinary">Ordentliches Mitglied (Stamm)</option>
-                        <option value="extraordinary">Außerordentliches Mitglied</option>
-                        <option value="active">Aktives Mitglied (Person)</option>
-                        <option value="supporting">Förderndes Mitglied</option>
-                        <option value="honorary">Ehrenmitglied</option>
+                        <option value="">{t('dashboard.admin.member_types.all')}</option>
+                        <option value="ordinary">{t('dashboard.admin.member_types.ordinary')}</option>
+                        <option value="extraordinary">{t('dashboard.admin.member_types.extraordinary')}</option>
+                        <option value="active">{t('dashboard.admin.member_types.active')}</option>
+                        <option value="supporting">{t('dashboard.admin.member_types.supporting')}</option>
+                        <option value="honorary">{t('dashboard.admin.member_types.honorary')}</option>
                     </select>
 
                     <select
@@ -208,7 +257,7 @@ export function UsersPage() {
                         onChange={(e) => setStatusFilter(e.target.value as ClubStatus | "")}
                     >
                         <option value="">{t('dashboard.filter.all_status')}</option>
-                        {['active', 'inactive', 'requested', 'denied', 'cancelled'].map((key) => (
+                        {['active', 'inactive', 'requested', 'denied'].map((key) => (
                             <option key={key} value={key}>{t(`club.status.${key}`)}</option>
                         ))}
                     </select>
@@ -225,36 +274,46 @@ export function UsersPage() {
             )}
 
             {!loading && filteredMembers.length > 0 && (
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredMembers.map(m => (
-                        <Link key={m._key} to={m._internal_type === 'user' ? `/user/${m._key}` : `/club/${m._key}`}>
-                            <Card className="h-full hover:bg-muted/50 transition-colors cursor-pointer">
-                                <CardHeader className="pb-4">
-                                    <div className="flex items-center justify-between space-x-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                                {m._internal_type === 'club' ? (
-                                                    <Building2 className="h-4 w-4 text-primary" />
-                                                ) : (
-                                                    <Users className="h-4 w-4 text-primary" />
-                                                )}
-                                            </div>
-                                            <div className="min-w-0">
-                                                <h3 className="font-semibold truncate">
-                                                    {m.name}
-                                                </h3>
-                                                <p className="text-sm text-muted-foreground truncate">{m.email}</p>
-                                            </div>
-                                        </div>
-                                        {m.membership?.status && (
-                                            <StatusBadge membership={m.membership} />
-                                        )}
-                                    </div>
-                                </CardHeader>
-                            </Card>
-                        </Link>
-                    ))}
-                </div>
+                <Card className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                        <thead>
+                            <tr className="border-b text-left text-muted-foreground">
+                                <th className="py-3 px-4 font-medium">{t('dashboard.admin.table.type')}</th>
+                                <th className="py-3 px-4 font-medium">{t('dashboard.admin.table.name')}</th>
+                                <th className="py-3 px-4 font-medium hidden md:table-cell">{t('dashboard.admin.table.email')}</th>
+                                <th className="py-3 px-4 font-medium hidden lg:table-cell">{t('club.details.labels.state')}</th>
+                                <th className="py-3 px-4 font-medium hidden md:table-cell">{t('dashboard.admin.table.member_type')}</th>
+                                <th className="py-3 px-4 font-medium">{t('dashboard.admin.table.status')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredMembers.map(m => {
+                                const to = m._internal_type === 'user' ? `/user/${m._key}` : `/club/${m._key}`;
+                                return (
+                                    <tr key={`${m._internal_type}-${m._key}`} onClick={() => navigate(to)} className="border-b last:border-0 hover:bg-muted/50 transition-colors cursor-pointer">
+                                        <td className="py-3 px-4 whitespace-nowrap">
+                                            <span className="inline-flex items-center gap-2 text-muted-foreground">
+                                                {m._internal_type === 'club' ? <Building2 className="h-4 w-4 text-primary" /> : <Users className="h-4 w-4 text-primary" />}
+                                                <span className="hidden sm:inline">{m._internal_type === 'club' ? t('dashboard.admin.table.club') : t('dashboard.admin.table.person')}</span>
+                                            </span>
+                                        </td>
+                                        <td className="py-3 px-4 font-medium">
+                                            <Link to={to} className="hover:underline underline-offset-4" onClick={(e) => e.stopPropagation()}>{m.name}</Link>
+                                            <div className="md:hidden text-xs font-normal text-muted-foreground break-all">{m.email}</div>
+                                        </td>
+                                        <td className="py-3 px-4 text-muted-foreground break-all hidden md:table-cell">{m.email}</td>
+                                        <td className="py-3 px-4 text-muted-foreground hidden lg:table-cell">{m.state || '–'}</td>
+                                        <td className="py-3 px-4 text-muted-foreground hidden md:table-cell">{memberTypeLabel(m)}</td>
+                                        <td className="py-3 px-4 whitespace-nowrap">
+                                            {m.membership?.status && <StatusBadge membership={m.membership} />}
+                                            {statusDate(m.membership) && <div className="text-xs text-muted-foreground mt-1">{statusDate(m.membership)}</div>}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </Card>
             )}
         </div>
     );

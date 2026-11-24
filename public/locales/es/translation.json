@@ -58,7 +58,29 @@
             "deny_membership_desc": "¿Realmente quieres denegar esta solicitud?",
             "cancel_membership": "Cancelar membresía",
             "cancel_membership_desc": "Selecciona la fecha de cancelación (fin del período activo).",
-            "export_error": "Error al exportar datos"
+            "export_error": "Error al exportar datos",
+            "table": {
+                "type": "Tipo",
+                "name": "Nombre",
+                "email": "Correo electrónico",
+                "status": "Estado",
+                "person": "Persona",
+                "club": "Club",
+                "member_type": "Tipo de membresía",
+                "from_date": "desde {{date}}",
+                "until_date": "hasta {{date}}",
+                "all_types": "Todos los tipos"
+            },
+            "member_types": {
+                "all": "Todas las formas de membresía",
+                "ordinary": "Miembro ordinario (base)",
+                "extraordinary": "Miembro extraordinario",
+                "active": "Miembro activo (persona)",
+                "supporting": "Miembro de apoyo",
+                "honorary": "Miembro honorario"
+            },
+            "export_users": "CSV de usuarios",
+            "export_clubs": "CSV de clubes"
         },
         "audit_page": {
             "title": "Registro de actividades",
@@ -75,7 +97,9 @@
             "no_actions": "Aún no se han registrado acciones.",
             "author_label": "Autor:",
             "unauthorized": "No tiene permiso para ver esta página."
-        }
+        },
+        "welcome_back": "Bienvenido de nuevo, {{firstname}}",
+        "intro": "Este es el portal de clubes de la Asociación Alemana de Parkour. Aquí puedes crear tu membresía personal en la asociación, así como registrar clubes y empresas y solicitar y gestionar sus membresías."
     },
     "club": {
         "status": {
@@ -84,8 +108,8 @@
             "requested": "Solicitado",
             "denied": "Denegado",
             "cancelled": "Cancelado",
-            "upcoming_membership": "Membresía futura 🚀",
-            "pending_cancellation": "Cancelación pendiente ⏳"
+            "upcoming_membership": "Membresía futura",
+            "pending_cancellation": "Cancelación pendiente"
         },
         "details": {
             "title": "Datos Principales",
@@ -123,7 +147,11 @@
                 "consent_privacy": "Acepto la <1>política de privacidad</1>.",
                 "consent_accuracy": "Confirmo que mis datos son verídicos.",
                 "consent_statutes": "He leído y acepto los <1>estatutos</1>.",
-                "consent_finances": "He leído y acepto el <1>reglamento de cuotas</1>."
+                "consent_finances": "He leído y acepto el <1>reglamento de cuotas</1>.",
+                "apply_button": "Enviar solicitud",
+                "cancel_dialog_description": "Tu club seguirá siendo miembro de la DPV hasta el final del plazo de preaviso.",
+                "cancel_dialog_info": "Si cancelas ahora, la membresía termina el <strong>{{date}}</strong>. La cancelación no se puede deshacer aquí.",
+                "withdraw_dialog_description": "Se retirará la solicitud de membresía de tu club. Puedes presentar una nueva solicitud en cualquier momento."
             }
         },
         "documents": {
@@ -131,7 +159,8 @@
             "description": "Sube aquí los documentos del club.",
             "upload_label": "Subir nuevo documento",
             "download_all": "Descargar todo",
-            "empty": "No hay documentos disponibles."
+            "empty": "No hay documentos disponibles.",
+            "info": "Sube aquí los estatutos y la resolución de exención fiscal (Freistellungsbescheid) de tu club para que podamos comprobar si puede ser miembro de la DPV."
         },
         "payment": {
             "title": "Datos de Pago",
@@ -147,7 +176,10 @@
             },
             "placeholders": {
                 "account_holder": "Nombre del titular de la cuenta"
-            }
+            },
+            "admin_only": "Solo editable por administradores.",
+            "info_debit": "Introduce aquí los datos bancarios de tu club. Si solicitáis la membresía, cobraremos las cuotas de esta cuenta.",
+            "info_required": "Los datos bancarios deben estar completos antes de poder solicitar la membresía."
         },
         "owners": {
             "title": "Junta y Administradores",
@@ -156,7 +188,9 @@
             "add_placeholder": "Añadir nuevo administrador por correo",
             "labels": {
                 "authorizedRepresentative": "Representante autorizado (§26 BGB)"
-            }
+            },
+            "info_who": "Añade a las personas que pueden editar los datos del club. Deben estar registradas en el portal de miembros de la DPV.",
+            "info_26": "Al menos una persona debe tener poder de representación según el §26 BGB."
         },
         "census": {
             "title": "Informe de Censo",
@@ -172,7 +206,8 @@
                 "birthdate": "Fecha de nacimiento"
             },
             "empty": "No hay informes de censo disponibles.",
-            "confirm_overwrite": "Ya existe un informe de censo para el año {{year}}. ¿Desea sobrescribirlo?"
+            "confirm_overwrite": "Ya existe un informe de censo para el año {{year}}. ¿Desea sobrescribirlo?",
+            "info_required": "Antes de solicitar la membresía, debe presentarse el informe de miembros (Bestandsmeldung) de {{year}}."
         },
         "messages": {
             "load_error": "No se pudo cargar el club.",
@@ -214,13 +249,18 @@
             "name": "Nombre del Club",
             "legal_form": "Forma Jurídica",
             "email_opt": "Correo (opcional)",
-            "address_opt": "Dirección (opcional)"
+            "address_opt": "Dirección (opcional)",
+            "authorized_representative": "Tengo poder de representación para este club (§26 BGB)",
+            "my_function": "Tu función en el club (opcional)",
+            "club_email_opt": "Correo del club (opcional)",
+            "contact_person_opt": "Persona de contacto (opcional)"
         },
         "placeholders": {
             "name": "Club de ejemplo",
             "legal_form": "p.ej. e.V.",
             "email": "info@club.de",
-            "address": "Calle 1, 12345 Ciudad"
+            "address": "Calle 1, 12345 Ciudad",
+            "my_function": "p. ej. presidencia, tesorería"
         },
         "search": {
             "title": "Clubes similares",
@@ -236,20 +276,32 @@
         "errors": {
             "not_authenticated": "No autenticado.",
             "create_failed": "Error en la creación. Por favor, verifica tus datos."
+        },
+        "info": {
+            "title": "Conviene saber",
+            "no_membership": "Crear tu club no lo convierte en miembro de la DPV.",
+            "next_steps": "Después podrás editar los datos, añadir a otras personas como directiva o administradores y solicitar la membresía en la DPV.",
+            "delete": "Mientras no exista una membresía ni una solicitud pendiente, también podrás eliminar tu club.",
+            "contact": "Si dejas estos campos vacíos, tú ({{name}}) serás la persona de contacto del club. Si el club tiene su propio correo o es otra persona quien lo lee, introduce aquí el correo del club y la persona de contacto."
         }
     },
     "profile": {
         "title": "Mi Perfil",
         "personal_data": {
             "title": "Datos Personales",
-            "description": "Actualiza aquí tu información personal."
+            "description": "Actualiza aquí tu información personal.",
+            "admin_description": "Datos del usuario",
+            "admin_edit_description": "Editar datos del usuario"
         },
         "labels": {
             "firstname": "Nombre",
             "lastname": "Apellido",
             "email": "Correo electrónico",
             "language": "Idioma",
-            "yourClub": "Tu Club"
+            "yourClub": "Tu Club",
+            "address": "Dirección",
+            "dateOfBirth": "Fecha de nacimiento",
+            "address_placeholder": "Calle, código postal, ciudad"
         },
         "messages": {
             "success": "Perfil actualizado.",
@@ -264,7 +316,18 @@
             "cancel_membership": "Cancelar membresía",
             "withdraw_application": "Retirar solicitud",
             "reapply": "Volver a solicitar",
-            "apply_membership": "Solicitar membresía"
+            "apply_membership": "Solicitar membresía",
+            "date_optional": "Fecha (opcional)",
+            "date_hint_application": "Si se deja vacío, se usará la fecha de la solicitud ({{date}}).",
+            "date_hint_today": "Si se deja vacío, se usará la fecha de hoy.",
+            "cancelling": "Baja en curso",
+            "cancel_admin": "Dar de baja (admin)",
+            "apply_description_self": "Tu membresía empieza el día de tu solicitud, una vez que la DPV la haya aprobado.",
+            "cancel_dialog_description_self": "Sigues siendo miembro de la DPV hasta el final del plazo de preaviso.",
+            "cancel_dialog_description_other": "Esta persona sigue siendo miembro de la DPV hasta el final del plazo de preaviso.",
+            "cancel_dialog_info": "Si se cancela ahora, la membresía termina el <strong>{{date}}</strong>. La cancelación no se puede deshacer aquí.",
+            "withdraw_dialog_description": "Se retirará tu solicitud de membresía. Puedes presentar una nueva solicitud en cualquier momento.",
+            "apply_needs_bank": "Primero añade tus datos bancarios en «Datos de Pago» para poder solicitar la membresía."
         },
         "language_options": {
             "browser_default": "Predeterminado del navegador"
@@ -273,7 +336,36 @@
             "title": "Datos de la asociación",
             "description": "Rellenado por la asociación",
             "membership_number": "Número de miembro",
-            "fee": "Cuota actual"
+            "fee": "Cuota actual",
+            "membership_type": "Tipo de membresía",
+            "votes": "Número de votos",
+            "see_documents": "Ver <statutes>estatutos</statutes> y <finances>reglamento de cuotas</finances>",
+            "landesverband": "Federación regional",
+            "begin_date": "Inicio de la membresía"
+        },
+        "roles": {
+            "title": "Gestión de roles",
+            "description": "Asignar permisos del sistema a este usuario",
+            "admin": "Administrador del sistema (admin)",
+            "aktivadmin": "Coordinador de miembros activos (aktivadmin)"
+        },
+        "membership": {
+            "title_self": "Membresía",
+            "title_other": "Estado de la membresía",
+            "description": "Gestiona tu membresía en la DPV",
+            "none": "No hay ninguna solicitud de membresía activa.",
+            "status": "Estado:",
+            "application_date": "Fecha de solicitud:",
+            "entry_date": "Fecha de alta:",
+            "immediately": "Inmediatamente",
+            "end_date": "Fecha de baja:",
+            "membership_number": "Número de socio:",
+            "planned_begin": "Inicio previsto:",
+            "after_approval": "tras la aprobación"
+        },
+        "apply": {
+            "active_option": "Membresía activa (10 € / año)",
+            "custom_fee": "Cuota deseada por año (€)"
         }
     },
     "auth": {
@@ -425,5 +517,13 @@
             "description": "Si representas a una empresa de parkour y deseas afiliarla, gestiona la membresía en la administración de empresas.",
             "button": "Próximamente"
         }
+    },
+    "breadcrumbs": {
+        "aria_label": "Ruta de navegación",
+        "clubs": "Gestión de clubes",
+        "club": "Club",
+        "user": "Usuario",
+        "status": "Estado",
+        "settings": "Configuración del sistema"
     }
 }
